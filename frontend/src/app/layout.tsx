@@ -34,6 +34,9 @@ export default function RootLayout({
               <Link href="/analytics" className="hover:underline flex items-center gap-2">
                 📈 Analytics
               </Link>
+              <Link href="/how-it-works" className="hover:underline flex items-center gap-2">
+                🔬 How it Works
+              </Link>
             </div>
           </div>
         </nav>

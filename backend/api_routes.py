@@ -11,9 +11,14 @@ from datetime import datetime
 import asyncio
 import logging
 from enum import Enum
+import json
+import hashlib
+import base64
+import secrets
+import time
 
 from mongodb_integration import TDPQIMLEMongoStorage, SensitivityLevel
-from algorithm import TDPQIMLEAlgorithm
+from algorithm import TDPQIMLEAlgorithm, TemporalPrivacyParams
 
 # Initialize router
 router = APIRouter(prefix="/api/novel", tags=["Novel TDP-QIMLE Algorithm"])
@@ -61,6 +66,26 @@ class SearchResultResponse(BaseModel):
     sensitivity_level: int
     created_at: datetime
     updated_at: datetime
+
+class EncryptionDemoRequest(BaseModel):
+    name: str
+    age: int
+    diagnosis: str
+    lab_results: str
+
+class EncryptionStep(BaseModel):
+    step: int
+    title: str
+    description: str
+    input_data: str
+    output_data: str
+    technical_details: str
+
+class EncryptionDemoResponse(BaseModel):
+    original_data: Dict[str, Any]
+    encryption_steps: List[EncryptionStep]
+    final_encrypted_data: str
+    algorithm_info: Dict[str, Any]
 
 # Global storage instance
 storage: Optional[TDPQIMLEMongoStorage] = None
@@ -517,6 +542,176 @@ async def benchmark_algorithm_performance(
     except Exception as e:
         logging.error(f"Benchmark failed: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Benchmark failed: {str(e)}")
+
+@router.post("/encryption/demo", response_model=EncryptionDemoResponse)
+async def encryption_demo(request: EncryptionDemoRequest):
+    """
+    Demonstrate step-by-step encryption process for research purposes.
+    Shows how patient data transforms through each encryption layer.
+    """
+    try:
+        # Original patient data
+        original_data = {
+            "name": request.name,
+            "age": request.age,
+            "diagnosis": request.diagnosis,
+            "lab_results": request.lab_results,
+            "timestamp": datetime.now().isoformat()
+        }
+        
+        # Initialize algorithm with proper parameters
+        master_key = secrets.token_bytes(32)
+        temporal_params = TemporalPrivacyParams(
+            epsilon=1.0,
+            delta=1e-5,
+            time_decay_factor=0.95,
+            temporal_window=3600,
+            sensitivity_multiplier=1.5
+        )
+        
+        algorithm = TDPQIMLEAlgorithm(master_key, temporal_params)
+        
+        # Step-by-step encryption demonstration
+        steps = []
+        current_data = json.dumps(original_data, indent=2)
+        
+        # Step 1: Temporal Differential Privacy
+        step1_input = current_data
+        timestamp = time.time()
+        temporal_noise = algorithm._compute_temporal_noise(timestamp, SensitivityLevel.HIGH)
+        
+        # Apply noise to sensitive fields
+        noisy_data = original_data.copy()
+        if isinstance(noisy_data.get('age'), int):
+            noisy_data['age'] = max(0, int(noisy_data['age'] + temporal_noise))
+        
+        step1_output = json.dumps(noisy_data, indent=2)
+        
+        steps.append(EncryptionStep(
+            step=1,
+            title="Temporal Differential Privacy",
+            description="Adding time-decay noise to protect temporal patterns",
+            input_data=step1_input,
+            output_data=step1_output,
+            technical_details=f"Applied Laplace noise with time-decay factor. Noise value: {temporal_noise:.4f}, Privacy budget: ε=1.0, δ=1e-5"
+        ))
+        
+        # Step 2: Quantum-Inspired Superposition
+        step2_input = step1_output
+        data_bytes = json.dumps(noisy_data).encode('utf-8')
+        quantum_layer = algorithm.quantum_states[0]  # Use first quantum layer
+        quantum_encrypted = algorithm._quantum_superposition_encrypt(data_bytes, quantum_layer)
+        quantum_b64 = base64.b64encode(quantum_encrypted).decode('utf-8')
+        
+        step2_output = f"Quantum Encrypted Data (Base64):\n{quantum_b64[:200]}..."
+        
+        steps.append(EncryptionStep(
+            step=2,
+            title="Quantum-Inspired Superposition",
+            description="Creating quantum-like superposition states for each data field",
+            input_data=step2_input,
+            output_data=step2_output,
+            technical_details=f"Applied quantum superposition with state: {quantum_layer.state.name}, Phase: {quantum_layer.phase:.4f}"
+        ))
+        
+        # Step 3: Multi-dimensional Lattice Obfuscation
+        step3_input = step2_output
+        lattice_encrypted, lattice_point = algorithm._lattice_obfuscation(quantum_encrypted, SensitivityLevel.HIGH)
+        lattice_b64 = base64.b64encode(lattice_encrypted).decode('utf-8')
+        
+        step3_output = f"Lattice Obfuscated Data (Base64):\n{lattice_b64[:200]}..."
+        
+        steps.append(EncryptionStep(
+            step=3,
+            title="Multi-dimensional Lattice Obfuscation",
+            description="Mapping data to high-dimensional lattice points",
+            input_data=step3_input,
+            output_data=step3_output,
+            technical_details=f"Used {algorithm.lattice_dimension}-dimensional lattice. Coordinates: {len(lattice_point.coordinates)} dimensions"
+        ))
+        
+        # Step 4: Key Evolution
+        step4_input = step3_output
+        evolved_key = algorithm._evolve_key(timestamp)
+        evolved_key_hex = evolved_key.hex()
+        
+        step4_output = f"Evolved Key (Hex):\n{evolved_key_hex[:100]}..."
+        
+        steps.append(EncryptionStep(
+            step=4,
+            title="Biological Key Evolution",
+            description="Evolving encryption keys using biological patterns",
+            input_data=step4_input,
+            output_data=step4_output,
+            technical_details=f"Generated new key using biological sequence. Key length: {len(evolved_key)} bytes"
+        ))
+        
+        # Step 5: Homomorphic Operations
+        step5_input = step4_output
+        homomorphic_data = algorithm._homomorphic_operation_preserve(lattice_encrypted)
+        homomorphic_b64 = base64.b64encode(homomorphic_data).decode('utf-8')
+        
+        step5_output = f"Homomorphic Encrypted Data (Base64):\n{homomorphic_b64[:200]}..."
+        
+        steps.append(EncryptionStep(
+            step=5,
+            title="Homomorphic Operations",
+            description="Enabling computation on encrypted data",
+            input_data=step5_input,
+            output_data=step5_output,
+            technical_details=f"Applied homomorphic encryption with modulus: {algorithm.homomorphic_modulus}"
+        ))
+        
+        # Step 6: Blockchain-Inspired Integrity
+        step6_input = step5_output
+        metadata = {
+            "patient_id": hashlib.sha256(request.name.encode()).hexdigest()[:16],
+            "timestamp": timestamp,
+            "sensitivity": SensitivityLevel.HIGH.name
+        }
+        integrity_block = algorithm._create_integrity_block(homomorphic_data, metadata)
+        
+        step6_output = f"Integrity Block:\n{json.dumps(integrity_block, indent=2)[:300]}..."
+        
+        steps.append(EncryptionStep(
+            step=6,
+            title="Blockchain-Inspired Integrity",
+            description="Adding cryptographic hash for data integrity verification",
+            input_data=step6_input,
+            output_data=step6_output,
+            technical_details=f"Generated integrity block with hash: {integrity_block['hash'][:32]}..."
+        ))
+        
+        # Final encrypted result (what would be stored in MongoDB)
+        final_encrypted_document = algorithm.encrypt_patient_data(original_data, SensitivityLevel.HIGH)
+        
+        # Convert any datetime objects to strings for JSON serialization
+        def serialize_for_json(obj):
+            if isinstance(obj, datetime):
+                return obj.isoformat()
+            elif isinstance(obj, dict):
+                return {k: serialize_for_json(v) for k, v in obj.items()}
+            elif isinstance(obj, list):
+                return [serialize_for_json(item) for item in obj]
+            else:
+                return obj
+        
+        final_encrypted_document = serialize_for_json(final_encrypted_document)
+        final_encrypted_str = json.dumps(final_encrypted_document, indent=2)
+        
+        # Algorithm information
+        algorithm_info = algorithm.get_algorithm_info()
+        algorithm_info = serialize_for_json(algorithm_info)
+        
+        return EncryptionDemoResponse(
+            original_data=original_data,
+            encryption_steps=steps,
+            final_encrypted_data=final_encrypted_str,
+            algorithm_info=algorithm_info
+        )
+        
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Encryption demo failed: {str(e)}")
 
 # Background task functions
 async def verify_storage_integrity(storage: TDPQIMLEMongoStorage, patient_id: str):

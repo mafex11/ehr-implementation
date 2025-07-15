@@ -265,4 +265,26 @@ export const getSystemInfo = async () => {
   }
 };
 
+export const encryptionDemo = async (data: {
+  name: string;
+  age: number;
+  diagnosis: string;
+  lab_results: string;
+}) => {
+  const response = await fetch('http://localhost:8001/api/novel/encryption/demo', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer demo-token'
+    },
+    body: JSON.stringify(data)
+  });
+
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+
+  return response.json();
+};
+
 export default api;
