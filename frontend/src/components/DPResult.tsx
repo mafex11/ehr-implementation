@@ -46,11 +46,11 @@ export default function DPResult() {
 
   return (
     <div>
-      <h2 className="text-xl font-bold mb-4">Privacy-Preserving Analytics</h2>
+      <h2 className="text-xl font-bold mb-4 text-black">Privacy-Preserving Analytics</h2>
       
       <div className="mb-6 p-4 border rounded bg-gray-50">
         <div className="mb-4">
-          <label className="block mb-2 font-medium">
+          <label className="block mb-2 font-medium text-black">
             Privacy Protection Level (Epsilon):
             <div className="flex items-center mt-1">
               <input

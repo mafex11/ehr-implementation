@@ -53,12 +53,12 @@ export default function PatientList() {
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold">Patient Records</h2>
+        <h2 className="text-xl font-bold text-black">Patient Records</h2>
         <div className="relative">
           <input
             type="text"
             placeholder="Search patients..."
-            className="px-3 py-2 border rounded-md"
+            className="px-3 py-2 border rounded-md text-black" 
             value={searchTerm}
             onChange={(e) => {
               setSearchTerm(e.target.value);
@@ -67,7 +67,7 @@ export default function PatientList() {
           />
           {searchTerm && (
             <button 
-              className="absolute right-2 top-2.5 text-gray-500"
+              className="absolute right-2 top-2.5 text-black"
               onClick={() => setSearchTerm('')}
             >
               ×
@@ -82,7 +82,7 @@ export default function PatientList() {
         </div>
       ) : (
         <>
-          <div className="bg-gray-50 rounded-t-lg p-3 grid grid-cols-12 font-semibold border-b">
+          <div className="bg-gray-50 rounded-t-lg p-3 grid grid-cols-12 font-semibold border-b text-black">
             <div className="col-span-3">Patient</div>
             <div className="col-span-2">Age</div>
             <div className="col-span-4">Diagnosis</div>
@@ -90,7 +90,7 @@ export default function PatientList() {
           </div>
           <ul>
             {currentPatients.map((p) => (
-              <li key={p._id} className="p-3 grid grid-cols-12 border-b hover:bg-gray-50 transition-colors">
+              <li key={p._id} className="p-3 grid grid-cols-12 border-b hover:bg-gray-50 transition-colors text-black">
                 <div className="col-span-3 font-semibold">{p.name}</div>
                 <div className="col-span-2">{p.age} years</div>
                 <div className="col-span-4">{p.diagnosis}</div>

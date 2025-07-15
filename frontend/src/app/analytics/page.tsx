@@ -90,14 +90,14 @@ export default function Analytics() {
   return (
     <div className="max-w-6xl mx-auto p-6">
       <div className="mb-8 p-6 bg-white rounded-lg shadow-md">
-        <h1 className="text-3xl font-bold text-blue-800 mb-3">Privacy-Preserving Analytics</h1>
+        <h1 className="text-3xl font-bold text-blue-800 mb-3 ">Privacy-Preserving Analytics</h1>
         <p className="text-gray-600">
           Run privacy-protected queries on patient data using differential privacy. 
           Adjust the privacy level to balance between data utility and privacy protection.
         </p>
       </div>
       
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 ">
         {/* Left panel: Settings */}
         <div className="bg-white p-6 rounded-lg shadow-md lg:col-span-1">
           <h2 className="text-xl font-bold mb-4">Query Settings</h2>
