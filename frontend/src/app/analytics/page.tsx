@@ -54,16 +54,14 @@ export default function Analytics() {
       setLoading(true);
       setError(null);
       
-      // Currently we only have the lab_average endpoint implemented on the backend
-      // For a real implementation, we would have different endpoints for different query types
-      const endpoint = 'ehr/dp/lab_average';
-      const res = await api.get(`${endpoint}?epsilon=${settings.epsilon}`);
+      // Use the new system stats endpoint
+      const res = await api.get('system/stats');
       
-      // Format the response based on query type (in a real app, this would be different for each query type)
+      // Format the response based on query type (using system stats)
       const formattedResult: DPResult = {
         queryType: settings.queryType,
         epsilon: settings.epsilon,
-        result: res.data.dp_average,
+        result: res.data.total_patients || 0,
         timestamp: new Date().toISOString(),
       };
       

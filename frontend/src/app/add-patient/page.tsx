@@ -47,15 +47,21 @@ export default function AddPatient() {
 
     try {
       setLoading(true);
-      // Convert empty strings to appropriate types for the API
+      // Convert to new API format
       const apiData = {
+        patient_id: `P${Date.now()}`,
         name: formData.name,
         age: Number(formData.age),
-        diagnosis: formData.diagnosis,
-        lab_result: Number(formData.lab_result),
+        medical_history: [formData.diagnosis],
+        current_medications: [],
+        test_results: {
+          lab_result: Number(formData.lab_result)
+        },
+        notes: '',
+        sensitivity_level: 'MEDIUM'
       };
       
-      await api.post('ehr/add', apiData);
+      await api.post('patients', apiData);
       
       setSuccess(true);
       setFormData({

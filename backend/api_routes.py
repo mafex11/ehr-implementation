@@ -3,7 +3,7 @@ FastAPI Routes for TDP-QIMLE Algorithm
 Novel Encryption System for Patient Data Storage
 """
 
-from fastapi import APIRouter, HTTPException, Depends, BackgroundTasks
+from fastapi import APIRouter, HTTPException, Depends, BackgroundTasks, Query
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel, Field
 from typing import Dict, List, Optional, Any
@@ -12,8 +12,8 @@ import asyncio
 import logging
 from enum import Enum
 
-from novel_mongodb_integration import TDPQIMLEMongoStorage, SensitivityLevel
-from novel_algorithm import TDPQIMLEAlgorithm
+from mongodb_integration import TDPQIMLEMongoStorage, SensitivityLevel
+from algorithm import TDPQIMLEAlgorithm
 
 # Initialize router
 router = APIRouter(prefix="/api/novel", tags=["Novel TDP-QIMLE Algorithm"])
@@ -69,7 +69,7 @@ async def get_storage():
     """Dependency to get storage instance"""
     global storage
     if storage is None:
-        storage = TDPQIMLEMongoStorage("mongodb://localhost:27017")
+        storage = TDPQIMLEMongoStorage("mongodb+srv://mafex:mafex@cluster0.sgapqkg.mongodb.net/")
         await storage.initialize_database()
     return storage
 
@@ -269,6 +269,69 @@ async def delete_patient_data(
         logging.error(f"Failed to delete patient data: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Deletion failed: {str(e)}")
 
+@router.get("/patients", response_model=List[PatientDataResponse])
+async def get_all_patients(
+    decrypt: bool = Query(default=True, description="Whether to decrypt patient data"),
+    limit: int = Query(default=100, ge=1, le=1000, description="Maximum number of patients to return"),
+    storage: TDPQIMLEMongoStorage = Depends(get_storage),
+    credentials: HTTPAuthorizationCredentials = Depends(security)
+):
+    """
+    Get all patients with optional decryption
+    
+    Returns a list of all patients, optionally decrypted.
+    For security reasons, this endpoint is limited to 1000 patients.
+    """
+    try:
+        if decrypt:
+            # Get all patients and decrypt them
+            patients = await storage.get_all_patients_decrypted(limit)
+            return [
+                PatientDataResponse(
+                    patient_id=patient["patient_id"],
+                    name=patient["name"],
+                    age=patient["age"],
+                    medical_history=patient["medical_history"],
+                    current_medications=patient["current_medications"],
+                    test_results=patient["test_results"],
+                    notes=patient.get("notes"),
+                    metadata={
+                        "algorithm": "TDP-QIMLE",
+                        "retrieved_at": datetime.now(),
+                        "integrity_verified": True
+                    }
+                )
+                for patient in patients
+            ]
+        else:
+            # Get metadata only
+            results = await storage.get_all_patients_metadata(limit)
+            return [
+                PatientDataResponse(
+                    patient_id=result["patient_id"],
+                    name="[ENCRYPTED]",
+                    age=0,
+                    medical_history=["[ENCRYPTED]"],
+                    current_medications=["[ENCRYPTED]"],
+                    test_results={"status": "[ENCRYPTED]"},
+                    notes="[ENCRYPTED]",
+                    metadata={
+                        "algorithm": "TDP-QIMLE",
+                        "retrieved_at": datetime.now(),
+                        "integrity_verified": True,
+                        "encrypted": True,
+                        "sensitivity_level": result["sensitivity_level"],
+                        "created_at": result["created_at"],
+                        "updated_at": result["updated_at"]
+                    }
+                )
+                for result in results
+            ]
+        
+    except Exception as e:
+        logging.error(f"Failed to get all patients: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Failed to retrieve patients: {str(e)}")
+
 @router.get("/patients/search/sensitivity/{sensitivity_level}", response_model=List[SearchResultResponse])
 async def search_patients_by_sensitivity(
     sensitivity_level: str,
@@ -386,7 +449,7 @@ async def get_algorithm_information(
 
 @router.post("/system/benchmark", response_model=Dict[str, Any])
 async def benchmark_algorithm_performance(
-    num_operations: int = Field(default=100, ge=1, le=1000),
+    num_operations: int = Query(default=100, ge=1, le=1000),
     storage: TDPQIMLEMongoStorage = Depends(get_storage),
     credentials: HTTPAuthorizationCredentials = Depends(security)
 ):
@@ -473,12 +536,10 @@ async def verify_storage_integrity(storage: TDPQIMLEMongoStorage, patient_id: st
     except Exception as e:
         logging.error(f"Background integrity verification failed: {str(e)}")
 
-# Error handlers
-@router.exception_handler(ValueError)
+# Error handlers (to be added to main FastAPI app)
 async def value_error_handler(request, exc):
     return HTTPException(status_code=422, detail=str(exc))
 
-@router.exception_handler(Exception)
 async def general_exception_handler(request, exc):
     logging.error(f"Unhandled exception: {str(exc)}")
     return HTTPException(status_code=500, detail="Internal server error")

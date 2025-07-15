@@ -20,9 +20,17 @@ export default function PatientList() {
 
   useEffect(() => {
     setLoading(true);
-    api.get('ehr/all')
+    api.get('patients?decrypt=true')
       .then((res) => {
-        setPatients(res.data);
+        // Transform the new API response to match the old format
+        const transformedPatients = res.data.map((patient: any) => ({
+          _id: patient.patient_id,
+          name: patient.name,
+          age: patient.age,
+          diagnosis: patient.medical_history[0] || 'No diagnosis',
+          lab_result: patient.test_results?.lab_result || patient.test_results?.blood_pressure || 'No results'
+        }));
+        setPatients(transformedPatients);
         setLoading(false);
       })
       .catch(err => {

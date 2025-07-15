@@ -122,7 +122,7 @@ This algorithm is **completely original** and combines concepts that have never 
 1. **Start the TDP-QIMLE Backend**
    ```bash
    cd backend
-   python main_novel.py
+   python main.py
    ```
    The API will be available at `http://localhost:8001`
 
@@ -189,7 +189,7 @@ This algorithm is **completely original** and combines concepts that have never 
 
 ```python
 import asyncio
-from novel_mongodb_integration import TDPQIMLEMongoStorage, SensitivityLevel
+from mongodb_integration import TDPQIMLEMongoStorage, SensitivityLevel
 
 async def example_usage():
     # Initialize storage

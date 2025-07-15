@@ -127,11 +127,18 @@ export default function EncryptPage() {
       simulateEncryptionProcess();
       
       // Make API call
-      const response = await api.post(`ehr/add?epsilon=${encryptionSettings.epsilon}`, {
+      const response = await api.post('patients', {
+        patient_id: `P${Date.now()}`,
         name: patientData.name,
         age: Number(patientData.age),
-        diagnosis: patientData.diagnosis,
-        lab_result: Number(patientData.lab_result)
+        medical_history: [patientData.diagnosis],
+        current_medications: [],
+        test_results: {
+          lab_result: Number(patientData.lab_result)
+        },
+        notes: '',
+        sensitivity_level: encryptionSettings.epsilon <= 0.5 ? 'HIGH' : 
+                          encryptionSettings.epsilon <= 1.0 ? 'MEDIUM' : 'LOW'
       });
       
       setEncryptionResult(response.data);

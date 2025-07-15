@@ -1,0 +1,307 @@
+2025-07-16 02:40:36,813 - __main__ - INFO - Starting TDP-QIMLE development server...
+2025-07-16 02:40:38,526 - main - INFO - Starting TDP-QIMLE Algorithm System...
+2025-07-16 02:40:38,527 - main - INFO - Initializing novel encryption components...
+2025-07-16 02:40:38,527 - main - INFO - TDP-QIMLE system started successfully
+2025-07-16 02:50:08,482 - main - INFO - Shutting down TDP-QIMLE Algorithm System...
+2025-07-16 02:50:08,483 - main - INFO - TDP-QIMLE system shutdown complete
+2025-07-16 02:50:10,712 - main - INFO - Starting TDP-QIMLE Algorithm System...
+2025-07-16 02:50:10,713 - main - INFO - Initializing novel encryption components...
+2025-07-16 02:50:10,714 - main - INFO - TDP-QIMLE system started successfully
+2025-07-16 02:50:38,241 - main - INFO - Shutting down TDP-QIMLE Algorithm System...
+2025-07-16 02:50:38,242 - main - INFO - TDP-QIMLE system shutdown complete
+2025-07-16 02:50:40,235 - main - INFO - Starting TDP-QIMLE Algorithm System...
+2025-07-16 02:50:40,235 - main - INFO - Initializing novel encryption components...
+2025-07-16 02:50:40,235 - main - INFO - TDP-QIMLE system started successfully
+2025-07-16 02:53:40,185 - main - INFO - Shutting down TDP-QIMLE Algorithm System...
+2025-07-16 02:53:40,185 - main - INFO - TDP-QIMLE system shutdown complete
+2025-07-16 02:53:41,687 - main - INFO - Starting TDP-QIMLE Algorithm System...
+2025-07-16 02:53:41,687 - main - INFO - Initializing novel encryption components...
+2025-07-16 02:53:41,688 - main - INFO - TDP-QIMLE system started successfully
+2025-07-16 02:54:34,481 - main - INFO - Request: OPTIONS http://localhost:8001/api/novel/patients?decrypt=true
+2025-07-16 02:54:34,485 - main - INFO - Response: 200 - 0.004s
+2025-07-16 02:54:34,719 - main - INFO - Request: GET http://localhost:8001/api/novel/patients?decrypt=true
+2025-07-16 02:54:38,533 - main - INFO - Request: GET http://localhost:8001/api/novel/patients?decrypt=true
+2025-07-16 02:54:50,629 - main - INFO - Request: OPTIONS http://localhost:8001/api/novel/patients
+2025-07-16 02:54:50,629 - main - INFO - Response: 200 - 0.000s
+2025-07-16 02:54:50,631 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-16 02:55:06,011 - mongodb_integration - ERROR - Database initialization failed: localhost:27017: [WinError 10061] No connection could be made because the target machine actively refused it (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms), Timeout: 30s, Topology Description: <TopologyDescription id: 6876c712839efc2dd65c13d4, topology_type: Unknown, servers: [<ServerDescription ('localhost', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('localhost:27017: [WinError 10061] No connection could be made because the target machine actively refused it (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms)')>]>
+2025-07-16 02:55:06,013 - main - ERROR - Unhandled exception: localhost:27017: [WinError 10061] No connection could be made because the target machine actively refused it (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms), Timeout: 30s, Topology Description: <TopologyDescription id: 6876c712839efc2dd65c13d4, topology_type: Unknown, servers: [<ServerDescription ('localhost', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('localhost:27017: [WinError 10061] No connection could be made because the target machine actively refused it (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms)')>]>
+  + Exception Group Traceback (most recent call last):
+  |   File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\_utils.py", line 76, in collapse_excgroups
+  |     yield
+  |   File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\middleware\base.py", line 177, in __call__
+  |     async with anyio.create_task_group() as task_group:
+  |                ~~~~~~~~~~~~~~~~~~~~~~~^^
+  |   File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\anyio\_backends\_asyncio.py", line 772, in __aexit__
+  |     raise BaseExceptionGroup(
+  |         "unhandled errors in a TaskGroup", self._exceptions
+  |     ) from None
+  | ExceptionGroup: unhandled errors in a TaskGroup (1 sub-exception)
+  +-+---------------- 1 ----------------
+    | Traceback (most recent call last):
+    |   File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    |     await self.app(scope, receive, _send)
+    |   File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\middleware\base.py", line 176, in __call__
+    |     with recv_stream, send_stream, collapse_excgroups():
+    |                                    ~~~~~~~~~~~~~~~~~~^^
+    |   File "C:\Python313\Lib\contextlib.py", line 162, in __exit__
+    |     self.gen.throw(value)
+    |     ~~~~~~~~~~~~~~^^^^^^^
+    |   File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\_utils.py", line 82, in collapse_excgroups
+    |     raise exc
+    |   File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\middleware\base.py", line 178, in __call__
+    |     response = await self.dispatch_func(request, call_next)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "H:\ehr privacy implementation - phd\backend\main.py", line 129, in log_requests
+    |     response = await call_next(request)
+    |                ^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\middleware\base.py", line 156, in call_next
+    |     raise app_exc
+    |   File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\middleware\base.py", line 141, in coro
+    |     await self.app(scope, receive_or_disconnect, send_no_error)
+    |   File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\middleware\trustedhost.py", line 51, in __call__
+    |     await self.app(scope, receive, send)
+    |   File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\middleware\cors.py", line 93, in __call__
+    |     await self.simple_response(scope, receive, send, request_headers=headers)
+    |   File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\middleware\cors.py", line 144, in simple_response
+    |     await self.app(scope, receive, send)
+    |   File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    |     await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+    |   File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\routing.py", line 714, in __call__
+    |     await self.middleware_stack(scope, receive, send)
+    |   File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\routing.py", line 734, in app
+    |     await route.handle(scope, receive, send)
+    |   File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\routing.py", line 288, in handle
+    |     await self.app(scope, receive, send)
+    |   File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\routing.py", line 76, in app
+    |     await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+    |   File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    |     raise exc
+    |   File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    |     await app(scope, receive, sender)
+    |   File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\routing.py", line 73, in app
+    |     response = await f(request)
+    |                ^^^^^^^^^^^^^^^^
+    |   File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\fastapi\routing.py", line 291, in app
+    |     solved_result = await solve_dependencies(
+    |                     ^^^^^^^^^^^^^^^^^^^^^^^^^
+    |     ...<6 lines>...
+    |     )
+    |     ^
+    |   File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\fastapi\dependencies\utils.py", line 638, in solve_dependencies
+    |     solved = await call(**solved_result.values)
+    |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "H:\ehr privacy implementation - phd\backend\api_routes.py", line 73, in get_storage
+    |     await storage.initialize_database()
+    |   File "H:\ehr privacy implementation - phd\backend\mongodb_integration.py", line 70, in initialize_database
+    |     await self.patients_collection.create_indexes(patient_indexes)
+    |   File "C:\Python313\Lib\concurrent\futures\thread.py", line 59, in run
+    |     result = self.fn(*self.args, **self.kwargs)
+    |   File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\pymongo\synchronous\collection.py", line 2215, in create_indexes
+    |     return self._create_indexes(indexes, session, **kwargs)
+    |            ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    |     return func(self, *args, **kwargs)
+    |   File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\pymongo\synchronous\collection.py", line 2231, in _create_indexes
+    |     with self._conn_for_writes(session, operation=_Op.CREATE_INDEXES) as conn:
+    |          ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\pymongo\synchronous\collection.py", line 578, in _conn_for_writes
+    |     return self._database.client._conn_for_writes(session, operation)
+    |            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+    |   File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\pymongo\synchronous\mongo_client.py", line 1829, in _conn_for_writes
+    |     server = self._select_server(writable_server_selector, session, operation)
+    |   File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\pymongo\synchronous\mongo_client.py", line 1812, in _select_server
+    |     server = topology.select_server(
+    |         server_selector,
+    |     ...<2 lines>...
+    |         operation_id=operation_id,
+    |     )
+    |   File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\pymongo\synchronous\topology.py", line 409, in select_server
+    |     server = self._select_server(
+    |         selector,
+    |     ...<4 lines>...
+    |         operation_id=operation_id,
+    |     )
+    |   File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\pymongo\synchronous\topology.py", line 387, in _select_server
+    |     servers = self.select_servers(
+    |         selector, operation, server_selection_timeout, address, operation_id
+    |     )
+    |   File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\pymongo\synchronous\topology.py", line 294, in select_servers
+    |     server_descriptions = self._select_servers_loop(
+    |         selector, server_timeout, operation, operation_id, address
+    |     )
+    |   File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\pymongo\synchronous\topology.py", line 344, in _select_servers_loop
+    |     raise ServerSelectionTimeoutError(
+    |         f"{self._error_message(selector)}, Timeout: {timeout}s, Topology Description: {self.description!r}"
+    |     )
+    | pymongo.errors.ServerSelectionTimeoutError: localhost:27017: [WinError 10061] No connection could be made because the target machine actively refused it (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms), Timeout: 30s, Topology Description: <TopologyDescription id: 6876c712839efc2dd65c13d4, topology_type: Unknown, servers: [<ServerDescription ('localhost', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('localhost:27017: [WinError 10061] No connection could be made because the target machine actively refused it (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms)')>]>
+    +------------------------------------
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\middleware\errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\middleware\base.py", line 176, in __call__
+    with recv_stream, send_stream, collapse_excgroups():
+                                   ~~~~~~~~~~~~~~~~~~^^
+  File "C:\Python313\Lib\contextlib.py", line 162, in __exit__
+    self.gen.throw(value)
+    ~~~~~~~~~~~~~~^^^^^^^
+  File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\_utils.py", line 82, in collapse_excgroups
+    raise exc
+  File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\middleware\base.py", line 178, in __call__
+    response = await self.dispatch_func(request, call_next)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "H:\ehr privacy implementation - phd\backend\main.py", line 129, in log_requests
+    response = await call_next(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\middleware\base.py", line 156, in call_next
+    raise app_exc
+  File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\middleware\base.py", line 141, in coro
+    await self.app(scope, receive_or_disconnect, send_no_error)
+  File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\middleware\trustedhost.py", line 51, in __call__
+    await self.app(scope, receive, send)
+  File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\middleware\cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\middleware\cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\middleware\exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\starlette\routing.py", line 73, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\fastapi\routing.py", line 291, in app
+    solved_result = await solve_dependencies(
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\fastapi\dependencies\utils.py", line 638, in solve_dependencies
+    solved = await call(**solved_result.values)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "H:\ehr privacy implementation - phd\backend\api_routes.py", line 73, in get_storage
+    await storage.initialize_database()
+  File "H:\ehr privacy implementation - phd\backend\mongodb_integration.py", line 70, in initialize_database
+    await self.patients_collection.create_indexes(patient_indexes)
+  File "C:\Python313\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\pymongo\synchronous\collection.py", line 2215, in create_indexes
+    return self._create_indexes(indexes, session, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\pymongo\_csot.py", line 119, in csot_wrapper
+    return func(self, *args, **kwargs)
+  File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\pymongo\synchronous\collection.py", line 2231, in _create_indexes
+    with self._conn_for_writes(session, operation=_Op.CREATE_INDEXES) as conn:
+         ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\pymongo\synchronous\collection.py", line 578, in _conn_for_writes
+    return self._database.client._conn_for_writes(session, operation)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\pymongo\synchronous\mongo_client.py", line 1829, in _conn_for_writes
+    server = self._select_server(writable_server_selector, session, operation)
+  File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\pymongo\synchronous\mongo_client.py", line 1812, in _select_server
+    server = topology.select_server(
+        server_selector,
+    ...<2 lines>...
+        operation_id=operation_id,
+    )
+  File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\pymongo\synchronous\topology.py", line 409, in select_server
+    server = self._select_server(
+        selector,
+    ...<4 lines>...
+        operation_id=operation_id,
+    )
+  File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\pymongo\synchronous\topology.py", line 387, in _select_server
+    servers = self.select_servers(
+        selector, operation, server_selection_timeout, address, operation_id
+    )
+  File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\pymongo\synchronous\topology.py", line 294, in select_servers
+    server_descriptions = self._select_servers_loop(
+        selector, server_timeout, operation, operation_id, address
+    )
+  File "C:\Users\esska\AppData\Roaming\Python\Python313\site-packages\pymongo\synchronous\topology.py", line 344, in _select_servers_loop
+    raise ServerSelectionTimeoutError(
+        f"{self._error_message(selector)}, Timeout: {timeout}s, Topology Description: {self.description!r}"
+    )
+pymongo.errors.ServerSelectionTimeoutError: localhost:27017: [WinError 10061] No connection could be made because the target machine actively refused it (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms), Timeout: 30s, Topology Description: <TopologyDescription id: 6876c712839efc2dd65c13d4, topology_type: Unknown, servers: [<ServerDescription ('localhost', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('localhost:27017: [WinError 10061] No connection could be made because the target machine actively refused it (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms)')>]>
+2025-07-16 02:55:39,081 - mongodb_integration - ERROR - Failed to log operation: localhost:27017: [WinError 10061] No connection could be made because the target machine actively refused it (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms), Timeout: 30s, Topology Description: <TopologyDescription id: 6876c712839efc2dd65c13d4, topology_type: Unknown, servers: [<ServerDescription ('localhost', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('localhost:27017: [WinError 10061] No connection could be made because the target machine actively refused it (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms)')>]>
+2025-07-16 02:55:39,081 - mongodb_integration - ERROR - Failed to get all patients: localhost:27017: [WinError 10061] No connection could be made because the target machine actively refused it (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms), Timeout: 30s, Topology Description: <TopologyDescription id: 6876c712839efc2dd65c13d4, topology_type: Unknown, servers: [<ServerDescription ('localhost', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('localhost:27017: [WinError 10061] No connection could be made because the target machine actively refused it (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms)')>]>
+2025-07-16 02:55:39,081 - root - ERROR - Failed to get all patients: localhost:27017: [WinError 10061] No connection could be made because the target machine actively refused it (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms), Timeout: 30s, Topology Description: <TopologyDescription id: 6876c712839efc2dd65c13d4, topology_type: Unknown, servers: [<ServerDescription ('localhost', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('localhost:27017: [WinError 10061] No connection could be made because the target machine actively refused it (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms)')>]>
+2025-07-16 02:55:39,082 - main - INFO - Response: 500 - 60.549s
+2025-07-16 02:55:51,117 - mongodb_integration - ERROR - Failed to log operation: localhost:27017: [WinError 10061] No connection could be made because the target machine actively refused it (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms), Timeout: 30s, Topology Description: <TopologyDescription id: 6876c712839efc2dd65c13d4, topology_type: Unknown, servers: [<ServerDescription ('localhost', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('localhost:27017: [WinError 10061] No connection could be made because the target machine actively refused it (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms)')>]>
+2025-07-16 02:55:51,118 - mongodb_integration - ERROR - Failed to store patient data: localhost:27017: [WinError 10061] No connection could be made because the target machine actively refused it (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms), Timeout: 30s, Topology Description: <TopologyDescription id: 6876c712839efc2dd65c13d4, topology_type: Unknown, servers: [<ServerDescription ('localhost', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('localhost:27017: [WinError 10061] No connection could be made because the target machine actively refused it (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms)')>]>
+2025-07-16 02:55:51,118 - root - ERROR - Failed to store patient data: localhost:27017: [WinError 10061] No connection could be made because the target machine actively refused it (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms), Timeout: 30s, Topology Description: <TopologyDescription id: 6876c712839efc2dd65c13d4, topology_type: Unknown, servers: [<ServerDescription ('localhost', 27017) server_type: Unknown, rtt: None, error=AutoReconnect('localhost:27017: [WinError 10061] No connection could be made because the target machine actively refused it (configured timeouts: socketTimeoutMS: 20000.0ms, connectTimeoutMS: 20000.0ms)')>]>
+2025-07-16 02:55:51,118 - main - INFO - Response: 500 - 60.487s
+2025-07-16 02:57:29,415 - main - INFO - Shutting down TDP-QIMLE Algorithm System...
+2025-07-16 02:57:29,416 - mongodb_integration - INFO - MongoDB connection closed
+2025-07-16 02:57:29,417 - main - INFO - TDP-QIMLE system shutdown complete
+2025-07-16 02:57:32,039 - main - INFO - Starting TDP-QIMLE Algorithm System...
+2025-07-16 02:57:32,039 - main - INFO - Initializing novel encryption components...
+2025-07-16 02:57:32,040 - main - INFO - TDP-QIMLE system started successfully
+2025-07-16 02:57:40,005 - main - INFO - Shutting down TDP-QIMLE Algorithm System...
+2025-07-16 02:57:40,006 - main - INFO - TDP-QIMLE system shutdown complete
+2025-07-16 02:57:41,481 - main - INFO - Starting TDP-QIMLE Algorithm System...
+2025-07-16 02:57:41,482 - main - INFO - Initializing novel encryption components...
+2025-07-16 02:57:41,482 - main - INFO - TDP-QIMLE system started successfully
+2025-07-16 02:57:48,700 - main - INFO - Shutting down TDP-QIMLE Algorithm System...
+2025-07-16 02:57:48,701 - main - INFO - TDP-QIMLE system shutdown complete
+2025-07-16 02:57:54,525 - main - INFO - Starting TDP-QIMLE Algorithm System...
+2025-07-16 02:57:54,525 - main - INFO - Initializing novel encryption components...
+2025-07-16 02:57:54,526 - main - INFO - TDP-QIMLE system started successfully
+2025-07-16 02:58:01,442 - main - INFO - Shutting down TDP-QIMLE Algorithm System...
+2025-07-16 02:58:01,443 - main - INFO - TDP-QIMLE system shutdown complete
+2025-07-16 02:58:03,534 - main - INFO - Starting TDP-QIMLE Algorithm System...
+2025-07-16 02:58:03,535 - main - INFO - Initializing novel encryption components...
+2025-07-16 02:58:03,535 - main - INFO - TDP-QIMLE system started successfully
+2025-07-16 02:58:21,583 - main - INFO - Shutting down TDP-QIMLE Algorithm System...
+2025-07-16 02:58:21,585 - main - INFO - TDP-QIMLE system shutdown complete
+2025-07-16 02:58:23,045 - main - INFO - Starting TDP-QIMLE Algorithm System...
+2025-07-16 02:58:23,046 - main - INFO - Initializing novel encryption components...
+2025-07-16 02:58:23,047 - main - INFO - TDP-QIMLE system started successfully
+2025-07-16 02:58:29,261 - main - INFO - Shutting down TDP-QIMLE Algorithm System...
+2025-07-16 02:58:29,261 - main - INFO - TDP-QIMLE system shutdown complete
+2025-07-16 02:58:30,895 - main - INFO - Starting TDP-QIMLE Algorithm System...
+2025-07-16 02:58:30,896 - main - INFO - Initializing novel encryption components...
+2025-07-16 02:58:30,896 - main - INFO - TDP-QIMLE system started successfully
+2025-07-16 02:58:37,330 - main - INFO - Shutting down TDP-QIMLE Algorithm System...
+2025-07-16 02:58:37,334 - main - INFO - TDP-QIMLE system shutdown complete
+2025-07-16 02:58:39,202 - main - INFO - Starting TDP-QIMLE Algorithm System...
+2025-07-16 02:58:39,203 - main - INFO - Initializing novel encryption components...
+2025-07-16 02:58:39,203 - main - INFO - TDP-QIMLE system started successfully
+2025-07-16 03:00:03,391 - main - INFO - Request: GET http://localhost:8001/api/novel/health
+2025-07-16 03:00:06,056 - mongodb_integration - INFO - Database initialized successfully
+2025-07-16 03:00:06,162 - main - INFO - Response: 200 - 2.771s
+2025-07-16 03:03:55,184 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-16 03:03:56,141 - mongodb_integration - INFO - Patient data stored successfully: 6876c943f2546376a48da276
+2025-07-16 03:03:56,141 - main - INFO - Response: 200 - 0.957s
+2025-07-16 03:04:07,217 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-16 03:04:07,711 - mongodb_integration - INFO - Patient data stored successfully: 6876c94ff2546376a48da279
+2025-07-16 03:04:07,712 - main - INFO - Response: 200 - 0.495s
+2025-07-16 03:04:10,224 - main - INFO - Request: GET http://localhost:8001/api/novel/patients?decrypt=true
+2025-07-16 03:04:10,580 - mongodb_integration - ERROR - Failed to decrypt patient P1752615234867: The length of the provided data is not a multiple of the block length.
+2025-07-16 03:04:10,581 - mongodb_integration - ERROR - Failed to decrypt patient P1752615247210: The length of the provided data is not a multiple of the block length.
+2025-07-16 03:04:10,682 - main - INFO - Response: 200 - 0.458s
+2025-07-16 03:04:10,700 - main - INFO - Request: GET http://localhost:8001/api/novel/patients?decrypt=true
+2025-07-16 03:04:11,013 - mongodb_integration - ERROR - Failed to decrypt patient P1752615234867: The length of the provided data is not a multiple of the block length.
+2025-07-16 03:04:11,017 - mongodb_integration - ERROR - Failed to decrypt patient P1752615247210: The length of the provided data is not a multiple of the block length.
+2025-07-16 03:04:11,193 - main - INFO - Response: 200 - 0.493s

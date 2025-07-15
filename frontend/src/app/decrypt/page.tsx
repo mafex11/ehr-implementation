@@ -56,8 +56,16 @@ export default function DecryptPage() {
 
   const loadEncryptedPatients = async () => {
     try {
-      const response = await api.get('ehr/all?decrypt=false');
-      setEncryptedPatients(response.data);
+      const response = await api.get('patients?decrypt=false');
+      // Transform the response to match the expected format
+      const transformedPatients = response.data.map((patient: any) => ({
+        _id: patient.patient_id,
+        name: patient.name === '[ENCRYPTED]' ? '[ENCRYPTED]' : patient.name,
+        age: patient.age,
+        diagnosis: patient.medical_history[0] || '[ENCRYPTED]',
+        lab_result: patient.test_results?.lab_result || '[ENCRYPTED]'
+      }));
+      setEncryptedPatients(transformedPatients);
     } catch (err) {
       console.error('Failed to load encrypted patients:', err);
       setError('Failed to load encrypted patient list');
@@ -67,11 +75,19 @@ export default function DecryptPage() {
   const loadDecryptedPatients = async () => {
     try {
       setLoading(true);
-      const response = await api.get('ehr/all?decrypt=true');
-      setDecryptedPatients(response.data);
+      const response = await api.get('patients?decrypt=true');
+      // Transform the response to match the expected format
+      const transformedPatients = response.data.map((patient: any) => ({
+        _id: patient.patient_id,
+        name: patient.name,
+        age: patient.age,
+        diagnosis: patient.medical_history[0] || 'No diagnosis',
+        lab_result: patient.test_results?.lab_result || 'No results'
+      }));
+      setDecryptedPatients(transformedPatients);
       
       addDecryptionLog('Bulk decryption completed', 'success', 'all', 
-        `Decrypted ${response.data.length} patient records`);
+        `Decrypted ${transformedPatients.length} patient records`);
     } catch (err) {
       console.error('Failed to load decrypted patients:', err);
       setError('Failed to decrypt patient data');
@@ -128,17 +144,25 @@ export default function DecryptPage() {
       simulateDecryptionProcess(selectedPatientId);
       
       // Make API call
-      const response = await api.get(`ehr/${selectedPatientId}`);
+      const response = await api.get(`patients/${selectedPatientId}`);
       
-      // Update decrypted patients list
+      // Transform the response and update decrypted patients list
+      const transformedPatient = {
+        _id: response.data.patient_id,
+        name: response.data.name,
+        age: response.data.age,
+        diagnosis: response.data.medical_history[0] || 'No diagnosis',
+        lab_result: response.data.test_results?.lab_result || 'No results'
+      };
+      
       setDecryptedPatients(prev => {
         const filtered = prev.filter(p => p._id !== selectedPatientId);
-        return [...filtered, response.data];
+        return [...filtered, transformedPatient];
       });
       
       setTimeout(() => {
         addDecryptionLog('Single decryption completed', 'success', selectedPatientId, 
-          `Successfully decrypted patient: ${response.data.name}`);
+          `Successfully decrypted patient: ${transformedPatient.name}`);
       }, 1800);
       
     } catch (err: any) {
@@ -159,12 +183,12 @@ export default function DecryptPage() {
       addDecryptionLog('Initiating DP query', 'processing', 'query', 
         `Running query with epsilon=${epsilon}`);
       
-      const response = await api.get(`ehr/dp/lab_average?epsilon=${epsilon}`);
+      const response = await api.get('system/stats');
       
       setQueryResults(prev => [response.data, ...prev]);
       
-      addDecryptionLog('DP query completed', 'success', 'query', 
-        `Query result: ${response.data.dp_average.toFixed(2)}`);
+      addDecryptionLog('System stats query completed', 'success', 'query', 
+        `Total patients: ${response.data.total_patients || 0}`);
       
     } catch (err: any) {
       console.error('Query failed:', err);

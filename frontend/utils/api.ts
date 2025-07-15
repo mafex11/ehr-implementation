@@ -2,10 +2,11 @@ import axios from 'axios';
 
 // Create axios instance with base configuration
 const api = axios.create({
-  baseURL: 'http://localhost:8000/api/', // FastAPI backend
+  baseURL: 'http://localhost:8001/api/novel/', // New TDP-QIMLE backend
   timeout: 30000, // 30 second timeout for encryption operations
   headers: {
     'Content-Type': 'application/json',
+    'Authorization': 'Bearer demo-token', // Add demo token for testing
   },
 });
 
@@ -60,9 +61,19 @@ api.interceptors.response.use(
 // Helper functions for encryption/decryption operations
 export const encryptionAPI = {
   // Encrypt and store patient data
-  encryptPatient: async (patientData: any, epsilon: number = 1.0) => {
+  encryptPatient: async (patientData: any, sensitivity: string = 'MEDIUM') => {
     try {
-      const response = await api.post(`ehr/add?epsilon=${epsilon}`, patientData);
+      const patientRequest = {
+        patient_id: patientData.patient_id || `P${Date.now()}`,
+        name: patientData.name,
+        age: patientData.age,
+        medical_history: patientData.medical_history || [patientData.diagnosis],
+        current_medications: patientData.current_medications || [],
+        test_results: patientData.test_results || { lab_result: patientData.lab_result },
+        notes: patientData.notes || '',
+        sensitivity_level: sensitivity
+      };
+      const response = await api.post('patients', patientRequest);
       return response.data;
     } catch (error) {
       throw new Error(`Encryption failed: ${error}`);
@@ -72,7 +83,7 @@ export const encryptionAPI = {
   // Get all patients (with optional decryption)
   getPatients: async (decrypt: boolean = true) => {
     try {
-      const response = await api.get(`ehr/all?decrypt=${decrypt}`);
+      const response = await api.get(`patients?decrypt=${decrypt}`);
       return response.data;
     } catch (error) {
       throw new Error(`Failed to retrieve patients: ${error}`);
@@ -82,83 +93,90 @@ export const encryptionAPI = {
   // Get specific patient by ID
   getPatient: async (patientId: string) => {
     try {
-      const response = await api.get(`ehr/${patientId}`);
+      const response = await api.get(`patients/${patientId}`);
       return response.data;
     } catch (error) {
       throw new Error(`Failed to retrieve patient: ${error}`);
     }
   },
 
-  // Execute differential privacy query
-  dpQuery: async (queryType: string = 'lab_average', epsilon: number = 1.0) => {
+  // Get system statistics (replaces DP query for now)
+  getSystemStats: async () => {
     try {
-      const response = await api.get(`ehr/dp/${queryType}?epsilon=${epsilon}`);
+      const response = await api.get('system/stats');
       return response.data;
     } catch (error) {
-      throw new Error(`DP query failed: ${error}`);
+      throw new Error(`Failed to get system stats: ${error}`);
     }
   },
 
-  // Decrypt query result
-  decryptResult: async (encryptedPackage: any) => {
+  // Get algorithm information
+  getAlgorithmInfo: async () => {
     try {
-      const response = await api.post('ehr/decrypt/result', encryptedPackage);
+      const response = await api.get('algorithm/info');
       return response.data;
     } catch (error) {
-      throw new Error(`Decryption failed: ${error}`);
+      throw new Error(`Failed to get algorithm info: ${error}`);
     }
   },
 
-  // Get privacy budget for entity
-  getPrivacyBudget: async (entityId: string) => {
+  // Benchmark algorithm performance
+  benchmarkAlgorithm: async (numOperations: number = 100) => {
     try {
-      const response = await api.get(`ehr/privacy/budget/${entityId}`);
+      const response = await api.post(`system/benchmark?num_operations=${numOperations}`);
       return response.data;
     } catch (error) {
-      throw new Error(`Failed to get privacy budget: ${error}`);
+      throw new Error(`Benchmark failed: ${error}`);
     }
   },
 
-  // Get system status
-  getSystemStatus: async () => {
+  // Get system integrity report
+  getIntegrityReport: async () => {
     try {
-      const response = await api.get('ehr/system/status');
+      const response = await api.get('system/integrity');
       return response.data;
     } catch (error) {
-      throw new Error(`Failed to get system status: ${error}`);
+      throw new Error(`Failed to get integrity report: ${error}`);
     }
   },
 
-  // Get crypto operation logs
-  getCryptoLogs: async (filters: any = {}) => {
+  // Search patients by sensitivity level
+  searchPatientsBySensitivity: async (sensitivityLevel: string) => {
     try {
-      const params = new URLSearchParams();
-      
-      if (filters.entityId) params.append('entity_id', filters.entityId);
-      if (filters.operationType) params.append('operation_type', filters.operationType);
-      if (filters.limit) params.append('limit', filters.limit.toString());
-      
-      const response = await api.get(`ehr/logs/crypto?${params.toString()}`);
+      const response = await api.get(`patients/search/sensitivity/${sensitivityLevel}`);
       return response.data;
     } catch (error) {
-      throw new Error(`Failed to get crypto logs: ${error}`);
+      throw new Error(`Failed to search patients: ${error}`);
     }
   },
 
-  // Get audit logs
-  getAuditLogs: async (filters: any = {}) => {
+  // Update patient data
+  updatePatient: async (patientId: string, patientData: any, sensitivity: string = 'MEDIUM') => {
     try {
-      const params = new URLSearchParams();
-      
-      if (filters.userId) params.append('user_id_filter', filters.userId);
-      if (filters.action) params.append('action', filters.action);
-      if (filters.resource) params.append('resource', filters.resource);
-      if (filters.limit) params.append('limit', filters.limit.toString());
-      
-      const response = await api.get(`ehr/logs/audit?${params.toString()}`);
+      const patientRequest = {
+        patient_id: patientId,
+        name: patientData.name,
+        age: patientData.age,
+        medical_history: patientData.medical_history || [patientData.diagnosis],
+        current_medications: patientData.current_medications || [],
+        test_results: patientData.test_results || { lab_result: patientData.lab_result },
+        notes: patientData.notes || '',
+        sensitivity_level: sensitivity
+      };
+      const response = await api.put(`patients/${patientId}`, patientRequest);
       return response.data;
     } catch (error) {
-      throw new Error(`Failed to get audit logs: ${error}`);
+      throw new Error(`Update failed: ${error}`);
+    }
+  },
+
+  // Delete patient data
+  deletePatient: async (patientId: string) => {
+    try {
+      const response = await api.delete(`patients/${patientId}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(`Delete failed: ${error}`);
     }
   }
 };
@@ -230,7 +248,7 @@ export const dataUtils = {
 // Health check function
 export const healthCheck = async () => {
   try {
-    const response = await axios.get('http://localhost:8000/health');
+    const response = await axios.get('http://localhost:8001/api/novel/health');
     return response.data;
   } catch (error) {
     throw new Error(`Health check failed: ${error}`);
@@ -240,7 +258,7 @@ export const healthCheck = async () => {
 // System info function
 export const getSystemInfo = async () => {
   try {
-    const response = await axios.get('http://localhost:8000/api/system/info');
+    const response = await axios.get('http://localhost:8001/system/info');
     return response.data;
   } catch (error) {
     throw new Error(`Failed to get system info: ${error}`);

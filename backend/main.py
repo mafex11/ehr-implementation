@@ -137,6 +137,17 @@ async def log_requests(request: Request, call_next):
 # Include routers
 app.include_router(novel_router)
 
+# Add exception handlers
+from api_routes import value_error_handler, general_exception_handler
+
+@app.exception_handler(ValueError)
+async def handle_value_error(request, exc):
+    return await value_error_handler(request, exc)
+
+@app.exception_handler(Exception)
+async def handle_general_exception(request, exc):
+    return await general_exception_handler(request, exc)
+
 # Root endpoint
 @app.get("/", response_model=dict)
 async def root():

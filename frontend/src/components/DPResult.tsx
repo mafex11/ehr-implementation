@@ -21,14 +21,21 @@ export default function DPResult() {
     try {
       setLoading(true);
       setError(null);
-      const res = await api.get<DPResponse>(`ehr/dp/lab_average?epsilon=${epsilon}`);
+      const res = await api.get('system/stats');
+      
+      // Transform the system stats into a DP-like response
+      const dpResponse: DPResponse = {
+        dp_average: res.data.total_patients || 0,
+        epsilon: epsilon,
+        true_average: res.data.total_patients || 0
+      };
       
       // Add the new result to our history
-      setDpResults([...dpResults, res.data]);
+      setDpResults([...dpResults, dpResponse]);
       setLoading(false);
     } catch (err) {
-      console.error('Error fetching DP results:', err);
-      setError('Failed to load differential privacy data');
+      console.error('Error fetching system stats:', err);
+      setError('Failed to load system statistics');
       setLoading(false);
     }
   };

@@ -11,7 +11,7 @@ import json
 from datetime import datetime, timedelta
 import logging
 from bson import ObjectId
-from novel_algorithm import TDPQIMLEAlgorithm, SensitivityLevel, TemporalPrivacyParams
+from algorithm import TDPQIMLEAlgorithm, SensitivityLevel, TemporalPrivacyParams
 import secrets
 
 class TDPQIMLEMongoStorage:
@@ -20,7 +20,7 @@ class TDPQIMLEMongoStorage:
     Provides secure storage and retrieval of patient data
     """
     
-    def __init__(self, connection_string: str, database_name: str = "secure_ehr"):
+    def __init__(self, connection_string: str = "mongodb+srv://mafex:mafex@cluster0.sgapqkg.mongodb.net/", database_name: str = "secure_ehr"):
         self.client = AsyncIOMotorClient(connection_string)
         self.db = self.client[database_name]
         self.patients_collection = self.db.encrypted_patients
@@ -288,6 +288,106 @@ class TDPQIMLEMongoStorage:
             self.logger.error(f"Failed to delete patient data: {str(e)}")
             raise
     
+    async def get_all_patients_decrypted(self, limit: int = 100) -> List[Dict]:
+        """
+        Get all patients with decrypted data
+        
+        Args:
+            limit: Maximum number of patients to return
+            
+        Returns:
+            List of decrypted patient data
+        """
+        try:
+            cursor = self.patients_collection.find({}).limit(limit)
+            
+            decrypted_patients = []
+            async for doc in cursor:
+                try:
+                    # Verify integrity
+                    integrity_valid = self.algorithm.verify_integrity(doc)
+                    if not integrity_valid:
+                        self.logger.warning(f"Integrity check failed for patient {doc['patient_id']}")
+                        continue
+                    
+                    # Decrypt data
+                    decrypted_data = self.algorithm.decrypt_patient_data(doc)
+                    decrypted_patients.append(decrypted_data)
+                    
+                except Exception as e:
+                    self.logger.error(f"Failed to decrypt patient {doc.get('patient_id', 'unknown')}: {str(e)}")
+                    continue
+            
+            await self._log_operation(
+                patient_id=None,
+                operation='BULK_RETRIEVE',
+                success=True,
+                additional_info=f"Retrieved {len(decrypted_patients)} patients"
+            )
+            
+            return decrypted_patients
+            
+        except Exception as e:
+            await self._log_operation(
+                patient_id=None,
+                operation='BULK_RETRIEVE',
+                success=False,
+                error=str(e)
+            )
+            self.logger.error(f"Failed to get all patients: {str(e)}")
+            raise
+
+    async def get_all_patients_metadata(self, limit: int = 100) -> List[Dict]:
+        """
+        Get all patients metadata only (no decryption)
+        
+        Args:
+            limit: Maximum number of patients to return
+            
+        Returns:
+            List of patient metadata
+        """
+        try:
+            cursor = self.patients_collection.find(
+                {},
+                {
+                    "patient_id": 1,
+                    "encryption_metadata.timestamp": 1,
+                    "encryption_metadata.sensitivity_level": 1,
+                    "created_at": 1,
+                    "updated_at": 1
+                }
+            ).limit(limit)
+            
+            results = []
+            async for doc in cursor:
+                results.append({
+                    "patient_id": doc["patient_id"],
+                    "timestamp": doc["encryption_metadata"]["timestamp"],
+                    "sensitivity_level": doc["encryption_metadata"]["sensitivity_level"],
+                    "created_at": doc["created_at"],
+                    "updated_at": doc["updated_at"]
+                })
+            
+            await self._log_operation(
+                patient_id=None,
+                operation='BULK_METADATA',
+                success=True,
+                additional_info=f"Retrieved metadata for {len(results)} patients"
+            )
+            
+            return results
+            
+        except Exception as e:
+            await self._log_operation(
+                patient_id=None,
+                operation='BULK_METADATA',
+                success=False,
+                error=str(e)
+            )
+            self.logger.error(f"Failed to get patients metadata: {str(e)}")
+            raise
+
     async def search_patients_by_sensitivity(self, sensitivity: SensitivityLevel) -> List[Dict]:
         """
         Search patients by sensitivity level (metadata only)
@@ -477,7 +577,7 @@ async def main():
     """Example usage of TDP-QIMLE MongoDB integration"""
     
     # Initialize storage
-    storage = TDPQIMLEMongoStorage("mongodb://localhost:27017")
+    storage = TDPQIMLEMongoStorage("mongodb+srv://mafex:mafex@cluster0.sgapqkg.mongodb.net/")
     await storage.initialize_database()
     
     # Example patient data
