@@ -1,23 +1,16 @@
 'use client';
+
 import { useState, useEffect } from 'react';
-import api from '../../../utils/api';
+import { decryptionService, DecryptionCredentials, DecryptionSession } from '../../../utils/decryption-api';
 
-interface EncryptedPatient {
-  _id: string;
-  created_at: string;
-  epsilon_used?: number;
-  algorithm?: string;
-  encrypted: boolean;
-}
-
-interface DecryptedPatient {
-  _id: string;
+interface Patient {
+  patient_id: string;
   name: string;
   age: number;
-  diagnosis: string;
-  lab_result: number;
-  created_at: string;
-  updated_at: string;
+  medical_history: string[];
+  current_medications: string[];
+  test_results: any;
+  notes?: string;
 }
 
 interface DecryptionLog {
@@ -25,524 +18,653 @@ interface DecryptionLog {
   operation: string;
   status: string;
   patient_id?: string;
-  details?: string;
-}
-
-interface QueryResult {
-  encrypted_result: any;
-  dp_average: number;
-  epsilon: number;
-  encrypted: boolean;
-  timestamp: string;
-  result_count: number;
+  method?: string;
+  error?: string;
 }
 
 export default function DecryptPage() {
-  const [encryptedPatients, setEncryptedPatients] = useState<EncryptedPatient[]>([]);
-  const [decryptedPatients, setDecryptedPatients] = useState<DecryptedPatient[]>([]);
-  const [selectedPatientId, setSelectedPatientId] = useState<string>('');
-  const [decryptionLogs, setDecryptionLogs] = useState<DecryptionLog[]>([]);
-  const [queryResults, setQueryResults] = useState<QueryResult[]>([]);
-  
+  const [session, setSession] = useState<DecryptionSession | null>(null);
+  const [credentials, setCredentials] = useState<DecryptionCredentials>({
+    username: '',
+    password: '',
+    security_clearance: 'standard',
+    purpose: '',
+    department: ''
+  });
+  const [encryptedPatients, setEncryptedPatients] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState<'single' | 'bulk' | 'queries'>('single');
-  const [showProcess, setShowProcess] = useState(true);
+  const [selectedPatient, setSelectedPatient] = useState<Patient | null>(null);
+  const [decryptionLogs, setDecryptionLogs] = useState<DecryptionLog[]>([]);
+  const [showLogin, setShowLogin] = useState(true);
+  const [activeTab, setActiveTab] = useState<'single' | 'bulk' | 'audit'>('single');
+  const [auditLog, setAuditLog] = useState<any[]>([]);
+  const [bulkPatientIds, setBulkPatientIds] = useState<string>('');
+  const [bulkResults, setBulkResults] = useState<any>(null);
 
-  // Load encrypted patients on component mount
   useEffect(() => {
-    loadEncryptedPatients();
+    // Try to restore existing session
+    const restoreSession = async () => {
+      const restored = await decryptionService.restoreSession();
+      if (restored) {
+        setSession(decryptionService.getCurrentSession());
+        setShowLogin(false);
+        loadEncryptedPatients();
+      }
+    };
+    
+    restoreSession();
   }, []);
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const newSession = await decryptionService.createSession(credentials);
+      setSession(newSession);
+      setShowLogin(false);
+      
+      // Load encrypted patients after successful login
+      await loadEncryptedPatients();
+      
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await decryptionService.terminateSession();
+      setSession(null);
+      setShowLogin(true);
+      setEncryptedPatients([]);
+      setSelectedPatient(null);
+      setDecryptionLogs([]);
+      setAuditLog([]);
+      setBulkResults(null);
+    } catch (err: any) {
+      console.error('Logout error:', err);
+    }
+  };
 
   const loadEncryptedPatients = async () => {
     try {
-      const response = await api.get('patients?decrypt=false');
-      // Transform the response to match the expected format
-      const transformedPatients = response.data.map((patient: any) => ({
-        _id: patient.patient_id,
-        name: patient.name === '[ENCRYPTED]' ? '[ENCRYPTED]' : patient.name,
-        age: patient.age,
-        diagnosis: patient.medical_history[0] || '[ENCRYPTED]',
-        lab_result: patient.test_results?.lab_result || '[ENCRYPTED]'
-      }));
-      setEncryptedPatients(transformedPatients);
-    } catch (err) {
-      console.error('Failed to load encrypted patients:', err);
-      setError('Failed to load encrypted patient list');
-    }
-  };
-
-  const loadDecryptedPatients = async () => {
-    try {
       setLoading(true);
-      const response = await api.get('patients?decrypt=true');
-      // Transform the response to match the expected format
-      const transformedPatients = response.data.map((patient: any) => ({
-        _id: patient.patient_id,
-        name: patient.name,
-        age: patient.age,
-        diagnosis: patient.medical_history[0] || 'No diagnosis',
-        lab_result: patient.test_results?.lab_result || 'No results'
-      }));
-      setDecryptedPatients(transformedPatients);
+      setError(null);
       
-      addDecryptionLog('Bulk decryption completed', 'success', 'all', 
-        `Decrypted ${transformedPatients.length} patient records`);
-    } catch (err) {
-      console.error('Failed to load decrypted patients:', err);
-      setError('Failed to decrypt patient data');
-      addDecryptionLog('Bulk decryption failed', 'error', 'all', 
-        'Failed to decrypt patient records');
+      // Search for encrypted patients by different sensitivity levels
+      const highSensitivity = await decryptionService.searchEncryptedPatients('HIGH', 20);
+      const mediumSensitivity = await decryptionService.searchEncryptedPatients('MEDIUM', 20);
+      const lowSensitivity = await decryptionService.searchEncryptedPatients('LOW', 20);
+      
+      const allEncrypted = [
+        ...highSensitivity.encrypted_patients,
+        ...mediumSensitivity.encrypted_patients,
+        ...lowSensitivity.encrypted_patients
+      ];
+      
+      setEncryptedPatients(allEncrypted);
+      
+    } catch (err: any) {
+      console.error('Error loading encrypted patients:', err);
+      setError('Failed to load encrypted patient data');
     } finally {
       setLoading(false);
     }
   };
 
-  const addDecryptionLog = (operation: string, status: string, patientId?: string, details?: string) => {
-    if (!showProcess) return;
-    
-    setDecryptionLogs(prev => [...prev, {
-      timestamp: new Date().toLocaleTimeString(),
-      operation,
-      status,
-      patient_id: patientId,
-      details
-    }]);
-  };
-
-  const simulateDecryptionProcess = (patientId: string) => {
-    if (!showProcess) return;
-    
-    const steps = [
-      { step: 'Locating encrypted record', delay: 300 },
-      { step: 'Extracting encryption metadata', delay: 200 },
-      { step: 'Deriving decryption key', delay: 400 },
-      { step: 'Decrypting with AES-256-CBC', delay: 600 },
-      { step: 'Removing padding', delay: 200 },
-      { step: 'Parsing decrypted data', delay: 300 },
-      { step: 'Logging access event', delay: 200 }
-    ];
-    
-    steps.forEach((step, index) => {
-      setTimeout(() => {
-        addDecryptionLog(step.step, 'processing', patientId);
-      }, steps.slice(0, index + 1).reduce((acc, s) => acc + s.delay, 0));
-    });
-  };
-
-  const handleSingleDecrypt = async () => {
-    if (!selectedPatientId) {
-      setError('Please select a patient to decrypt');
-      return;
-    }
-    
-    setLoading(true);
-    setError(null);
-    
+  const handleDecryptPatient = async (patientId: string) => {
     try {
-      // Simulate decryption process
-      simulateDecryptionProcess(selectedPatientId);
+      setLoading(true);
+      setError(null);
+      setDecryptionLogs([]);
       
-      // Make API call
-      const response = await api.get(`patients/${selectedPatientId}`);
-      
-      // Transform the response and update decrypted patients list
-      const transformedPatient = {
-        _id: response.data.patient_id,
-        name: response.data.name,
-        age: response.data.age,
-        diagnosis: response.data.medical_history[0] || 'No diagnosis',
-        lab_result: response.data.test_results?.lab_result || 'No results'
+      // Add decryption logs
+      const logEntry: DecryptionLog = {
+        timestamp: new Date().toLocaleTimeString(),
+        operation: 'Starting independent decryption process',
+        patient_id: patientId,
+        status: 'in_progress'
       };
+      setDecryptionLogs(prev => [...prev, logEntry]);
       
-      setDecryptedPatients(prev => {
-        const filtered = prev.filter(p => p._id !== selectedPatientId);
-        return [...filtered, transformedPatient];
+      // Simulate decryption process steps
+      setTimeout(() => {
+        setDecryptionLogs(prev => [...prev, {
+          timestamp: new Date().toLocaleTimeString(),
+          operation: 'Applying reverse lattice decryption',
+          patient_id: patientId,
+          status: 'processing'
+        }]);
+      }, 500);
+      
+      setTimeout(() => {
+        setDecryptionLogs(prev => [...prev, {
+          timestamp: new Date().toLocaleTimeString(),
+          operation: 'Quantum decoherence decryption',
+          patient_id: patientId,
+          status: 'processing'
+        }]);
+      }, 1000);
+      
+      setTimeout(() => {
+        setDecryptionLogs(prev => [...prev, {
+          timestamp: new Date().toLocaleTimeString(),
+          operation: 'Temporal reconstruction decryption',
+          patient_id: patientId,
+          status: 'processing'
+        }]);
+      }, 1500);
+      
+      // Perform actual decryption using independent service
+      const decryptedPatient = await decryptionService.decryptSinglePatient({
+        patient_id: patientId,
+        decryption_method: 'full_independent',
+        audit_reason: 'Medical review and analysis'
       });
       
+      setSelectedPatient(decryptedPatient.decrypted_data);
+      
+      // Add final log entry
       setTimeout(() => {
-        addDecryptionLog('Single decryption completed', 'success', selectedPatientId, 
-          `Successfully decrypted patient: ${transformedPatient.name}`);
-      }, 1800);
+        setDecryptionLogs(prev => [...prev, {
+          timestamp: new Date().toLocaleTimeString(),
+          operation: 'Independent decryption completed successfully',
+          patient_id: patientId,
+          status: 'success',
+          method: 'full_independent'
+        }]);
+      }, 2000);
       
     } catch (err: any) {
       console.error('Decryption failed:', err);
-      setError(err.response?.data?.detail || 'Failed to decrypt patient data');
-      addDecryptionLog('Single decryption failed', 'error', selectedPatientId, 
-        'Failed to decrypt patient record');
+      setError('Failed to decrypt patient data: ' + err.message);
+      
+      setDecryptionLogs(prev => [...prev, {
+        timestamp: new Date().toLocaleTimeString(),
+        operation: 'Independent decryption failed',
+        patient_id: patientId,
+        status: 'error',
+        error: err.message
+      }]);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleQueryDecrypt = async (epsilon: number = 1.0) => {
-    setLoading(true);
-    setError(null);
-    
+  const handleBulkDecrypt = async () => {
+    if (!bulkPatientIds.trim()) {
+      setError('Please enter patient IDs separated by commas');
+      return;
+    }
+
     try {
-      addDecryptionLog('Initiating DP query', 'processing', 'query', 
-        `Running query with epsilon=${epsilon}`);
+      setLoading(true);
+      setError(null);
+      setBulkResults(null);
+
+      const patientIds = bulkPatientIds.split(',').map(id => id.trim()).filter(id => id);
       
-      const response = await api.get('system/stats');
-      
-      setQueryResults(prev => [response.data, ...prev]);
-      
-      addDecryptionLog('System stats query completed', 'success', 'query', 
-        `Total patients: ${response.data.total_patients || 0}`);
+      const result = await decryptionService.decryptBulkPatients({
+        patient_ids: patientIds,
+        decryption_method: 'full_independent',
+        batch_size: 5,
+        audit_reason: 'Bulk medical data analysis'
+      });
+
+      setBulkResults(result);
       
     } catch (err: any) {
-      console.error('Query failed:', err);
-      setError(err.response?.data?.detail || 'Failed to execute query');
-      addDecryptionLog('DP query failed', 'error', 'query', 
-        'Failed to execute differential privacy query');
+      setError('Bulk decryption failed: ' + err.message);
     } finally {
       setLoading(false);
     }
   };
 
-  const clearLogs = () => {
-    setDecryptionLogs([]);
-  };
-
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'success': return 'border-green-500 bg-green-50 text-green-800';
-      case 'error': return 'border-red-500 bg-red-50 text-red-800';
-      case 'processing': return 'border-blue-500 bg-blue-50 text-blue-800';
-      default: return 'border-gray-500 bg-gray-50 text-gray-800';
+  const loadAuditLog = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const audit = await decryptionService.getSessionAuditLog();
+      setAuditLog(audit.audit_entries || []);
+      
+    } catch (err: any) {
+      setError('Failed to load audit log: ' + err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const formatTimestamp = (timestamp: string) => {
-    return new Date(timestamp).toLocaleString();
+  const handleReset = () => {
+    setSelectedPatient(null);
+    setDecryptionLogs([]);
+    setError(null);
+    setBulkResults(null);
   };
 
-  return (
-    <div className="max-w-7xl mx-auto p-6">
-      <div className="mb-8 p-6 bg-white rounded-lg shadow-md">
-        <h1 className="text-3xl font-bold text-green-800 mb-3">🔓 Data Decryption Center</h1>
-        <p className="text-gray-600">
-          Decrypt patient data, view encrypted records, and execute privacy-preserving queries. 
-          Monitor the decryption process and understand data access patterns.
-        </p>
-      </div>
+  // Login form
+  if (showLogin) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+        <div className="max-w-md w-full">
+          <div className="bg-white rounded-xl shadow-xl p-8">
+            <div className="text-center mb-8">
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">🔓 Decryption Access</h1>
+              <p className="text-gray-600">Independent Decryption System</p>
+              <p className="text-sm text-gray-500 mt-2">Separate authentication required</p>
+            </div>
 
-      {/* Tab Navigation */}
-      <div className="mb-6">
-        <div className="border-b border-gray-200">
-          <nav className="-mb-px flex space-x-8">
+            <form onSubmit={handleLogin} className="space-y-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Username
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={credentials.username}
+                  onChange={(e) => setCredentials(prev => ({ ...prev, username: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="decrypt_admin, medical_staff, or researcher"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  required
+                  value={credentials.password}
+                  onChange={(e) => setCredentials(prev => ({ ...prev, password: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Security Clearance
+                </label>
+                <select
+                  value={credentials.security_clearance}
+                  onChange={(e) => setCredentials(prev => ({ ...prev, security_clearance: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="standard">Standard</option>
+                  <option value="high">High</option>
+                  <option value="admin">Admin</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Purpose
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={credentials.purpose}
+                  onChange={(e) => setCredentials(prev => ({ ...prev, purpose: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Medical analysis, research, etc."
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Department
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={credentials.department}
+                  onChange={(e) => setCredentials(prev => ({ ...prev, department: e.target.value }))}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Cardiology, Research, IT, etc."
+                />
+              </div>
+
+              {error && (
+                <div className="bg-red-50 border border-red-200 rounded-md p-3">
+                  <p className="text-sm text-red-600">{error}</p>
+                </div>
+              )}
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
+              >
+                {loading ? 'Authenticating...' : 'Access Decryption System'}
+              </button>
+            </form>
+
+            <div className="mt-6 p-4 bg-gray-50 rounded-md">
+              <h3 className="text-sm font-medium text-gray-700 mb-2">Test Credentials:</h3>
+              <p className="text-xs text-gray-600">Username: decrypt_admin</p>
+              <p className="text-xs text-gray-600">Password: decrypt_key_2024_secure</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // Main decryption interface
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+      <div className="max-w-7xl mx-auto">
+        {/* Header */}
+        <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
+          <div className="flex justify-between items-center">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">🔓 Independent Decryption System</h1>
+              <p className="text-gray-600">Separate decryption service for TDP-QIMLE encrypted data</p>
+              {session && (
+                <p className="text-sm text-green-600 mt-1">
+                  Session: {session.session_id.substring(0, 8)}... | 
+                  Clearance: {session.clearance_level} | 
+                  Expires: {new Date(session.expires_at).toLocaleString()}
+                </p>
+              )}
+            </div>
+            <button
+              onClick={handleLogout}
+              className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
+            >
+              Logout
+            </button>
+          </div>
+        </div>
+
+        {/* Tab Navigation */}
+        <div className="bg-white rounded-xl shadow-lg mb-6">
+          <div className="flex border-b">
             <button
               onClick={() => setActiveTab('single')}
-              className={`py-2 px-1 border-b-2 font-medium text-sm ${
+              className={`px-6 py-3 font-medium ${
                 activeTab === 'single'
-                  ? 'border-green-500 text-green-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  ? 'text-blue-600 border-b-2 border-blue-600'
+                  : 'text-gray-500 hover:text-gray-700'
               }`}
             >
-              Single Record
+              Single Patient Decryption
             </button>
             <button
               onClick={() => setActiveTab('bulk')}
-              className={`py-2 px-1 border-b-2 font-medium text-sm ${
+              className={`px-6 py-3 font-medium ${
                 activeTab === 'bulk'
-                  ? 'border-green-500 text-green-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                  ? 'text-blue-600 border-b-2 border-blue-600'
+                  : 'text-gray-500 hover:text-gray-700'
               }`}
             >
-              Bulk Decrypt
+              Bulk Decryption
             </button>
             <button
-              onClick={() => setActiveTab('queries')}
-              className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                activeTab === 'queries'
-                  ? 'border-green-500 text-green-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+              onClick={() => {
+                setActiveTab('audit');
+                loadAuditLog();
+              }}
+              className={`px-6 py-3 font-medium ${
+                activeTab === 'audit'
+                  ? 'text-blue-600 border-b-2 border-blue-600'
+                  : 'text-gray-500 hover:text-gray-700'
               }`}
             >
-              DP Queries
+              Audit Log
             </button>
-          </nav>
-        </div>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Left Panel: Decryption Controls */}
-        <div className="space-y-6">
-          {/* Single Record Decryption */}
-          {activeTab === 'single' && (
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h2 className="text-xl font-bold mb-4 text-gray-800">🔍 Single Record Decryption</h2>
-              
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Select Encrypted Patient Record
-                  </label>
-                  <select
-                    value={selectedPatientId}
-                    onChange={(e) => setSelectedPatientId(e.target.value)}
-                    className="w-full p-3 border rounded-lg focus:ring-green-500 focus:border-green-500"
-                  >
-                    <option value="">Choose a patient record...</option>
-                    {encryptedPatients.map((patient) => (
-                      <option key={patient._id} value={patient._id}>
-                        ID: {patient._id} | Created: {formatTimestamp(patient.created_at)}
-                        {patient.epsilon_used && ` | ε: ${patient.epsilon_used}`}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <button
-                  onClick={handleSingleDecrypt}
-                  disabled={loading || !selectedPatientId}
-                  className="w-full py-3 px-4 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors disabled:bg-green-300"
-                >
-                  {loading ? 'Decrypting...' : '🔓 Decrypt Selected Record'}
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* Bulk Decryption */}
-          {activeTab === 'bulk' && (
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h2 className="text-xl font-bold mb-4 text-gray-800">📂 Bulk Decryption</h2>
-              
-              <div className="space-y-4">
-                <div className="p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
-                  <p className="text-sm text-yellow-800">
-                    <strong>Warning:</strong> Bulk decryption will decrypt all patient records. 
-                    This operation consumes significant computational resources and should be used carefully.
-                  </p>
-                </div>
-
-                <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                  <p className="text-sm text-blue-800">
-                    <strong>Info:</strong> Found {encryptedPatients.length} encrypted records in the database.
-                  </p>
-                </div>
-
-                <button
-                  onClick={loadDecryptedPatients}
-                  disabled={loading}
-                  className="w-full py-3 px-4 bg-orange-600 hover:bg-orange-700 text-white font-medium rounded-lg transition-colors disabled:bg-orange-300"
-                >
-                  {loading ? 'Decrypting All Records...' : '🔓 Decrypt All Records'}
-                </button>
-              </div>
-            </div>
-          )}
-
-          {/* DP Queries */}
-          {activeTab === 'queries' && (
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h2 className="text-xl font-bold mb-4 text-gray-800">🔢 Differential Privacy Queries</h2>
-              
-              <div className="space-y-4">
-                <div className="p-4 bg-purple-50 border border-purple-200 rounded-lg">
-                  <p className="text-sm text-purple-800">
-                    Execute privacy-preserving queries on encrypted data without full decryption.
-                  </p>
-                </div>
-
-                <div className="space-y-3">
-                  <button
-                    onClick={() => handleQueryDecrypt(0.1)}
-                    disabled={loading}
-                    className="w-full py-2 px-4 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-colors disabled:bg-purple-300"
-                  >
-                    High Privacy Query (ε=0.1)
-                  </button>
-                  
-                  <button
-                    onClick={() => handleQueryDecrypt(1.0)}
-                    disabled={loading}
-                    className="w-full py-2 px-4 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-colors disabled:bg-purple-300"
-                  >
-                    Medium Privacy Query (ε=1.0)
-                  </button>
-                  
-                  <button
-                    onClick={() => handleQueryDecrypt(5.0)}
-                    disabled={loading}
-                    className="w-full py-2 px-4 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-colors disabled:bg-purple-300"
-                  >
-                    Low Privacy Query (ε=5.0)
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Settings */}
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-bold mb-4 text-gray-800">⚙️ Decryption Settings</h2>
-            
-            <div className="space-y-4">
-              <div className="flex items-center">
-                <input
-                  type="checkbox"
-                  checked={showProcess}
-                  onChange={(e) => setShowProcess(e.target.checked)}
-                  className="mr-2"
-                />
-                <label className="text-sm text-gray-700">
-                  Show decryption process in real-time
-                </label>
-              </div>
-
-              <button
-                onClick={clearLogs}
-                className="w-full py-2 px-4 bg-gray-500 hover:bg-gray-600 text-white font-medium rounded-lg transition-colors"
-              >
-                Clear Process Logs
-              </button>
-            </div>
           </div>
 
-          {error && (
-            <div className="p-4 bg-red-100 border border-red-200 text-red-700 rounded-lg">
-              {error}
-            </div>
-          )}
-        </div>
+          <div className="p-6">
+            {/* Single Patient Tab */}
+            {activeTab === 'single' && (
+              <div className="space-y-6">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  {/* Encrypted Patients List */}
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                      Encrypted Patients ({encryptedPatients.length})
+                    </h3>
+                    <div className="space-y-2 max-h-64 overflow-y-auto">
+                      {encryptedPatients.map((patient, index) => (
+                        <div
+                          key={index}
+                          className="bg-white p-3 rounded-md border border-gray-200 hover:border-blue-300 cursor-pointer"
+                          onClick={() => handleDecryptPatient(patient.patient_id)}
+                        >
+                          <div className="flex justify-between items-center">
+                            <div>
+                              <p className="font-medium text-gray-900">{patient.patient_id}</p>
+                              <p className="text-sm text-gray-500">
+                                Sensitivity: {patient.sensitivity_level} | 
+                                Encrypted: {new Date(patient.encrypted_at).toLocaleDateString()}
+                              </p>
+                            </div>
+                            <div className="text-right">
+                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                🔒 Encrypted
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
 
-        {/* Right Panel: Results and Logs */}
-        <div className="space-y-6">
-          {/* Decrypted Data Display */}
-          {activeTab !== 'queries' && decryptedPatients.length > 0 && (
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h2 className="text-xl font-bold mb-4 text-gray-800">📋 Decrypted Records</h2>
-              
-              <div className="space-y-4 max-h-96 overflow-y-auto">
-                {decryptedPatients.map((patient) => (
-                  <div key={patient._id} className="p-4 border rounded-lg bg-gray-50">
-                    <div className="grid grid-cols-2 gap-4">
+                  {/* Decryption Process */}
+                  <div className="bg-gray-50 rounded-lg p-4">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                      Decryption Process
+                    </h3>
+                    <div className="space-y-2 max-h-64 overflow-y-auto">
+                      {decryptionLogs.map((log, index) => (
+                        <div
+                          key={index}
+                          className={`p-2 rounded text-sm ${
+                            log.status === 'success'
+                              ? 'bg-green-100 text-green-800'
+                              : log.status === 'error'
+                              ? 'bg-red-100 text-red-800'
+                              : 'bg-blue-100 text-blue-800'
+                          }`}
+                        >
+                          <div className="flex justify-between">
+                            <span>{log.operation}</span>
+                            <span className="text-xs">{log.timestamp}</span>
+                          </div>
+                          {log.patient_id && (
+                            <div className="text-xs opacity-75">Patient: {log.patient_id}</div>
+                          )}
+                          {log.error && (
+                            <div className="text-xs opacity-75">Error: {log.error}</div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Decrypted Patient Data */}
+                {selectedPatient && (
+                  <div className="bg-white rounded-lg border border-gray-200 p-6">
+                    <div className="flex justify-between items-center mb-4">
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        🔓 Decrypted Patient Data
+                      </h3>
+                      <button
+                        onClick={handleReset}
+                        className="text-gray-500 hover:text-gray-700"
+                      >
+                        Clear
+                      </button>
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <p className="text-sm font-medium text-gray-700">Patient ID:</p>
+                        <p className="text-gray-900">{selectedPatient.patient_id}</p>
+                      </div>
                       <div>
                         <p className="text-sm font-medium text-gray-700">Name:</p>
-                        <p className="text-lg font-semibold text-gray-900">{patient.name}</p>
+                        <p className="text-gray-900">{selectedPatient.name}</p>
                       </div>
                       <div>
                         <p className="text-sm font-medium text-gray-700">Age:</p>
-                        <p className="text-lg font-semibold text-gray-900">{patient.age}</p>
+                        <p className="text-gray-900">{selectedPatient.age}</p>
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-gray-700">Diagnosis:</p>
-                        <p className="text-lg font-semibold text-gray-900">{patient.diagnosis}</p>
+                        <p className="text-sm font-medium text-gray-700">Medical History:</p>
+                        <p className="text-gray-900">{selectedPatient.medical_history?.join(', ')}</p>
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-gray-700">Lab Result:</p>
-                        <p className="text-lg font-semibold text-gray-900">{patient.lab_result}</p>
-                      </div>
-                    </div>
-                    <div className="mt-3 pt-3 border-t">
-                      <p className="text-xs text-gray-500">
-                        ID: {patient._id} | Created: {formatTimestamp(patient.created_at)}
-                      </p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Query Results */}
-          {activeTab === 'queries' && queryResults.length > 0 && (
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h2 className="text-xl font-bold mb-4 text-gray-800">📊 Query Results</h2>
-              
-              <div className="space-y-4 max-h-96 overflow-y-auto">
-                {queryResults.map((result, index) => (
-                  <div key={index} className="p-4 border rounded-lg bg-purple-50">
-                    <div className="grid grid-cols-2 gap-4">
-                      <div>
-                        <p className="text-sm font-medium text-purple-700">DP Average:</p>
-                        <p className="text-2xl font-bold text-purple-900">{result.dp_average.toFixed(2)}</p>
+                        <p className="text-sm font-medium text-gray-700">Current Medications:</p>
+                        <p className="text-gray-900">{selectedPatient.current_medications?.join(', ')}</p>
                       </div>
                       <div>
-                        <p className="text-sm font-medium text-purple-700">Privacy Level:</p>
-                        <p className="text-lg font-semibold text-purple-900">ε = {result.epsilon}</p>
+                        <p className="text-sm font-medium text-gray-700">Test Results:</p>
+                        <p className="text-gray-900">{JSON.stringify(selectedPatient.test_results)}</p>
                       </div>
-                      <div>
-                        <p className="text-sm font-medium text-purple-700">Records Used:</p>
-                        <p className="text-lg font-semibold text-purple-900">{result.result_count}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium text-purple-700">Encrypted:</p>
-                        <p className="text-lg font-semibold text-purple-900">
-                          {result.encrypted ? 'Yes' : 'No'}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="mt-3 pt-3 border-t">
-                      <p className="text-xs text-purple-600">
-                        Timestamp: {formatTimestamp(result.timestamp)}
-                      </p>
+                      {selectedPatient.notes && (
+                        <div className="md:col-span-2">
+                          <p className="text-sm font-medium text-gray-700">Notes:</p>
+                          <p className="text-gray-900">{selectedPatient.notes}</p>
+                        </div>
+                      )}
                     </div>
                   </div>
-                ))}
+                )}
               </div>
-            </div>
-          )}
+            )}
 
-          {/* Process Logs */}
-          {decryptionLogs.length > 0 && (
-            <div className="bg-white p-6 rounded-lg shadow-md">
-              <h2 className="text-xl font-bold mb-4 text-gray-800">📝 Decryption Process</h2>
-              
-              <div className="space-y-2 max-h-96 overflow-y-auto">
-                {decryptionLogs.map((log, index) => (
-                  <div
-                    key={index}
-                    className={`p-3 rounded-lg border-l-4 ${getStatusColor(log.status)}`}
-                  >
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <p className="text-sm font-medium">{log.operation}</p>
-                        {log.details && (
-                          <p className="text-xs mt-1 opacity-75">{log.details}</p>
-                        )}
-                        {log.patient_id && log.patient_id !== 'all' && log.patient_id !== 'query' && (
-                          <p className="text-xs mt-1 opacity-75">ID: {log.patient_id}</p>
-                        )}
+            {/* Bulk Decryption Tab */}
+            {activeTab === 'bulk' && (
+              <div className="space-y-6">
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                    Bulk Patient Decryption
+                  </h3>
+                  <div className="space-y-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Patient IDs (comma-separated)
+                      </label>
+                      <textarea
+                        value={bulkPatientIds}
+                        onChange={(e) => setBulkPatientIds(e.target.value)}
+                        rows={4}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        placeholder="P123, P456, P789..."
+                      />
+                    </div>
+                    <button
+                      onClick={handleBulkDecrypt}
+                      disabled={loading}
+                      className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
+                    >
+                      {loading ? 'Decrypting...' : 'Decrypt Bulk Patients'}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Bulk Results */}
+                {bulkResults && (
+                  <div className="bg-white rounded-lg border border-gray-200 p-6">
+                    <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                      Bulk Decryption Results
+                    </h3>
+                    <div className="grid grid-cols-3 gap-4 mb-4">
+                      <div className="text-center">
+                        <p className="text-2xl font-bold text-blue-600">{bulkResults.total_requested}</p>
+                        <p className="text-sm text-gray-600">Total Requested</p>
                       </div>
-                      <div className="text-right">
-                        <p className="text-xs opacity-75">{log.timestamp}</p>
+                      <div className="text-center">
+                        <p className="text-2xl font-bold text-green-600">{bulkResults.successfully_decrypted}</p>
+                        <p className="text-sm text-gray-600">Successfully Decrypted</p>
+                      </div>
+                      <div className="text-center">
+                        <p className="text-2xl font-bold text-red-600">{bulkResults.failed_decryptions}</p>
+                        <p className="text-sm text-gray-600">Failed</p>
                       </div>
                     </div>
+                    
+                    <div className="space-y-4">
+                      {bulkResults.decrypted_patients?.map((patient: any, index: number) => (
+                        <div key={index} className="bg-gray-50 rounded-lg p-4">
+                          <h4 className="font-medium text-gray-900 mb-2">
+                            Patient: {patient.patient_id}
+                          </h4>
+                          <div className="grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                              <p><span className="font-medium">Name:</span> {patient.data.name}</p>
+                              <p><span className="font-medium">Age:</span> {patient.data.age}</p>
+                            </div>
+                            <div>
+                              <p><span className="font-medium">Decrypted:</span> {new Date(patient.decrypted_at).toLocaleString()}</p>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                ))}
+                )}
               </div>
-            </div>
-          )}
+            )}
 
-          {/* Information Panel */}
-          <div className="bg-white p-6 rounded-lg shadow-md">
-            <h2 className="text-xl font-bold mb-4 text-gray-800">ℹ️ Decryption Information</h2>
-            
-            <div className="space-y-4">
-              <div>
-                <h3 className="font-semibold text-gray-700 mb-2">Security Features:</h3>
-                <ul className="text-sm text-gray-600 space-y-1">
-                  <li>• All decryption operations are logged</li>
-                  <li>• Privacy budget is tracked per query</li>
-                  <li>• Differential privacy protects individual records</li>
-                  <li>• Audit trails maintain compliance</li>
-                </ul>
+            {/* Audit Log Tab */}
+            {activeTab === 'audit' && (
+              <div className="space-y-6">
+                <div className="bg-gray-50 rounded-lg p-4">
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                    Session Audit Log
+                  </h3>
+                  <div className="space-y-2 max-h-96 overflow-y-auto">
+                    {auditLog.map((entry, index) => (
+                      <div key={index} className="bg-white p-3 rounded-md border border-gray-200">
+                        <div className="flex justify-between items-center">
+                          <div>
+                            <p className="font-medium text-gray-900">{entry.action}</p>
+                            <p className="text-sm text-gray-600">
+                              {entry.patient_id && `Patient: ${entry.patient_id} | `}
+                              User: {entry.user} | 
+                              Time: {new Date(entry.timestamp * 1000).toLocaleString()}
+                            </p>
+                          </div>
+                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                            entry.success ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+                          }`}>
+                            {entry.success ? 'Success' : 'Failed'}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
               </div>
-              
-              <div>
-                <h3 className="font-semibold text-gray-700 mb-2">Query Types:</h3>
-                <ul className="text-sm text-gray-600 space-y-1">
-                  <li>• <strong>Single:</strong> Decrypt one specific record</li>
-                  <li>• <strong>Bulk:</strong> Decrypt all records at once</li>
-                  <li>• <strong>DP Queries:</strong> Privacy-preserving aggregations</li>
-                </ul>
+            )}
+          </div>
+        </div>
+
+        {/* Error Display */}
+        {error && (
+          <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <p className="text-sm text-red-800">{error}</p>
               </div>
             </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

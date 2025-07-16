@@ -21,6 +21,8 @@ import os
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 from api_routes import router as novel_router, cleanup_storage
+from decryption_api import router as decryption_router
+from decryption_engine import decryption_engine
 
 # Configure logging
 logging.basicConfig(
@@ -42,10 +44,15 @@ async def lifespan(app: FastAPI):
     # Startup
     logger.info("Starting TDP-QIMLE Algorithm System...")
     logger.info("Initializing novel encryption components...")
+    logger.info("Initializing independent decryption system...")
+    
+    # Start cleanup task for expired decryption sessions
+    cleanup_task = asyncio.create_task(periodic_decryption_cleanup())
     
     try:
         # Initialize any required components here
         logger.info("TDP-QIMLE system started successfully")
+        logger.info("Independent decryption system started successfully")
         yield
     except Exception as e:
         logger.error(f"Failed to start TDP-QIMLE system: {str(e)}")
@@ -53,8 +60,27 @@ async def lifespan(app: FastAPI):
     finally:
         # Shutdown
         logger.info("Shutting down TDP-QIMLE Algorithm System...")
+        logger.info("Shutting down independent decryption system...")
+        cleanup_task.cancel()
+        try:
+            await cleanup_task
+        except asyncio.CancelledError:
+            pass
         await cleanup_storage()
         logger.info("TDP-QIMLE system shutdown complete")
+
+async def periodic_decryption_cleanup():
+    """Periodic cleanup of expired decryption sessions"""
+    while True:
+        try:
+            await asyncio.sleep(1800)  # Every 30 minutes
+            cleaned_count = await decryption_engine.cleanup_expired_sessions()
+            if cleaned_count > 0:
+                logger.info(f"Cleaned up {cleaned_count} expired decryption sessions")
+        except asyncio.CancelledError:
+            break
+        except Exception as e:
+            logger.error(f"Error during periodic decryption cleanup: {e}")
 
 # Create FastAPI application
 app = FastAPI(
@@ -74,6 +100,7 @@ app = FastAPI(
     - **Homomorphic Properties**: Encrypted domain operations
     - **Blockchain-Inspired Integrity**: Tamper-proof verification
     - **Biological Key Evolution**: Bio-inspired key generation patterns
+    - **Independent Decryption System**: Separate algorithms for decryption
     
     ### Security Components:
     1. **Temporal Privacy Protection** with time-decay mechanisms
@@ -83,6 +110,11 @@ app = FastAPI(
     5. **Homomorphic Operation Preservation** for encrypted computations
     6. **Blockchain-Inspired Integrity Verification** with proof-of-work
     7. **Biological Pattern Key Evolution** for dynamic security
+    8. **Independent Decryption Engine** with separate mathematical foundations
+    
+    ### Dual Service Architecture:
+    - **Encryption Service**: `/api/novel/*` - Handles patient data encryption and storage
+    - **Decryption Service**: `/api/decrypt/*` - Independent decryption with separate authentication
     
     ### Algorithm Novelty:
     This algorithm combines multiple cutting-edge cryptographic concepts in a unified framework 
@@ -136,6 +168,48 @@ async def log_requests(request: Request, call_next):
 
 # Include routers
 app.include_router(novel_router)
+app.include_router(decryption_router)
+
+# Root endpoint showing both services
+@app.get("/")
+async def root():
+    """Root endpoint showing both encryption and decryption services"""
+    return {
+        "system": "TDP-QIMLE: Temporal Differential Privacy with Quantum-Inspired Multi-Layer Encryption",
+        "version": "1.0.0",
+        "status": "operational",
+        "services": {
+            "encryption": {
+                "description": "Patient data encryption service",
+                "base_path": "/api/novel",
+                "endpoints": {
+                    "store_patient": "POST /api/novel/patients",
+                    "retrieve_patient": "GET /api/novel/patients/{patient_id}",
+                    "update_patient": "PUT /api/novel/patients/{patient_id}",
+                    "delete_patient": "DELETE /api/novel/patients/{patient_id}",
+                    "get_all_patients": "GET /api/novel/patients",
+                    "health_check": "GET /api/novel/health"
+                }
+            },
+            "decryption": {
+                "description": "Independent decryption service with separate authentication",
+                "base_path": "/api/decrypt",
+                "endpoints": {
+                    "create_session": "POST /api/decrypt/auth/session",
+                    "decrypt_single": "POST /api/decrypt/patient/single",
+                    "decrypt_bulk": "POST /api/decrypt/patient/bulk",
+                    "search_encrypted": "GET /api/decrypt/patient/search/encrypted",
+                    "session_audit": "GET /api/decrypt/audit/session",
+                    "terminate_session": "DELETE /api/decrypt/auth/session",
+                    "health_check": "GET /api/decrypt/health"
+                }
+            }
+        },
+        "database": "MongoDB Atlas",
+        "port": 8001,
+        "documentation": "/docs",
+        "timestamp": datetime.now().isoformat()
+    }
 
 # Add exception handlers
 from api_routes import value_error_handler, general_exception_handler
