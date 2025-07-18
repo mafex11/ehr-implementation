@@ -91,10 +91,16 @@ export const decryptionService = {
       currentSession = response.data;
       
       // Store session in localStorage with expiration
-      localStorage.setItem('decryption_session', JSON.stringify({
-        session: currentSession,
-        expires_at: currentSession.expires_at
-      }));
+      if (currentSession) {
+        localStorage.setItem('decryption_session', JSON.stringify({
+          session: currentSession,
+          expires_at: currentSession.expires_at
+        }));
+      }
+      
+      if (!currentSession) {
+        throw new Error('Failed to create session');
+      }
       
       return currentSession;
     } catch (error: any) {

@@ -1,6 +1,17 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
+import { Loader2, Shield, Unlock, User, AlertCircle, CheckCircle, ArrowLeft, Eye, Database, Clock } from 'lucide-react';
 import { decryptionService, DecryptionCredentials, DecryptionSession } from '../../../utils/decryption-api';
 
 interface Patient {
@@ -23,13 +34,14 @@ interface DecryptionLog {
 }
 
 export default function DecryptPage() {
+  const router = useRouter();
   const [session, setSession] = useState<DecryptionSession | null>(null);
   const [credentials, setCredentials] = useState<DecryptionCredentials>({
-    username: '',
-    password: '',
+    username: 'medical_staff',
+    password: 'medical_decrypt_access',
     security_clearance: 'standard',
-    purpose: '',
-    department: ''
+    purpose: 'Medical review and patient data analysis',
+    department: 'Medical Department'
   });
   const [encryptedPatients, setEncryptedPatients] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
@@ -49,7 +61,7 @@ export default function DecryptPage() {
       if (restored) {
         setSession(decryptionService.getCurrentSession());
         setShowLogin(false);
-        loadEncryptedPatients();
+    loadEncryptedPatients();
       }
     };
     
@@ -98,21 +110,21 @@ export default function DecryptPage() {
       setError(null);
       
       // Search for encrypted patients by different sensitivity levels
-      const highSensitivity = await decryptionService.searchEncryptedPatients('HIGH', 20);
-      const mediumSensitivity = await decryptionService.searchEncryptedPatients('MEDIUM', 20);
-      const lowSensitivity = await decryptionService.searchEncryptedPatients('LOW', 20);
+      const highResults = await decryptionService.searchEncryptedPatients('HIGH', 20);
+      const mediumResults = await decryptionService.searchEncryptedPatients('MEDIUM', 20);
+      const lowResults = await decryptionService.searchEncryptedPatients('LOW', 10);
       
-      const allEncrypted = [
-        ...highSensitivity.encrypted_patients,
-        ...mediumSensitivity.encrypted_patients,
-        ...lowSensitivity.encrypted_patients
+      // Combine results
+      const allPatients = [
+        ...(highResults.encrypted_patients || []),
+        ...(mediumResults.encrypted_patients || []),
+        ...(lowResults.encrypted_patients || [])
       ];
       
-      setEncryptedPatients(allEncrypted);
+      setEncryptedPatients(allPatients);
       
     } catch (err: any) {
-      console.error('Error loading encrypted patients:', err);
-      setError('Failed to load encrypted patient data');
+      setError(err.message);
     } finally {
       setLoading(false);
     }
@@ -122,105 +134,74 @@ export default function DecryptPage() {
     try {
       setLoading(true);
       setError(null);
-      setDecryptionLogs([]);
       
-      // Add decryption logs
-      const logEntry: DecryptionLog = {
-        timestamp: new Date().toLocaleTimeString(),
-        operation: 'Starting independent decryption process',
+      const decryptedData = await decryptionService.decryptSinglePatient({
         patient_id: patientId,
-        status: 'in_progress'
-      };
-      setDecryptionLogs(prev => [...prev, logEntry]);
-      
-      // Simulate decryption process steps
-      setTimeout(() => {
-        setDecryptionLogs(prev => [...prev, {
-          timestamp: new Date().toLocaleTimeString(),
-          operation: 'Applying reverse lattice decryption',
-          patient_id: patientId,
-          status: 'processing'
-        }]);
-      }, 500);
-      
-      setTimeout(() => {
-        setDecryptionLogs(prev => [...prev, {
-          timestamp: new Date().toLocaleTimeString(),
-          operation: 'Quantum decoherence decryption',
-          patient_id: patientId,
-          status: 'processing'
-        }]);
-      }, 1000);
-      
-      setTimeout(() => {
-        setDecryptionLogs(prev => [...prev, {
-          timestamp: new Date().toLocaleTimeString(),
-          operation: 'Temporal reconstruction decryption',
-          patient_id: patientId,
-          status: 'processing'
-        }]);
-      }, 1500);
-      
-      // Perform actual decryption using independent service
-      const decryptedPatient = await decryptionService.decryptSinglePatient({
-        patient_id: patientId,
-        decryption_method: 'full_independent',
-        audit_reason: 'Medical review and analysis'
+        audit_reason: 'Medical review and patient data analysis'
       });
+      setSelectedPatient(decryptedData.decrypted_data);
       
-      setSelectedPatient(decryptedPatient.decrypted_data);
+      // Add to logs
+      const logEntry: DecryptionLog = {
+        timestamp: new Date().toISOString(),
+        operation: 'DECRYPT_SINGLE',
+        status: 'SUCCESS',
+        patient_id: patientId,
+        method: 'TDP-QIMLE'
+      };
       
-      // Add final log entry
-      setTimeout(() => {
-        setDecryptionLogs(prev => [...prev, {
-          timestamp: new Date().toLocaleTimeString(),
-          operation: 'Independent decryption completed successfully',
-          patient_id: patientId,
-          status: 'success',
-          method: 'full_independent'
-        }]);
-      }, 2000);
+      setDecryptionLogs(prev => [logEntry, ...prev]);
       
     } catch (err: any) {
-      console.error('Decryption failed:', err);
-      setError('Failed to decrypt patient data: ' + err.message);
+      setError(err.message);
       
-      setDecryptionLogs(prev => [...prev, {
-        timestamp: new Date().toLocaleTimeString(),
-        operation: 'Independent decryption failed',
+      const logEntry: DecryptionLog = {
+        timestamp: new Date().toISOString(),
+        operation: 'DECRYPT_SINGLE',
+        status: 'ERROR',
         patient_id: patientId,
-        status: 'error',
+        method: 'TDP-QIMLE',
         error: err.message
-      }]);
+      };
+      
+      setDecryptionLogs(prev => [logEntry, ...prev]);
     } finally {
       setLoading(false);
     }
   };
 
   const handleBulkDecrypt = async () => {
-    if (!bulkPatientIds.trim()) {
-      setError('Please enter patient IDs separated by commas');
-      return;
-    }
-
     try {
-      setLoading(true);
-      setError(null);
+    setLoading(true);
+    setError(null);
       setBulkResults(null);
-
+      
       const patientIds = bulkPatientIds.split(',').map(id => id.trim()).filter(id => id);
       
-      const result = await decryptionService.decryptBulkPatients({
+      if (patientIds.length === 0) {
+        setError('Please enter at least one patient ID');
+        return;
+      }
+      
+      const results = await decryptionService.decryptBulkPatients({
         patient_ids: patientIds,
-        decryption_method: 'full_independent',
         batch_size: 5,
         audit_reason: 'Bulk medical data analysis'
       });
-
-      setBulkResults(result);
+      setBulkResults(results);
+      
+      // Add to logs
+      const logEntry: DecryptionLog = {
+        timestamp: new Date().toISOString(),
+        operation: 'DECRYPT_BULK',
+        status: 'SUCCESS',
+        method: 'TDP-QIMLE'
+      };
+      
+      setDecryptionLogs(prev => [logEntry, ...prev]);
       
     } catch (err: any) {
-      setError('Bulk decryption failed: ' + err.message);
+      setError(err.message);
     } finally {
       setLoading(false);
     }
@@ -229,441 +210,412 @@ export default function DecryptPage() {
   const loadAuditLog = async () => {
     try {
       setLoading(true);
-      setError(null);
-      
-      const audit = await decryptionService.getSessionAuditLog();
-      setAuditLog(audit.audit_entries || []);
-      
+      const log = await decryptionService.getSessionAuditLog();
+      setAuditLog(log.audit_entries || []);
     } catch (err: any) {
-      setError('Failed to load audit log: ' + err.message);
+      setError(err.message);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleReset = () => {
-    setSelectedPatient(null);
-    setDecryptionLogs([]);
-    setError(null);
-    setBulkResults(null);
-  };
-
-  // Login form
   if (showLogin) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-        <div className="max-w-md w-full">
-          <div className="bg-white rounded-xl shadow-xl p-8">
-            <div className="text-center mb-8">
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">🔓 Decryption Access</h1>
-              <p className="text-gray-600">Independent Decryption System</p>
-              <p className="text-sm text-gray-500 mt-2">Separate authentication required</p>
-            </div>
-
-            <form onSubmit={handleLogin} className="space-y-6">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Username
-                </label>
-                <input
-                  type="text"
-                  required
+  return (
+      <div className="min-h-screen bg-background flex items-center justify-center p-6">
+        <Card className="w-full max-w-md">
+          <CardHeader className="text-center">
+            <div className="mx-auto mb-4 w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+              <Shield className="w-6 h-6 text-primary" />
+      </div>
+            <CardTitle className="text-2xl">Secure Access</CardTitle>
+            <CardDescription>
+              Enter your credentials to access encrypted patient data
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleLogin} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="username">Username</Label>
+                <Input
+                  id="username"
                   value={credentials.username}
                   onChange={(e) => setCredentials(prev => ({ ...prev, username: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="decrypt_admin, medical_staff, or researcher"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Password
-                </label>
-                <input
-                  type="password"
+                  placeholder="Enter username"
                   required
+                />
+      </div>
+              
+              <div className="space-y-2">
+                <Label htmlFor="password">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
                   value={credentials.password}
                   onChange={(e) => setCredentials(prev => ({ ...prev, password: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter password"
+                  required
                 />
               </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Security Clearance
-                </label>
-                <select
-                  value={credentials.security_clearance}
-                  onChange={(e) => setCredentials(prev => ({ ...prev, security_clearance: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="standard">Standard</option>
-                  <option value="high">High</option>
-                  <option value="admin">Admin</option>
-                </select>
+              
+              <div className="space-y-2">
+                <Label htmlFor="clearance">Security Clearance</Label>
+                <Select value={credentials.security_clearance} onValueChange={(value) => setCredentials(prev => ({ ...prev, security_clearance: value }))}>
+                  <SelectTrigger>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="standard">Standard</SelectItem>
+                    <SelectItem value="elevated">Elevated</SelectItem>
+                    <SelectItem value="admin">Administrator</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Purpose
-                </label>
-                <input
-                  type="text"
-                  required
+              
+              <div className="space-y-2">
+                <Label htmlFor="purpose">Access Purpose</Label>
+                <Textarea
+                  id="purpose"
                   value={credentials.purpose}
                   onChange={(e) => setCredentials(prev => ({ ...prev, purpose: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Medical analysis, research, etc."
+                  placeholder="Describe the purpose of data access"
+                  rows={3}
                 />
               </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Department
-                </label>
-                <input
-                  type="text"
-                  required
+              
+              <div className="space-y-2">
+                <Label htmlFor="department">Department</Label>
+                <Input
+                  id="department"
                   value={credentials.department}
                   onChange={(e) => setCredentials(prev => ({ ...prev, department: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Cardiology, Research, IT, etc."
+                  placeholder="Enter department"
                 />
               </div>
 
               {error && (
-                <div className="bg-red-50 border border-red-200 rounded-md p-3">
-                  <p className="text-sm text-red-600">{error}</p>
-                </div>
+                <Alert variant="destructive">
+                  <AlertCircle className="h-4 w-4" />
+                  <AlertDescription>{error}</AlertDescription>
+                </Alert>
               )}
-
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50"
-              >
-                {loading ? 'Authenticating...' : 'Access Decryption System'}
-              </button>
+              
+              <Button type="submit" className="w-full" disabled={loading}>
+                {loading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Authenticating...
+                  </>
+                ) : (
+                  <>
+                    <Unlock className="w-4 h-4 mr-2" />
+                    Access Secure System
+                  </>
+                )}
+              </Button>
             </form>
-
-            <div className="mt-6 p-4 bg-gray-50 rounded-md">
-              <h3 className="text-sm font-medium text-gray-700 mb-2">Test Credentials:</h3>
-              <p className="text-xs text-gray-600">Username: decrypt_admin</p>
-              <p className="text-xs text-gray-600">Password: decrypt_key_2024_secure</p>
-            </div>
-          </div>
-        </div>
+          </CardContent>
+        </Card>
       </div>
     );
   }
 
-  // Main decryption interface
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+    <div className="min-h-screen bg-background p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
-          <div className="flex justify-between items-center">
+        <div className="mb-8">
+          <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900 mb-2">🔓 Independent Decryption System</h1>
-              <p className="text-gray-600">Separate decryption service for TDP-QIMLE encrypted data</p>
-              {session && (
-                <p className="text-sm text-green-600 mt-1">
-                  Session: {session.session_id.substring(0, 8)}... | 
-                  Clearance: {session.clearance_level} | 
-                  Expires: {new Date(session.expires_at).toLocaleString()}
-                </p>
-              )}
+              <Button 
+                variant="ghost" 
+                onClick={() => router.push('/')}
+                className="mb-4"
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back to Dashboard
+              </Button>
+              <h1 className="text-4xl font-bold mb-2">Patient Data Decryption</h1>
+              <p className="text-muted-foreground text-lg">
+                Secure access to encrypted patient records using TDP-QIMLE
+              </p>
             </div>
-            <button
-              onClick={handleLogout}
-              className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
-            >
-              Logout
-            </button>
+            <div className="text-right">
+              <p className="text-sm text-muted-foreground">Session: {session?.session_id?.substring(0, 8)}...</p>
+              <p className="text-sm text-muted-foreground">Clearance: {session?.clearance_level}</p>
+              <Button variant="outline" size="sm" onClick={handleLogout} className="mt-2">
+                Logout
+              </Button>
+            </div>
           </div>
         </div>
 
-        {/* Tab Navigation */}
-        <div className="bg-white rounded-xl shadow-lg mb-6">
-          <div className="flex border-b">
-            <button
-              onClick={() => setActiveTab('single')}
-              className={`px-6 py-3 font-medium ${
-                activeTab === 'single'
-                  ? 'text-blue-600 border-b-2 border-blue-600'
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
-            >
-              Single Patient Decryption
-            </button>
-            <button
-              onClick={() => setActiveTab('bulk')}
-              className={`px-6 py-3 font-medium ${
-                activeTab === 'bulk'
-                  ? 'text-blue-600 border-b-2 border-blue-600'
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
-            >
-              Bulk Decryption
-            </button>
-            <button
-              onClick={() => {
-                setActiveTab('audit');
-                loadAuditLog();
-              }}
-              className={`px-6 py-3 font-medium ${
-                activeTab === 'audit'
-                  ? 'text-blue-600 border-b-2 border-blue-600'
-                  : 'text-gray-500 hover:text-gray-700'
-              }`}
-            >
-              Audit Log
-            </button>
-          </div>
+        <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'single' | 'bulk' | 'audit')}>
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="single">Single Patient</TabsTrigger>
+            <TabsTrigger value="bulk">Bulk Decryption</TabsTrigger>
+            <TabsTrigger value="audit">Audit Log</TabsTrigger>
+          </TabsList>
 
-          <div className="p-6">
-            {/* Single Patient Tab */}
-            {activeTab === 'single' && (
-              <div className="space-y-6">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  {/* Encrypted Patients List */}
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                      Encrypted Patients ({encryptedPatients.length})
-                    </h3>
-                    <div className="space-y-2 max-h-64 overflow-y-auto">
-                      {encryptedPatients.map((patient, index) => (
-                        <div
-                          key={index}
-                          className="bg-white p-3 rounded-md border border-gray-200 hover:border-blue-300 cursor-pointer"
-                          onClick={() => handleDecryptPatient(patient.patient_id)}
-                        >
-                          <div className="flex justify-between items-center">
-                            <div>
-                              <p className="font-medium text-gray-900">{patient.patient_id}</p>
-                              <p className="text-sm text-gray-500">
-                                Sensitivity: {patient.sensitivity_level} | 
-                                Encrypted: {new Date(patient.encrypted_at).toLocaleDateString()}
-                              </p>
-                            </div>
-                            <div className="text-right">
-                              <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
-                                🔒 Encrypted
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Decryption Process */}
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                      Decryption Process
-                    </h3>
-                    <div className="space-y-2 max-h-64 overflow-y-auto">
-                      {decryptionLogs.map((log, index) => (
-                        <div
-                          key={index}
-                          className={`p-2 rounded text-sm ${
-                            log.status === 'success'
-                              ? 'bg-green-100 text-green-800'
-                              : log.status === 'error'
-                              ? 'bg-red-100 text-red-800'
-                              : 'bg-blue-100 text-blue-800'
-                          }`}
-                        >
-                          <div className="flex justify-between">
-                            <span>{log.operation}</span>
-                            <span className="text-xs">{log.timestamp}</span>
-                          </div>
-                          {log.patient_id && (
-                            <div className="text-xs opacity-75">Patient: {log.patient_id}</div>
-                          )}
-                          {log.error && (
-                            <div className="text-xs opacity-75">Error: {log.error}</div>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Decrypted Patient Data */}
-                {selectedPatient && (
-                  <div className="bg-white rounded-lg border border-gray-200 p-6">
-                    <div className="flex justify-between items-center mb-4">
-                      <h3 className="text-lg font-semibold text-gray-900">
-                        🔓 Decrypted Patient Data
-                      </h3>
-                      <button
-                        onClick={handleReset}
-                        className="text-gray-500 hover:text-gray-700"
+          <TabsContent value="single" className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Patient List */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Database className="w-5 h-5" />
+                    Encrypted Patients
+                  </CardTitle>
+                  <CardDescription>
+                    Select a patient to decrypt their data
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2 max-h-96 overflow-y-auto">
+                    {encryptedPatients.map((patient) => (
+                      <div
+                        key={patient.patient_id}
+                        className="flex items-center justify-between p-3 border rounded-lg hover:bg-muted/50 cursor-pointer"
+                        onClick={() => handleDecryptPatient(patient.patient_id)}
                       >
-                        Clear
-                      </button>
-                    </div>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <div>
-                        <p className="text-sm font-medium text-gray-700">Patient ID:</p>
-                        <p className="text-gray-900">{selectedPatient.patient_id}</p>
+                          <p className="font-medium">{patient.patient_id}</p>
+                          <p className="text-sm text-muted-foreground">
+                            Sensitivity: {patient.sensitivity_level}
+                          </p>
                       </div>
+                        <Button variant="ghost" size="sm" disabled={loading}>
+                          <Eye className="w-4 h-4" />
+                        </Button>
+                      </div>
+                    ))}
+                    {encryptedPatients.length === 0 && (
+                      <div className="text-center py-8 text-muted-foreground">
+                        No encrypted patients found
+                      </div>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+
+              {/* Decrypted Patient Data */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <User className="w-5 h-5" />
+                    Decrypted Patient Data
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  {selectedPatient ? (
+                    <div className="space-y-4">
+                    <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <p className="text-sm font-medium text-gray-700">Name:</p>
-                        <p className="text-gray-900">{selectedPatient.name}</p>
+                          <Label className="text-sm font-medium">Name</Label>
+                          <p className="text-lg">{selectedPatient.name}</p>
+                        </div>
+                        <div>
+                          <Label className="text-sm font-medium">Age</Label>
+                          <p className="text-lg">{selectedPatient.age}</p>
+                        </div>
                       </div>
+                      
                       <div>
-                        <p className="text-sm font-medium text-gray-700">Age:</p>
-                        <p className="text-gray-900">{selectedPatient.age}</p>
+                        <Label className="text-sm font-medium">Medical History</Label>
+                        <div className="flex flex-wrap gap-2 mt-1">
+                          {selectedPatient.medical_history.map((item, index) => (
+                            <Badge key={index} variant="secondary">
+                              {item}
+                            </Badge>
+                          ))}
+                        </div>
                       </div>
+                      
                       <div>
-                        <p className="text-sm font-medium text-gray-700">Medical History:</p>
-                        <p className="text-gray-900">{selectedPatient.medical_history?.join(', ')}</p>
+                        <Label className="text-sm font-medium">Current Medications</Label>
+                        <div className="flex flex-wrap gap-2 mt-1">
+                          {selectedPatient.current_medications.length > 0 ? (
+                            selectedPatient.current_medications.map((med, index) => (
+                              <Badge key={index} variant="outline">
+                                {med}
+                              </Badge>
+                            ))
+                          ) : (
+                            <span className="text-muted-foreground">None</span>
+                          )}
+                        </div>
                       </div>
+                      
                       <div>
-                        <p className="text-sm font-medium text-gray-700">Current Medications:</p>
-                        <p className="text-gray-900">{selectedPatient.current_medications?.join(', ')}</p>
+                        <Label className="text-sm font-medium">Test Results</Label>
+                        <div className="mt-1 p-3 bg-muted rounded-lg">
+                          <pre className="text-sm">
+                            {JSON.stringify(selectedPatient.test_results, null, 2)}
+                          </pre>
+                        </div>
                       </div>
-                      <div>
-                        <p className="text-sm font-medium text-gray-700">Test Results:</p>
-                        <p className="text-gray-900">{JSON.stringify(selectedPatient.test_results)}</p>
-                      </div>
+                      
                       {selectedPatient.notes && (
-                        <div className="md:col-span-2">
-                          <p className="text-sm font-medium text-gray-700">Notes:</p>
-                          <p className="text-gray-900">{selectedPatient.notes}</p>
+                        <div>
+                          <Label className="text-sm font-medium">Notes</Label>
+                          <p className="mt-1 text-sm text-muted-foreground">
+                            {selectedPatient.notes}
+                          </p>
                         </div>
                       )}
                     </div>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {/* Bulk Decryption Tab */}
-            {activeTab === 'bulk' && (
-              <div className="space-y-6">
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                    Bulk Patient Decryption
-                  </h3>
-                  <div className="space-y-4">
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Patient IDs (comma-separated)
-                      </label>
-                      <textarea
-                        value={bulkPatientIds}
-                        onChange={(e) => setBulkPatientIds(e.target.value)}
-                        rows={4}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        placeholder="P123, P456, P789..."
-                      />
+                  ) : (
+                    <div className="text-center py-8 text-muted-foreground">
+                      Select a patient to view decrypted data
                     </div>
-                    <button
-                      onClick={handleBulkDecrypt}
-                      disabled={loading}
-                      className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
-                    >
-                      {loading ? 'Decrypting...' : 'Decrypt Bulk Patients'}
-                    </button>
-                  </div>
-                </div>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
 
-                {/* Bulk Results */}
+          <TabsContent value="bulk" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle>Bulk Decryption</CardTitle>
+                <CardDescription>
+                  Decrypt multiple patients at once by entering their IDs
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Label htmlFor="bulk-ids">Patient IDs (comma-separated)</Label>
+                  <Textarea
+                    id="bulk-ids"
+                    value={bulkPatientIds}
+                    onChange={(e) => setBulkPatientIds(e.target.value)}
+                    placeholder="P1234567890, P0987654321, ..."
+                    rows={4}
+                  />
+                </div>
+                
+                <Button onClick={handleBulkDecrypt} disabled={loading}>
+                  {loading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Decrypting...
+                    </>
+                  ) : (
+                    <>
+                      <Unlock className="w-4 h-4 mr-2" />
+                      Decrypt All
+                    </>
+                  )}
+                </Button>
+                
                 {bulkResults && (
-                  <div className="bg-white rounded-lg border border-gray-200 p-6">
-                    <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                      Bulk Decryption Results
-                    </h3>
-                    <div className="grid grid-cols-3 gap-4 mb-4">
-                      <div className="text-center">
-                        <p className="text-2xl font-bold text-blue-600">{bulkResults.total_requested}</p>
-                        <p className="text-sm text-gray-600">Total Requested</p>
-                      </div>
-                      <div className="text-center">
-                        <p className="text-2xl font-bold text-green-600">{bulkResults.successfully_decrypted}</p>
-                        <p className="text-sm text-gray-600">Successfully Decrypted</p>
-                      </div>
-                      <div className="text-center">
-                        <p className="text-2xl font-bold text-red-600">{bulkResults.failed_decryptions}</p>
-                        <p className="text-sm text-gray-600">Failed</p>
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-4">
-                      {bulkResults.decrypted_patients?.map((patient: any, index: number) => (
-                        <div key={index} className="bg-gray-50 rounded-lg p-4">
-                          <h4 className="font-medium text-gray-900 mb-2">
-                            Patient: {patient.patient_id}
-                          </h4>
-                          <div className="grid grid-cols-2 gap-4 text-sm">
-                            <div>
-                              <p><span className="font-medium">Name:</span> {patient.data.name}</p>
-                              <p><span className="font-medium">Age:</span> {patient.data.age}</p>
-                            </div>
-                            <div>
-                              <p><span className="font-medium">Decrypted:</span> {new Date(patient.decrypted_at).toLocaleString()}</p>
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
+                  <div className="mt-6">
+                    <h3 className="font-medium mb-3">Decryption Results</h3>
+                    <div className="space-y-2">
+                      {bulkResults.results?.map((result: any, index: number) => (
+                        <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+                          <span>{result.patient_id}</span>
+                          <Badge variant={result.success ? "default" : "destructive"}>
+                            {result.success ? "Success" : "Failed"}
+                          </Badge>
                   </div>
-                )}
-              </div>
-            )}
-
-            {/* Audit Log Tab */}
-            {activeTab === 'audit' && (
-              <div className="space-y-6">
-                <div className="bg-gray-50 rounded-lg p-4">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                    Session Audit Log
-                  </h3>
-                  <div className="space-y-2 max-h-96 overflow-y-auto">
-                    {auditLog.map((entry, index) => (
-                      <div key={index} className="bg-white p-3 rounded-md border border-gray-200">
-                        <div className="flex justify-between items-center">
-                          <div>
-                            <p className="font-medium text-gray-900">{entry.action}</p>
-                            <p className="text-sm text-gray-600">
-                              {entry.patient_id && `Patient: ${entry.patient_id} | `}
-                              User: {entry.user} | 
-                              Time: {new Date(entry.timestamp * 1000).toLocaleString()}
-                            </p>
-                          </div>
-                          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                            entry.success ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                          }`}>
-                            {entry.success ? 'Success' : 'Failed'}
-                          </span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Error Display */}
-        {error && (
-          <div className="bg-red-50 border border-red-200 rounded-md p-4 mb-6">
-            <div className="flex">
-              <div className="flex-shrink-0">
-                <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
-                </svg>
-              </div>
-              <div className="ml-3">
-                <p className="text-sm text-red-800">{error}</p>
+                ))}
               </div>
             </div>
-          </div>
+          )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="audit" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Clock className="w-5 h-5" />
+                  Audit Log
+                </CardTitle>
+                <CardDescription>
+                  Review all decryption activities and access logs
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <Button onClick={loadAuditLog} disabled={loading} className="mb-4">
+                  {loading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      Loading...
+                    </>
+                  ) : (
+                    "Load Audit Log"
+                  )}
+                </Button>
+              
+              <div className="space-y-2 max-h-96 overflow-y-auto">
+                  {auditLog.map((entry, index) => (
+                    <div key={index} className="p-3 border rounded-lg">
+                      <div className="flex items-center justify-between">
+                        <Badge variant={entry.status === 'SUCCESS' ? 'default' : 'destructive'}>
+                          {entry.operation}
+                        </Badge>
+                        <span className="text-sm text-muted-foreground">
+                          {new Date(entry.timestamp).toLocaleString()}
+                        </span>
+                      </div>
+                      {entry.patient_id && (
+                        <p className="text-sm text-muted-foreground mt-1">
+                          Patient: {entry.patient_id}
+                        </p>
+                      )}
+                      {entry.error && (
+                        <p className="text-sm text-red-500 mt-1">
+                          Error: {entry.error}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                  {auditLog.length === 0 && (
+                    <div className="text-center py-8 text-muted-foreground">
+                      No audit entries found
+                    </div>
+                  )}
+                      </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
+
+        {/* Recent Activity */}
+        {decryptionLogs.length > 0 && (
+          <Card className="mt-6">
+            <CardHeader>
+              <CardTitle>Recent Activity</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                {decryptionLogs.slice(0, 5).map((log, index) => (
+                  <div key={index} className="flex items-center justify-between p-2 rounded bg-muted/50">
+                    <div className="flex items-center gap-2">
+                      <Badge variant={log.status === 'SUCCESS' ? 'default' : 'destructive'}>
+                        {log.operation}
+                      </Badge>
+                      {log.patient_id && (
+                        <span className="text-sm">{log.patient_id}</span>
+                      )}
+                    </div>
+                    <span className="text-xs text-muted-foreground">
+                      {new Date(log.timestamp).toLocaleTimeString()}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+
+        {error && (
+          <Alert variant="destructive" className="mt-6">
+            <AlertCircle className="h-4 w-4" />
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
         )}
       </div>
     </div>

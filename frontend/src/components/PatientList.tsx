@@ -1,13 +1,27 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Loader2, Shield, Lock, AlertCircle } from 'lucide-react';
 import api from '../../utils/api';
 
 interface Patient {
   _id: string;
   name: string;
-  age: number;
+  age: number | string;
   diagnosis: string;
-  lab_result: number;
+  lab_result: number | string;
+  encryption_info?: {
+    algorithm: string;
+    version: string;
+    sensitivity_level: string;
+    encrypted_at: string;
+    last_updated: string;
+    data_size: number;
+    has_integrity_block: boolean;
+  };
 }
 
 export default function PatientList() {
@@ -20,15 +34,16 @@ export default function PatientList() {
 
   useEffect(() => {
     setLoading(true);
-    api.get('patients?decrypt=true')
+    api.get('patients?decrypt=false')
       .then((res) => {
-        // Transform the new API response to match the old format
+        // Transform the encrypted API response to display format
         const transformedPatients = res.data.map((patient: any) => ({
           _id: patient.patient_id,
           name: patient.name,
           age: patient.age,
           diagnosis: patient.medical_history[0] || 'No diagnosis',
-          lab_result: patient.test_results?.lab_result || patient.test_results?.blood_pressure || 'No results'
+          lab_result: patient.test_results?.lab_result || patient.test_results?.status || 'No results',
+          encryption_info: patient.metadata?.encryption_info || null
         }));
         setPatients(transformedPatients);
         setLoading(false);
@@ -42,8 +57,9 @@ export default function PatientList() {
 
   // Filter patients based on search term
   const filteredPatients = patients.filter(patient => 
-    patient.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    patient.diagnosis.toLowerCase().includes(searchTerm.toLowerCase())
+    patient._id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (patient.encryption_info?.sensitivity_level || '').toLowerCase().includes(searchTerm.toLowerCase()) ||
+    (patient.encryption_info?.algorithm || '').toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // Pagination logic
@@ -55,106 +71,86 @@ export default function PatientList() {
   // Change page
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
-  if (loading) return <div className="animate-pulse p-4">Loading patient data...</div>;
-  if (error) return <div className="text-red-500 p-4">{error}</div>;
+  if (loading) {
+    return (
+      <Card>
+        <CardContent className="flex items-center justify-center py-8">
+          <Loader2 className="w-6 h-6 animate-spin mr-2" />
+          <span>Loading patients...</span>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (error) {
+    return (
+      <Alert variant="destructive">
+        <AlertCircle className="h-4 w-4" />
+        <AlertDescription>{error}</AlertDescription>
+      </Alert>
+    );
+  }
 
   return (
-    <div>
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold text-black">Patient Records</h2>
-        <div className="relative">
-          <input
-            type="text"
-            placeholder="Search patients..."
-            className="px-3 py-2 border rounded-md text-black" 
-            value={searchTerm}
-            onChange={(e) => {
-              setSearchTerm(e.target.value);
-              setCurrentPage(1); // Reset to first page on search
-            }}
-          />
-          {searchTerm && (
-            <button 
-              className="absolute right-2 top-2.5 text-black"
-              onClick={() => setSearchTerm('')}
-            >
-              ×
-            </button>
-          )}
-        </div>
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="p-4 bg-muted/50 rounded-lg border">
+        <h3 className="text-sm font-semibold text-foreground mb-1 flex items-center gap-2">
+          <Shield className="w-4 h-4" />
+          Encrypted Data Display
+        </h3>
+        <p className="text-xs text-muted-foreground">
+          All patient data is encrypted using TDP-QIMLE algorithm
+        </p>
       </div>
 
-      {currentPatients.length === 0 ? (
-        <div className="text-center p-4 bg-gray-50 rounded">
-          {searchTerm ? 'No patients match your search.' : 'No patients in the system.'}
-        </div>
-      ) : (
-        <>
-          <div className="bg-gray-50 rounded-t-lg p-3 grid grid-cols-12 font-semibold border-b text-black">
-            <div className="col-span-3">Patient</div>
-            <div className="col-span-2">Age</div>
-            <div className="col-span-4">Diagnosis</div>
-            <div className="col-span-3">Lab Result</div>
-          </div>
-          <ul>
-            {currentPatients.map((p) => (
-              <li key={p._id} className="p-3 grid grid-cols-12 border-b hover:bg-gray-50 transition-colors text-black">
-                <div className="col-span-3 font-semibold">{p.name}</div>
-                <div className="col-span-2">{p.age} years</div>
-                <div className="col-span-4">{p.diagnosis}</div>
-                <div className="col-span-3">
-                  <span className={`inline-block px-2 py-1 rounded-full text-sm ${
-                    p.lab_result > 120 ? 'bg-red-100 text-red-800' : 
-                    p.lab_result < 90 ? 'bg-blue-100 text-blue-800' : 
-                    'bg-green-100 text-green-800'
-                  }`}>
-                    {p.lab_result.toFixed(1)}
-                  </span>
+      {/* Patient List */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Lock className="w-5 h-5" />
+            Encrypted Patient Records
+          </CardTitle>
+          <CardDescription>
+            {patients.length} patient{patients.length !== 1 ? 's' : ''} in secure database
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-3">
+            {patients.length === 0 ? (
+              <div className="text-center py-8 text-muted-foreground">
+                <Shield className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                <p>No patients found. Add some patients to see them here.</p>
+              </div>
+            ) : (
+              patients.map((patient) => (
+                <div
+                  key={patient._id}
+                  className="flex items-center justify-between p-4 border rounded-lg hover:bg-muted/50 transition-colors"
+                >
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3">
+                      <div className="flex-1">
+                        <h4 className="font-medium">{patient.name}</h4>
+                        <p className="text-sm text-muted-foreground">
+                          Age: {patient.age} | Diagnosis: {patient.diagnosis}
+                        </p>
+                      </div>
+                      <Badge variant="secondary" className="flex items-center gap-1">
+                        <Lock className="w-3 h-3" />
+                        Encrypted
+                      </Badge>
+                    </div>
+                  </div>
+                  <Button variant="outline" size="sm">
+                    View Details
+                  </Button>
                 </div>
-              </li>
-            ))}
-          </ul>
-        </>
-      )}
-
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="flex justify-center mt-4">
-          <nav className="flex items-center space-x-1">
-            <button
-              onClick={() => paginate(currentPage > 1 ? currentPage - 1 : 1)}
-              disabled={currentPage === 1}
-              className={`px-3 py-1 rounded ${
-                currentPage === 1 ? 'bg-gray-200 text-gray-500' : 'bg-gray-200 hover:bg-gray-300'
-              }`}
-            >
-              &laquo;
-            </button>
-            
-            {[...Array(totalPages)].map((_, i) => (
-              <button
-                key={i}
-                onClick={() => paginate(i + 1)}
-                className={`px-3 py-1 rounded ${
-                  currentPage === i + 1 ? 'bg-blue-500 text-white' : 'bg-gray-200 hover:bg-gray-300'
-                }`}
-              >
-                {i + 1}
-              </button>
-            ))}
-            
-            <button
-              onClick={() => paginate(currentPage < totalPages ? currentPage + 1 : totalPages)}
-              disabled={currentPage === totalPages}
-              className={`px-3 py-1 rounded ${
-                currentPage === totalPages ? 'bg-gray-200 text-gray-500' : 'bg-gray-200 hover:bg-gray-300'
-              }`}
-            >
-              &raquo;
-            </button>
-          </nav>
-        </div>
-      )}
+              ))
+            )}
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }

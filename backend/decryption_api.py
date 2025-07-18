@@ -293,9 +293,24 @@ async def search_encrypted_patients(
     Returns encrypted metadata only, requires separate decryption calls
     """
     try:
-        # Search encrypted documents
+        # Convert string sensitivity level to integer value for database query
+        sensitivity_map = {
+            "LOW": 1,
+            "MEDIUM": 2,
+            "HIGH": 3,
+            "CRITICAL": 4
+        }
+        
+        sensitivity_value = sensitivity_map.get(sensitivity_level.upper())
+        if sensitivity_value is None:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Invalid sensitivity level. Must be one of: {list(sensitivity_map.keys())}"
+            )
+        
+        # Search encrypted documents using integer sensitivity level
         cursor = storage.patients_collection.find(
-            {"encryption_metadata.sensitivity_level": sensitivity_level}
+            {"encryption_metadata.sensitivity_level": sensitivity_value}
         ).limit(limit)
         
         encrypted_patients = []

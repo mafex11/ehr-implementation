@@ -6,7 +6,7 @@ Novel Encryption System for Patient Data Storage
 from fastapi import APIRouter, HTTPException, Depends, BackgroundTasks, Query
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel, Field
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Optional, Any, Union
 from datetime import datetime
 import asyncio
 import logging
@@ -38,7 +38,7 @@ class PatientDataRequest(BaseModel):
 class PatientDataResponse(BaseModel):
     patient_id: str
     name: str
-    age: int
+    age: Union[int, str]  # Allow both int (decrypted) and str (encrypted display)
     medical_history: List[str]
     current_medications: List[str]
     test_results: Dict[str, Any]
@@ -329,28 +329,26 @@ async def get_all_patients(
                 for patient in patients
             ]
         else:
-            # Get metadata only
-            results = await storage.get_all_patients_metadata(limit)
+            # Get encrypted data for display
+            encrypted_patients = await storage.get_all_patients_encrypted_display(limit)
             return [
                 PatientDataResponse(
-                    patient_id=result["patient_id"],
-                    name="[ENCRYPTED]",
-                    age=0,
-                    medical_history=["[ENCRYPTED]"],
-                    current_medications=["[ENCRYPTED]"],
-                    test_results={"status": "[ENCRYPTED]"},
-                    notes="[ENCRYPTED]",
+                    patient_id=patient["patient_id"],
+                    name=patient["name"],
+                    age=patient["age"],
+                    medical_history=patient["medical_history"],
+                    current_medications=patient["current_medications"],
+                    test_results=patient["test_results"],
+                    notes=patient["notes"],
                     metadata={
                         "algorithm": "TDP-QIMLE",
                         "retrieved_at": datetime.now(),
                         "integrity_verified": True,
                         "encrypted": True,
-                        "sensitivity_level": result["sensitivity_level"],
-                        "created_at": result["created_at"],
-                        "updated_at": result["updated_at"]
+                        "encryption_info": patient["encryption_info"]
                     }
                 )
-                for result in results
+                for patient in encrypted_patients
             ]
         
     except Exception as e:

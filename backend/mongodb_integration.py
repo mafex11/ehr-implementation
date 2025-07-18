@@ -6,13 +6,14 @@ Secure Patient Data Storage with Advanced Encryption
 import asyncio
 from motor.motor_asyncio import AsyncIOMotorClient
 from pymongo import IndexModel, ASCENDING, DESCENDING
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Optional, Any, Tuple
 import json
 from datetime import datetime, timedelta
 import logging
 from bson import ObjectId
 from algorithm import TDPQIMLEAlgorithm, SensitivityLevel, TemporalPrivacyParams
 import secrets
+import hashlib
 
 class TDPQIMLEMongoStorage:
     """
@@ -27,8 +28,9 @@ class TDPQIMLEMongoStorage:
         self.audit_collection = self.db.encryption_audit
         self.integrity_collection = self.db.integrity_chain
         
-        # Initialize algorithm
-        self.master_key = secrets.token_bytes(32)
+        # Initialize algorithm with fixed master key for consistent encryption/decryption
+        # In production, this should be stored securely (e.g., in environment variables or key management service)
+        self.master_key = hashlib.sha256(b"TDP-QIMLE-MASTER-KEY-2025").digest()
         self.temporal_params = TemporalPrivacyParams(
             epsilon=1.0,
             delta=1e-5,
@@ -77,6 +79,24 @@ class TDPQIMLEMongoStorage:
             self.logger.error(f"Database initialization failed: {str(e)}")
             raise
     
+    async def _get_next_integrity_index(self) -> Tuple[int, str]:
+        """Get the next integrity chain index and previous hash from database"""
+        try:
+            # Get the latest integrity block
+            latest_block = await self.integrity_collection.find_one(
+                {}, 
+                sort=[("index", -1)]
+            )
+            
+            if latest_block:
+                return latest_block['index'] + 1, latest_block['hash']
+            else:
+                return 0, '0' * 64
+                
+        except Exception as e:
+            self.logger.error(f"Failed to get next integrity index: {str(e)}")
+            return 0, '0' * 64
+    
     async def store_patient_data(self, patient_data: Dict, sensitivity: SensitivityLevel) -> str:
         """
         Store patient data using TDP-QIMLE encryption
@@ -89,8 +109,16 @@ class TDPQIMLEMongoStorage:
             MongoDB document ID
         """
         try:
-            # Encrypt patient data
-            encrypted_document = self.algorithm.encrypt_patient_data(patient_data, sensitivity)
+            # Get next integrity chain index and previous hash
+            next_index, previous_hash = await self._get_next_integrity_index()
+            
+            # Encrypt patient data with database-aware integrity chain
+            encrypted_document = self.algorithm.encrypt_patient_data(
+                patient_data, 
+                sensitivity, 
+                next_index=next_index, 
+                previous_hash=previous_hash
+            )
             
             # Store in MongoDB
             result = await self.patients_collection.insert_one(encrypted_document)
@@ -388,6 +416,83 @@ class TDPQIMLEMongoStorage:
             self.logger.error(f"Failed to get patients metadata: {str(e)}")
             raise
 
+    async def get_all_patients_encrypted_display(self, limit: int = 100) -> List[Dict]:
+        """
+        Get all patients with encrypted data for dashboard display
+        
+        Args:
+            limit: Maximum number of patients to return
+            
+        Returns:
+            List of patient data with encrypted fields shown as encrypted
+        """
+        try:
+            cursor = self.patients_collection.find({}).limit(limit)
+            
+            encrypted_patients = []
+            async for doc in cursor:
+                try:
+                    # Get basic metadata
+                    metadata = doc['encryption_metadata']
+                    
+                    # Create a display-friendly encrypted patient record
+                    encrypted_patient = {
+                        "patient_id": doc["patient_id"],
+                        "name": f"🔒 ENCRYPTED ({metadata['sensitivity_level']})",
+                        "age": f"🔒 ENCRYPTED",
+                        "medical_history": [f"🔒 ENCRYPTED DATA"],
+                        "current_medications": [f"🔒 ENCRYPTED DATA"],
+                        "test_results": {
+                            "status": f"🔒 ENCRYPTED ({metadata['algorithm']})",
+                            "lab_result": "🔒 ENCRYPTED"
+                        },
+                        "notes": f"🔒 ENCRYPTED - Sensitivity: {self._get_sensitivity_name(metadata['sensitivity_level'])}",
+                        "encryption_info": {
+                            "algorithm": metadata['algorithm'],
+                            "version": metadata['version'],
+                            "sensitivity_level": self._get_sensitivity_name(metadata['sensitivity_level']),
+                            "encrypted_at": doc['created_at'].isoformat() if doc.get('created_at') else None,
+                            "last_updated": doc['updated_at'].isoformat() if doc.get('updated_at') else None,
+                            "data_size": len(doc['encrypted_data']),
+                            "has_integrity_block": 'integrity_block' in metadata
+                        }
+                    }
+                    
+                    encrypted_patients.append(encrypted_patient)
+                    
+                except Exception as e:
+                    self.logger.error(f"Failed to process encrypted patient {doc.get('patient_id', 'unknown')}: {str(e)}")
+                    continue
+            
+            await self._log_operation(
+                patient_id=None,
+                operation='BULK_ENCRYPTED_DISPLAY',
+                success=True,
+                additional_info=f"Retrieved {len(encrypted_patients)} encrypted patients for display"
+            )
+            
+            return encrypted_patients
+            
+        except Exception as e:
+            await self._log_operation(
+                patient_id=None,
+                operation='BULK_ENCRYPTED_DISPLAY',
+                success=False,
+                error=str(e)
+            )
+            self.logger.error(f"Failed to get encrypted patients for display: {str(e)}")
+            raise
+
+    def _get_sensitivity_name(self, sensitivity_value: int) -> str:
+        """Convert sensitivity level number to name"""
+        sensitivity_map = {
+            1: "LOW",
+            2: "MEDIUM", 
+            3: "HIGH",
+            4: "CRITICAL"
+        }
+        return sensitivity_map.get(sensitivity_value, "UNKNOWN")
+    
     async def search_patients_by_sensitivity(self, sensitivity: SensitivityLevel) -> List[Dict]:
         """
         Search patients by sensitivity level (metadata only)

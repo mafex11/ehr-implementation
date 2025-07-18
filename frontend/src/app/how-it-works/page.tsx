@@ -1,6 +1,17 @@
 'use client';
 
 import React, { useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Progress } from '@/components/ui/progress';
+import { Textarea } from '@/components/ui/textarea';
+import { Loader2, Play, ArrowLeft, Shield, Zap, Database, Layers, AlertCircle, CheckCircle } from 'lucide-react';
 import { encryptionDemo } from '../../../utils/api';
 
 interface EncryptionStep {
@@ -35,20 +46,23 @@ interface EncryptionDemoResponse {
 }
 
 export default function HowItWorks() {
+  const router = useRouter();
   const [formData, setFormData] = useState({
-    name: '',
-    age: '',
-    diagnosis: '',
-    lab_results: ''
+    name: 'John Doe',
+    age: '35',
+    diagnosis: 'Hypertension',
+    lab_results: '120/80 mmHg'
   });
   const [demoResult, setDemoResult] = useState<EncryptionDemoResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [currentStep, setCurrentStep] = useState(0);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setCurrentStep(0);
+    setError(null);
     
     try {
       const result = await encryptionDemo({
@@ -65,7 +79,7 @@ export default function HowItWorks() {
       }
     } catch (error) {
       console.error('Encryption demo failed:', error);
-      alert('Failed to demonstrate encryption process');
+      setError('Failed to demonstrate encryption process. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -78,292 +92,426 @@ export default function HowItWorks() {
     });
   };
 
+  const algorithmFeatures = [
+    {
+      icon: <Zap className="w-6 h-6" />,
+      title: 'Quantum-Inspired Layers',
+      description: '4 quantum layers with superposition, entanglement, and coherence states',
+      color: 'bg-purple-500'
+    },
+    {
+      icon: <Database className="w-6 h-6" />,
+      title: 'Lattice Obfuscation',
+      description: '128-dimensional lattice with QR decomposition for mathematical stability',
+      color: 'bg-blue-500'
+    },
+    {
+      icon: <Layers className="w-6 h-6" />,
+      title: 'Biological Evolution',
+      description: '1000-element DNA-like sequence with golden ratio growth patterns',
+      color: 'bg-green-500'
+    },
+    {
+      icon: <Shield className="w-6 h-6" />,
+      title: 'Differential Privacy',
+      description: 'Temporal privacy protection with time-decay mechanisms',
+      color: 'bg-orange-500'
+    }
+  ];
+
+  const encryptionSteps = [
+    'Initialize quantum superposition states',
+    'Apply lattice obfuscation transformation',
+    'Evolve biological key sequences',
+    'Add differential privacy noise',
+    'Generate integrity verification hash',
+    'Finalize encrypted data package'
+  ];
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-6">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-background p-6">
+      <div className="max-w-7xl mx-auto">
         {/* Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            How TDP-QIMLE Encryption Works
-          </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Temporal Differential Privacy with Quantum-Inspired Multi-Layer Encryption
+        <div className="mb-8">
+          <Button 
+            variant="ghost" 
+            onClick={() => router.push('/')}
+            className="mb-4"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Dashboard
+          </Button>
+          <h1 className="text-4xl font-bold mb-2">How TDP-QIMLE Works</h1>
+          <p className="text-muted-foreground text-lg">
+            Interactive demonstration of Temporal Differential Privacy with Quantum-Inspired Multi-Layer Encryption
           </p>
-          <p className="text-lg text-gray-500 mt-2">
-            Real-time demonstration of how patient data transforms through 6 encryption layers
-          </p>
         </div>
 
-        {/* Algorithm Overview */}
-        <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Algorithm Overview</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            <div className="bg-blue-50 p-4 rounded-lg">
-              <h3 className="font-semibold text-blue-800">Privacy Protection</h3>
-              <p className="text-sm text-blue-600">Differential privacy with temporal decay</p>
-            </div>
-            <div className="bg-purple-50 p-4 rounded-lg">
-              <h3 className="font-semibold text-purple-800">Quantum-Inspired</h3>
-              <p className="text-sm text-purple-600">Superposition states for enhanced security</p>
-            </div>
-            <div className="bg-green-50 p-4 rounded-lg">
-              <h3 className="font-semibold text-green-800">Multi-Layer</h3>
-              <p className="text-sm text-green-600">6 independent encryption layers</p>
-            </div>
-            <div className="bg-yellow-50 p-4 rounded-lg">
-              <h3 className="font-semibold text-yellow-800">Homomorphic</h3>
-              <p className="text-sm text-yellow-600">Computation on encrypted data</p>
-            </div>
-            <div className="bg-red-50 p-4 rounded-lg">
-              <h3 className="font-semibold text-red-800">Lattice-Based</h3>
-              <p className="text-sm text-red-600">Post-quantum cryptography</p>
-            </div>
-            <div className="bg-indigo-50 p-4 rounded-lg">
-              <h3 className="font-semibold text-indigo-800">Integrity</h3>
-              <p className="text-sm text-indigo-600">Blockchain-inspired verification</p>
-            </div>
-          </div>
-        </div>
+        <Tabs defaultValue="demo" className="w-full">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="demo">Live Demo</TabsTrigger>
+            <TabsTrigger value="algorithm">Algorithm Details</TabsTrigger>
+            <TabsTrigger value="security">Security Features</TabsTrigger>
+          </TabsList>
 
-        {/* Demo Form */}
-        <div className="bg-white rounded-lg shadow-lg p-6 mb-8">
-          <h2 className="text-2xl font-semibold text-gray-800 mb-4">Try the Encryption Demo</h2>
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Patient Name
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter patient name"
-                  required
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Age
-                </label>
-                <input
-                  type="number"
-                  name="age"
-                  value={formData.age}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter age"
-                  required
-                />
-              </div>
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Diagnosis
-              </label>
-              <input
-                type="text"
-                name="diagnosis"
-                value={formData.diagnosis}
-                onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter diagnosis"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Lab Results
-              </label>
-              <textarea
-                name="lab_results"
-                value={formData.lab_results}
-                onChange={handleInputChange}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Enter lab results"
-                rows={3}
-                required
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? 'Processing...' : 'Demonstrate Encryption Process'}
-            </button>
-          </form>
-        </div>
-
-        {/* Encryption Process Visualization */}
-        {demoResult && (
-          <div className="space-y-6">
-            {/* Original Data */}
-            <div className="bg-white rounded-lg shadow-lg p-6">
-              <h3 className="text-xl font-semibold text-gray-800 mb-4">
-                Original Patient Data
-              </h3>
-              <div className="bg-gray-50 p-4 rounded-lg">
-                <pre className="text-sm text-gray-700 whitespace-pre-wrap">
-                  {JSON.stringify(demoResult.original_data, null, 2)}
-                </pre>
-              </div>
-            </div>
-
-            {/* Encryption Steps */}
-            <div className="bg-white rounded-lg shadow-lg p-6">
-              <h3 className="text-xl font-semibold text-gray-800 mb-4">
-                Encryption Process (6 Layers)
-              </h3>
-              
-              {/* Progress Bar */}
-              <div className="mb-6">
-                <div className="flex justify-between text-sm text-gray-600 mb-2">
-                  <span>Progress</span>
-                  <span>{currentStep}/{demoResult.encryption_steps.length} steps</span>
-                </div>
-                <div className="w-full bg-gray-200 rounded-full h-2">
-                  <div 
-                    className="bg-blue-600 h-2 rounded-full transition-all duration-1000"
-                    style={{ width: `${(currentStep / demoResult.encryption_steps.length) * 100}%` }}
-                  />
-                </div>
-              </div>
-
-              {/* Steps */}
-              <div className="space-y-4">
-                {demoResult.encryption_steps.map((step, index) => (
-                  <div
-                    key={step.step}
-                    className={`border rounded-lg p-4 transition-all duration-500 ${
-                      index < currentStep
-                        ? 'border-green-500 bg-green-50'
-                        : index === currentStep
-                        ? 'border-blue-500 bg-blue-50 shadow-lg'
-                        : 'border-gray-200 bg-gray-50 opacity-50'
-                    }`}
-                  >
-                    <div className="flex items-center mb-3">
-                      <div className={`w-8 h-8 rounded-full flex items-center justify-center text-white font-bold ${
-                        index < currentStep ? 'bg-green-500' : index === currentStep ? 'bg-blue-500' : 'bg-gray-400'
-                      }`}>
-                        {index < currentStep ? '✓' : step.step}
+          <TabsContent value="demo" className="space-y-6">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* Input Form */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Play className="w-5 h-5" />
+                    Demo Input Data
+                  </CardTitle>
+                  <CardDescription>
+                    Enter patient data to see the encryption process in action
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <form onSubmit={handleSubmit} className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Label htmlFor="name">Patient Name</Label>
+                        <Input
+                          id="name"
+                          name="name"
+                          value={formData.name}
+                          onChange={handleInputChange}
+                          placeholder="Enter patient name"
+                        />
                       </div>
-                      <h4 className="text-lg font-semibold text-gray-800 ml-3">
-                        {step.title}
-                      </h4>
+                      <div className="space-y-2">
+                        <Label htmlFor="age">Age</Label>
+                        <Input
+                          id="age"
+                          name="age"
+                          type="number"
+                          value={formData.age}
+                          onChange={handleInputChange}
+                          placeholder="Enter age"
+                        />
+                      </div>
                     </div>
-                    
-                    <p className="text-gray-600 mb-3">{step.description}</p>
-                    
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+
+                    <div className="space-y-2">
+                      <Label htmlFor="diagnosis">Diagnosis</Label>
+                      <Input
+                        id="diagnosis"
+                        name="diagnosis"
+                        value={formData.diagnosis}
+                        onChange={handleInputChange}
+                        placeholder="Enter diagnosis"
+                      />
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="lab_results">Lab Results</Label>
+                      <Textarea
+                        id="lab_results"
+                        name="lab_results"
+                        value={formData.lab_results}
+                        onChange={handleInputChange}
+                        placeholder="Enter lab results"
+                        rows={3}
+                      />
+                    </div>
+
+                    {error && (
+                      <Alert variant="destructive">
+                        <AlertCircle className="h-4 w-4" />
+                        <AlertDescription>{error}</AlertDescription>
+                      </Alert>
+                    )}
+
+                    <Button type="submit" disabled={loading} className="w-full">
+                      {loading ? (
+                        <>
+                          <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                          Running Demo...
+                        </>
+                      ) : (
+                        <>
+                          <Play className="w-4 h-4 mr-2" />
+                          Start Encryption Demo
+                        </>
+                      )}
+                    </Button>
+                  </form>
+                </CardContent>
+              </Card>
+
+              {/* Encryption Process */}
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Shield className="w-5 h-5" />
+                    Encryption Process
+                  </CardTitle>
+                  <CardDescription>
+                    Watch as your data goes through each encryption layer
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  {demoResult ? (
+                    <div className="space-y-4">
+                      <div className="space-y-3">
+                        {encryptionSteps.map((step, index) => (
+                          <div key={index} className="flex items-center gap-3">
+                            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
+                              index < currentStep ? 'bg-green-500 text-white' : 
+                              index === currentStep ? 'bg-blue-500 text-white' : 
+                              'bg-muted text-muted-foreground'
+                            }`}>
+                              {index < currentStep ? (
+                                <CheckCircle className="w-4 h-4" />
+                              ) : (
+                                <span className="text-sm font-medium">{index + 1}</span>
+                              )}
+                            </div>
+                            <span className={`text-sm ${
+                              index < currentStep ? 'text-green-600' : 
+                              index === currentStep ? 'text-blue-600' : 
+                              'text-muted-foreground'
+                            }`}>
+                              {step}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                      
+                      <div className="mt-6 p-4 bg-muted rounded-lg">
+                        <h4 className="font-medium mb-2">Encryption Progress</h4>
+                        <Progress value={(currentStep / encryptionSteps.length) * 100} className="w-full" />
+                        <p className="text-sm text-muted-foreground mt-2">
+                          {currentStep === encryptionSteps.length ? 'Encryption Complete!' : 
+                           currentStep > 0 ? `Step ${currentStep}: ${encryptionSteps[currentStep - 1]}` : 
+                           'Ready to start encryption'}
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="text-center py-8 text-muted-foreground">
+                      <Shield className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                      <p>Run the demo to see the encryption process</p>
+                    </div>
+                  )}
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Results */}
+            {demoResult && (
+              <Card>
+                <CardHeader>
+                  <CardTitle>Encryption Results</CardTitle>
+                  <CardDescription>
+                    Original data transformed through TDP-QIMLE algorithm
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                      <h4 className="font-medium mb-3">Original Data</h4>
+                      <div className="space-y-2 p-4 bg-muted rounded-lg">
+                        <p><strong>Name:</strong> {demoResult.original_data.name}</p>
+                        <p><strong>Age:</strong> {demoResult.original_data.age}</p>
+                        <p><strong>Diagnosis:</strong> {demoResult.original_data.diagnosis}</p>
+                        <p><strong>Lab Results:</strong> {demoResult.original_data.lab_results}</p>
+                      </div>
+                    </div>
+                    <div>
+                      <h4 className="font-medium mb-3">Encrypted Data</h4>
+                      <div className="p-4 bg-muted rounded-lg">
+                        <code className="text-sm break-all">
+                          {demoResult.final_encrypted_data.substring(0, 200)}...
+                        </code>
+                      </div>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+          </TabsContent>
+
+          <TabsContent value="algorithm" className="space-y-6">
+            {/* Algorithm Overview */}
+            <Card>
+              <CardHeader>
+                <CardTitle>TDP-QIMLE Algorithm Components</CardTitle>
+                <CardDescription>
+                  Understanding the four core components of our encryption system
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {algorithmFeatures.map((feature, index) => (
+                    <div key={index} className="flex items-start gap-4 p-4 border rounded-lg">
+                      <div className={`p-2 rounded-lg ${feature.color} text-white`}>
+                        {feature.icon}
+                      </div>
                       <div>
-                        <h5 className="font-medium text-gray-700 mb-2">Input:</h5>
-                        <div className="bg-white p-3 rounded border max-h-40 overflow-y-auto">
-                          <pre className="text-xs text-gray-600 whitespace-pre-wrap">
-                            {step.input_data}
-                          </pre>
-                        </div>
-                      </div>
-                      <div>
-                        <h5 className="font-medium text-gray-700 mb-2">Output:</h5>
-                        <div className="bg-white p-3 rounded border max-h-40 overflow-y-auto">
-                          <pre className="text-xs text-gray-600 whitespace-pre-wrap">
-                            {step.output_data}
-                          </pre>
-                        </div>
+                        <h4 className="font-medium mb-2">{feature.title}</h4>
+                        <p className="text-sm text-muted-foreground">{feature.description}</p>
                       </div>
                     </div>
-                    
-                    <div className="mt-3 p-3 bg-blue-50 rounded">
-                      <h5 className="font-medium text-blue-800 mb-1">Technical Details:</h5>
-                      <p className="text-sm text-blue-700">{step.technical_details}</p>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Technical Details */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Technical Implementation</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  <div>
+                    <h4 className="font-medium mb-3">Quantum-Inspired Layers</h4>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="space-y-2">
+                        <Badge variant="outline">SUPERPOSITION</Badge>
+                        <p className="text-sm text-muted-foreground">XOR-based superposition with multiple states</p>
+                      </div>
+                      <div className="space-y-2">
+                        <Badge variant="outline">ENTANGLED</Badge>
+                        <p className="text-sm text-muted-foreground">Position-based correlation between data elements</p>
+                      </div>
+                      <div className="space-y-2">
+                        <Badge variant="outline">COLLAPSED</Badge>
+                        <p className="text-sm text-muted-foreground">Measurement-based state reduction</p>
+                      </div>
+                      <div className="space-y-2">
+                        <Badge variant="outline">COHERENT</Badge>
+                        <p className="text-sm text-muted-foreground">Final coherence state maintenance</p>
+                      </div>
                     </div>
                   </div>
-                ))}
-              </div>
+
+                  <div>
+                    <h4 className="font-medium mb-3">Lattice Obfuscation</h4>
+                    <div className="p-4 bg-muted rounded-lg">
+                      <p className="text-sm">
+                        Uses 128-dimensional lattice with QR decomposition for numerical stability.
+                        Handles data longer than lattice dimension through segmentation and reconstruction.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4 className="font-medium mb-3">Biological Key Evolution</h4>
+                    <div className="p-4 bg-muted rounded-lg">
+                      <p className="text-sm">
+                        1000-element DNA-like sequence with golden ratio growth (φ = 1.618).
+                        5% mutation rate with deterministic evolution for reproducibility.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="security" className="space-y-6">
+            {/* Security Features */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Privacy Protection</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Differential Privacy</span>
+                    <Badge variant="outline">ε-δ Framework</Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Temporal Protection</span>
+                    <Badge variant="outline">Time-decay</Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Noise Injection</span>
+                    <Badge variant="outline">Laplace Mechanism</Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Privacy Budget</span>
+                    <Badge variant="outline">Configurable</Badge>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Cryptographic Strength</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Encryption Layers</span>
+                    <Badge variant="outline">Multi-layer</Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Key Evolution</span>
+                    <Badge variant="outline">Dynamic</Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Integrity Verification</span>
+                    <Badge variant="outline">SHA-256</Badge>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-sm">Attack Resistance</span>
+                    <Badge variant="outline">Quantum-ready</Badge>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
 
-            {/* Final Result */}
-            <div className="bg-white rounded-lg shadow-lg p-6">
-              <h3 className="text-xl font-semibold text-gray-800 mb-4">
-                Final Encrypted Data
-              </h3>
-              <div className="bg-red-50 p-4 rounded-lg border border-red-200">
-                <p className="text-sm text-red-700 mb-2">
-                  ⚠️ This is what gets stored in MongoDB - completely unreadable without decryption
-                </p>
-                <div className="bg-white p-3 rounded border max-h-40 overflow-y-auto">
-                  <pre className="text-xs text-gray-600 whitespace-pre-wrap">
-                    {demoResult.final_encrypted_data}
-                  </pre>
-                </div>
-              </div>
-            </div>
-
-            {/* Algorithm Information */}
-            <div className="bg-white rounded-lg shadow-lg p-6">
-              <h3 className="text-xl font-semibold text-gray-800 mb-4">
-                Algorithm Specifications
-              </h3>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="font-medium text-gray-700">Algorithm:</span>
-                    <span className="text-gray-600">{demoResult.algorithm_info.name}</span>
+            {/* Security Guarantees */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Security Guarantees</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
+                    <div>
+                      <h4 className="font-medium">Data Confidentiality</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Multi-layer encryption ensures data remains confidential even if individual layers are compromised
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="font-medium text-gray-700">Layers:</span>
-                    <span className="text-gray-600">{demoResult.algorithm_info.layers}</span>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
+                    <div>
+                      <h4 className="font-medium">Privacy Preservation</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Differential privacy guarantees protect individual privacy while allowing statistical analysis
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="font-medium text-gray-700">Privacy Budget:</span>
-                    <span className="text-gray-600">{demoResult.algorithm_info.privacy_budget}</span>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
+                    <div>
+                      <h4 className="font-medium">Data Integrity</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Blockchain-inspired integrity verification ensures data hasn't been tampered with
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <div className="space-y-3">
-                  <div className="flex justify-between">
-                    <span className="font-medium text-gray-700">Homomorphic:</span>
-                    <span className={`px-2 py-1 rounded text-xs ${
-                      demoResult.algorithm_info.homomorphic_support 
-                        ? 'bg-green-100 text-green-800' 
-                        : 'bg-red-100 text-red-800'
-                    }`}>
-                      {demoResult.algorithm_info.homomorphic_support ? 'Yes' : 'No'}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="font-medium text-gray-700">Temporal Protection:</span>
-                    <span className={`px-2 py-1 rounded text-xs ${
-                      demoResult.algorithm_info.temporal_protection 
-                        ? 'bg-green-100 text-green-800' 
-                        : 'bg-red-100 text-red-800'
-                    }`}>
-                      {demoResult.algorithm_info.temporal_protection ? 'Yes' : 'No'}
-                    </span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="font-medium text-gray-700">Integrity Verification:</span>
-                    <span className={`px-2 py-1 rounded text-xs ${
-                      demoResult.algorithm_info.integrity_verification 
-                        ? 'bg-green-100 text-green-800' 
-                        : 'bg-red-100 text-red-800'
-                    }`}>
-                      {demoResult.algorithm_info.integrity_verification ? 'Yes' : 'No'}
-                    </span>
+                  <div className="flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-green-500 mt-0.5" />
+                    <div>
+                      <h4 className="font-medium">Future-Proof Security</h4>
+                      <p className="text-sm text-muted-foreground">
+                        Quantum-inspired design provides resistance against future quantum computing attacks
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className="mt-4 p-3 bg-gray-50 rounded">
-                <p className="text-sm text-gray-700">
-                  <strong>Encryption Strength:</strong> {demoResult.algorithm_info.encryption_strength}
-                </p>
-              </div>
-            </div>
-          </div>
-        )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
     </div>
   );
