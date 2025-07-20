@@ -1,0 +1,9 @@
+Security Feature,TDP-QIMLE,AES-256,RSA-2048,Lattice-Based
+Quantum Resistance,High (128-dim lattice + quantum layers),Low (vulnerable to Grover),Low (vulnerable to Shor),High
+Differential Privacy,"Yes (ε=1.0, δ=1e-5)",No,No,No
+Lattice-Based Security,Yes (128-dimensional),No,No,Yes
+Homomorphic Encryption,Yes (XOR-based),No,No,Limited
+Integrity Verification,Yes (Blockchain-inspired),No,No,No
+Key Evolution,Yes (Biological patterns),No,No,No
+Field-Level Adaptation,Yes (4 sensitivity levels),No,No,No
+Temporal Privacy,Yes (Time-decay),No,No,No

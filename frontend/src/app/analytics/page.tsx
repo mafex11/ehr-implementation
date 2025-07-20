@@ -233,7 +233,7 @@ export default function Analytics() {
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>
-                    <SelectContent>
+                    <SelectContent className='bg-zinc-950'>
                       <SelectItem value="system_stats">System Statistics</SelectItem>
                       <SelectItem value="lab_average">Lab Average</SelectItem>
                       <SelectItem value="age_distribution">Age Distribution</SelectItem>
@@ -267,7 +267,7 @@ export default function Analytics() {
                   <p className="text-sm text-muted-foreground">{privacyLevel.description}</p>
                 </div>
                 
-                <Button onClick={runQuery} disabled={loading} className="w-full">
+                <Button onClick={runQuery} disabled={loading} className="w-full bg-zinc-700 hover:bg-zinc-600">
                   {loading ? (
                     <>
                       <Loader2 className="w-4 h-4 mr-2 animate-spin" />

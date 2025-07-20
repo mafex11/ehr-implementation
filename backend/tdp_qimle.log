@@ -2551,3 +2551,538 @@
 2025-07-18 15:37:15,652 - main - INFO - Shutting down independent decryption system...
 2025-07-18 15:37:15,708 - mongodb_integration - INFO - MongoDB connection closed
 2025-07-18 15:37:15,717 - main - INFO - TDP-QIMLE system shutdown complete
+2025-07-20 20:19:04,586 - __main__ - INFO - Starting TDP-QIMLE development server...
+2025-07-20 20:19:06,929 - main - INFO - Starting TDP-QIMLE Algorithm System...
+2025-07-20 20:19:06,930 - main - INFO - Initializing novel encryption components...
+2025-07-20 20:19:06,930 - main - INFO - Initializing independent decryption system...
+2025-07-20 20:19:06,930 - main - INFO - TDP-QIMLE system started successfully
+2025-07-20 20:19:06,931 - main - INFO - Independent decryption system started successfully
+2025-07-20 20:19:21,331 - main - INFO - Request: OPTIONS http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-20 20:19:21,332 - main - INFO - Response: 200 - 0.001s
+2025-07-20 20:19:21,335 - main - INFO - Request: GET http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-20 20:19:22,477 - mongodb_integration - INFO - Database initialized successfully
+2025-07-20 20:19:22,625 - main - INFO - Response: 200 - 1.290s
+2025-07-20 20:20:36,395 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/auth/session
+2025-07-20 20:20:36,395 - main - INFO - Response: 200 - 0.001s
+2025-07-20 20:20:36,397 - main - INFO - Request: POST http://localhost:8001/api/decrypt/auth/session
+2025-07-20 20:20:36,468 - main - INFO - Response: 200 - 0.071s
+2025-07-20 20:20:36,474 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-20 20:20:36,475 - main - INFO - Response: 200 - 0.001s
+2025-07-20 20:20:36,477 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-20 20:20:37,077 - main - INFO - Response: 200 - 0.600s
+2025-07-20 20:20:37,083 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-20 20:20:37,084 - main - INFO - Response: 200 - 0.001s
+2025-07-20 20:20:37,087 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-20 20:20:37,771 - main - INFO - Response: 200 - 0.684s
+2025-07-20 20:20:37,776 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-20 20:20:37,777 - main - INFO - Response: 200 - 0.000s
+2025-07-20 20:20:37,779 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-20 20:20:38,435 - main - INFO - Response: 200 - 0.656s
+2025-07-20 20:20:43,912 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/single
+2025-07-20 20:20:43,913 - main - INFO - Response: 200 - 0.001s
+2025-07-20 20:20:43,915 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-20 20:20:44,397 - main - INFO - Response: 200 - 0.482s
+2025-07-20 20:20:50,194 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-20 20:20:50,639 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (172,) (128,) 
+2025-07-20 20:20:50,661 - main - INFO - Response: 200 - 0.467s
+2025-07-20 21:49:06,932 - decryption_engine - INFO - Cleaned up expired decryption session: QvPugemWbSpmIC0nzGhM_KrOBuqD0FqXyed1_Gz29oQ
+2025-07-20 21:49:06,934 - main - INFO - Cleaned up 1 expired decryption sessions
+2025-07-20 22:30:16,902 - main - INFO - Request: OPTIONS http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-20 22:30:16,905 - main - INFO - Request: OPTIONS http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-20 22:30:16,908 - main - INFO - Response: 200 - 0.006s
+2025-07-20 22:30:16,910 - main - INFO - Response: 200 - 0.005s
+2025-07-20 22:30:16,913 - main - INFO - Request: GET http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-20 22:30:17,043 - main - INFO - Response: 200 - 0.130s
+2025-07-20 22:30:17,047 - main - INFO - Request: GET http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-20 22:30:17,101 - main - INFO - Response: 200 - 0.055s
+2025-07-20 22:35:01,013 - main - INFO - Request: GET http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-20 22:35:01,116 - main - INFO - Response: 200 - 0.103s
+2025-07-20 22:35:01,119 - main - INFO - Request: GET http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-20 22:35:01,171 - main - INFO - Response: 200 - 0.052s
+2025-07-20 22:35:36,551 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/auth/session
+2025-07-20 22:35:36,551 - main - INFO - Response: 200 - 0.001s
+2025-07-20 22:35:36,555 - main - INFO - Request: POST http://localhost:8001/api/decrypt/auth/session
+2025-07-20 22:35:36,634 - main - INFO - Response: 200 - 0.079s
+2025-07-20 22:35:36,641 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-20 22:35:36,642 - main - INFO - Response: 200 - 0.001s
+2025-07-20 22:35:36,646 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-20 22:35:37,092 - main - INFO - Response: 200 - 0.447s
+2025-07-20 22:35:37,097 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-20 22:35:37,097 - main - INFO - Response: 200 - 0.000s
+2025-07-20 22:35:37,100 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-20 22:35:37,546 - main - INFO - Response: 200 - 0.446s
+2025-07-20 22:35:37,551 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-20 22:35:37,552 - main - INFO - Response: 200 - 0.000s
+2025-07-20 22:35:37,556 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-20 22:35:37,901 - main - INFO - Response: 200 - 0.345s
+2025-07-20 22:35:38,732 - main - INFO - Request: GET http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-20 22:35:38,832 - main - INFO - Response: 200 - 0.100s
+2025-07-20 22:35:38,834 - main - INFO - Request: GET http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-20 22:35:38,886 - main - INFO - Response: 200 - 0.051s
+2025-07-20 22:38:45,268 - main - INFO - Request: GET http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-20 22:38:45,392 - main - INFO - Response: 200 - 0.124s
+2025-07-20 22:47:57,159 - main - INFO - Request: OPTIONS http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-20 22:47:57,159 - main - INFO - Response: 200 - 0.001s
+2025-07-20 22:47:57,162 - main - INFO - Request: GET http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-20 22:47:57,268 - main - INFO - Response: 200 - 0.106s
+2025-07-20 22:48:12,181 - main - INFO - Request: OPTIONS http://localhost:8001/api/novel/system/stats
+2025-07-20 22:48:12,181 - main - INFO - Response: 200 - 0.001s
+2025-07-20 22:48:12,184 - main - INFO - Request: GET http://localhost:8001/api/novel/system/stats
+2025-07-20 22:48:12,309 - main - INFO - Response: 200 - 0.125s
+2025-07-20 22:48:14,051 - main - INFO - Request: GET http://localhost:8001/api/novel/system/stats
+2025-07-20 22:48:14,167 - main - INFO - Response: 200 - 0.116s
+2025-07-20 22:48:18,440 - main - INFO - Request: GET http://localhost:8001/api/novel/system/stats
+2025-07-20 22:48:18,556 - main - INFO - Response: 200 - 0.116s
+2025-07-20 22:48:20,121 - main - INFO - Request: GET http://localhost:8001/api/novel/system/stats
+2025-07-20 22:48:20,236 - main - INFO - Response: 200 - 0.115s
+2025-07-20 22:48:20,765 - main - INFO - Request: GET http://localhost:8001/api/novel/system/stats
+2025-07-20 22:48:20,881 - main - INFO - Response: 200 - 0.116s
+2025-07-20 22:48:21,015 - main - INFO - Request: GET http://localhost:8001/api/novel/system/stats
+2025-07-20 22:48:21,130 - main - INFO - Response: 200 - 0.115s
+2025-07-20 22:48:21,544 - main - INFO - Request: GET http://localhost:8001/api/novel/system/stats
+2025-07-20 22:48:21,664 - main - INFO - Response: 200 - 0.120s
+2025-07-20 22:56:31,768 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-20 22:56:31,768 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-20 22:56:31,769 - main - INFO - Response: 200 - 0.002s
+2025-07-20 22:56:31,770 - main - INFO - Response: 200 - 0.002s
+2025-07-20 22:56:31,773 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-20 22:56:32,301 - main - INFO - Response: 200 - 0.528s
+2025-07-20 22:56:32,303 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-20 22:56:32,332 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-20 22:56:32,333 - main - INFO - Response: 200 - 0.001s
+2025-07-20 22:56:32,337 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-20 22:56:32,929 - main - INFO - Response: 200 - 0.626s
+2025-07-20 22:56:33,026 - main - INFO - Response: 200 - 0.688s
+2025-07-20 22:56:33,028 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-20 22:56:33,053 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-20 22:56:33,053 - main - INFO - Response: 200 - 0.001s
+2025-07-20 22:56:33,056 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-20 22:56:33,507 - main - INFO - Response: 200 - 0.478s
+2025-07-20 22:56:33,507 - main - INFO - Response: 200 - 0.452s
+2025-07-20 22:56:33,519 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-20 22:56:33,886 - main - INFO - Response: 200 - 0.367s
+2025-07-20 22:58:01,847 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-20 22:58:02,226 - main - INFO - Response: 200 - 0.379s
+2025-07-20 22:58:02,231 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-20 22:58:02,604 - main - INFO - Response: 200 - 0.373s
+2025-07-20 22:58:02,610 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-20 22:58:03,050 - main - INFO - Response: 200 - 0.440s
+2025-07-20 22:58:05,179 - main - INFO - Request: OPTIONS http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-20 22:58:05,181 - main - INFO - Response: 200 - 0.001s
+2025-07-20 22:58:05,184 - main - INFO - Request: OPTIONS http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-20 22:58:05,187 - main - INFO - Response: 200 - 0.003s
+2025-07-20 22:58:05,192 - main - INFO - Request: GET http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-20 22:58:05,267 - main - INFO - Response: 200 - 0.075s
+2025-07-20 22:58:05,270 - main - INFO - Request: GET http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-20 22:58:05,323 - main - INFO - Response: 200 - 0.052s
+2025-07-20 22:58:59,810 - main - INFO - Request: OPTIONS http://localhost:8001/api/novel/patients
+2025-07-20 22:58:59,811 - main - INFO - Response: 200 - 0.001s
+2025-07-20 22:58:59,813 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-20 22:59:00,059 - mongodb_integration - INFO - Patient data stored successfully: 687d275bf668b307694bb5c5
+2025-07-20 22:59:00,060 - main - INFO - Response: 200 - 0.247s
+2025-07-20 22:59:02,392 - main - INFO - Request: GET http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-20 22:59:02,445 - main - INFO - Response: 200 - 0.053s
+2025-07-20 22:59:02,449 - main - INFO - Request: GET http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-20 22:59:02,500 - main - INFO - Response: 200 - 0.052s
+2025-07-20 22:59:08,359 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-20 22:59:08,729 - main - INFO - Response: 200 - 0.370s
+2025-07-20 22:59:08,731 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-20 22:59:08,752 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-20 22:59:09,130 - main - INFO - Response: 200 - 0.399s
+2025-07-20 22:59:09,152 - main - INFO - Response: 200 - 0.400s
+2025-07-20 22:59:09,155 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-20 22:59:09,178 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-20 22:59:09,588 - main - INFO - Response: 200 - 0.432s
+2025-07-20 22:59:09,650 - main - INFO - Response: 200 - 0.472s
+2025-07-20 22:59:09,652 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-20 22:59:10,030 - main - INFO - Response: 200 - 0.378s
+2025-07-20 22:59:10,565 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/single
+2025-07-20 22:59:10,566 - main - INFO - Response: 200 - 0.001s
+2025-07-20 22:59:10,569 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-20 22:59:10,957 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (231,) (128,) 
+2025-07-20 22:59:10,980 - main - INFO - Response: 200 - 0.410s
+2025-07-20 23:00:02,651 - main - INFO - Request: OPTIONS http://localhost:8001/api/novel/system/stats
+2025-07-20 23:00:02,652 - main - INFO - Request: OPTIONS http://localhost:8001/api/novel/system/stats
+2025-07-20 23:00:02,653 - main - INFO - Response: 200 - 0.002s
+2025-07-20 23:00:02,654 - main - INFO - Response: 200 - 0.002s
+2025-07-20 23:00:02,657 - main - INFO - Request: GET http://localhost:8001/api/novel/system/stats
+2025-07-20 23:00:02,777 - main - INFO - Response: 200 - 0.120s
+2025-07-20 23:00:02,779 - main - INFO - Request: GET http://localhost:8001/api/novel/system/stats
+2025-07-20 23:00:02,897 - main - INFO - Response: 200 - 0.117s
+2025-07-20 23:00:05,907 - main - INFO - Request: GET http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-20 23:00:05,966 - main - INFO - Response: 200 - 0.059s
+2025-07-20 23:00:05,968 - main - INFO - Request: GET http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-20 23:00:06,031 - main - INFO - Response: 200 - 0.063s
+2025-07-20 23:15:54,417 - main - INFO - Request: OPTIONS http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-20 23:15:54,418 - main - INFO - Request: OPTIONS http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-20 23:15:54,418 - main - INFO - Response: 200 - 0.002s
+2025-07-20 23:15:54,419 - main - INFO - Response: 200 - 0.002s
+2025-07-20 23:15:54,423 - main - INFO - Request: GET http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-20 23:15:54,480 - main - INFO - Response: 200 - 0.057s
+2025-07-20 23:15:54,482 - main - INFO - Request: GET http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-20 23:15:54,534 - main - INFO - Response: 200 - 0.052s
+2025-07-20 23:22:42,690 - main - INFO - Request: GET http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-20 23:22:42,746 - main - INFO - Response: 200 - 0.055s
+2025-07-20 23:23:01,714 - main - INFO - Request: GET http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-20 23:23:01,769 - main - INFO - Response: 200 - 0.055s
+2025-07-20 23:36:34,417 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/auth/session
+2025-07-20 23:36:34,418 - main - INFO - Response: 200 - 0.001s
+2025-07-20 23:36:34,421 - main - INFO - Request: POST http://localhost:8001/api/decrypt/auth/session
+2025-07-20 23:36:34,525 - main - INFO - Response: 200 - 0.104s
+2025-07-20 23:36:34,533 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-20 23:36:34,533 - main - INFO - Response: 200 - 0.000s
+2025-07-20 23:36:34,537 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-20 23:36:35,017 - main - INFO - Response: 200 - 0.480s
+2025-07-20 23:36:35,022 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-20 23:36:35,023 - main - INFO - Response: 200 - 0.001s
+2025-07-20 23:36:35,026 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-20 23:36:35,391 - main - INFO - Response: 200 - 0.365s
+2025-07-20 23:36:35,396 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-20 23:36:35,396 - main - INFO - Response: 200 - 0.001s
+2025-07-20 23:36:35,399 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-20 23:36:35,778 - main - INFO - Response: 200 - 0.379s
+2025-07-20 23:36:36,681 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/single
+2025-07-20 23:36:36,681 - main - INFO - Response: 200 - 0.001s
+2025-07-20 23:36:36,684 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-20 23:36:37,071 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (231,) (128,) 
+2025-07-20 23:36:37,098 - main - INFO - Response: 200 - 0.414s
+2025-07-21 00:11:18,148 - main - INFO - Shutting down TDP-QIMLE Algorithm System...
+2025-07-21 00:11:18,149 - main - INFO - Shutting down independent decryption system...
+2025-07-21 00:11:18,183 - mongodb_integration - INFO - MongoDB connection closed
+2025-07-21 00:11:18,192 - main - INFO - TDP-QIMLE system shutdown complete
+2025-07-21 00:11:21,219 - main - INFO - Starting TDP-QIMLE Algorithm System...
+2025-07-21 00:11:21,220 - main - INFO - Initializing novel encryption components...
+2025-07-21 00:11:21,220 - main - INFO - Initializing independent decryption system...
+2025-07-21 00:11:21,220 - main - INFO - TDP-QIMLE system started successfully
+2025-07-21 00:11:21,220 - main - INFO - Independent decryption system started successfully
+2025-07-21 00:13:48,383 - main - INFO - Shutting down TDP-QIMLE Algorithm System...
+2025-07-21 00:13:48,384 - main - INFO - Shutting down independent decryption system...
+2025-07-21 00:13:48,384 - main - INFO - TDP-QIMLE system shutdown complete
+2025-07-21 00:14:32,784 - main - INFO - Starting TDP-QIMLE Algorithm System...
+2025-07-21 00:14:32,785 - main - INFO - Initializing novel encryption components...
+2025-07-21 00:14:32,785 - main - INFO - Initializing independent decryption system...
+2025-07-21 00:14:32,785 - main - INFO - TDP-QIMLE system started successfully
+2025-07-21 00:14:32,786 - main - INFO - Independent decryption system started successfully
+2025-07-21 00:16:43,023 - main - INFO - Shutting down TDP-QIMLE Algorithm System...
+2025-07-21 00:16:43,023 - main - INFO - Shutting down independent decryption system...
+2025-07-21 00:16:43,023 - main - INFO - TDP-QIMLE system shutdown complete
+2025-07-21 00:16:45,383 - main - INFO - Starting TDP-QIMLE Algorithm System...
+2025-07-21 00:16:45,384 - main - INFO - Initializing novel encryption components...
+2025-07-21 00:16:45,384 - main - INFO - Initializing independent decryption system...
+2025-07-21 00:16:45,384 - main - INFO - TDP-QIMLE system started successfully
+2025-07-21 00:16:45,385 - main - INFO - Independent decryption system started successfully
+2025-07-21 00:16:48,979 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/single
+2025-07-21 00:16:48,979 - main - INFO - Response: 200 - 0.001s
+2025-07-21 00:16:48,981 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-21 00:16:48,983 - main - INFO - Response: 401 - 0.001s
+2025-07-21 00:16:53,698 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/auth/session
+2025-07-21 00:16:53,698 - main - INFO - Response: 200 - 0.001s
+2025-07-21 00:16:53,701 - main - INFO - Request: POST http://localhost:8001/api/decrypt/auth/session
+2025-07-21 00:16:53,776 - main - INFO - Response: 200 - 0.075s
+2025-07-21 00:16:53,784 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-21 00:16:53,785 - main - INFO - Response: 200 - 0.001s
+2025-07-21 00:16:53,788 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-21 00:16:54,323 - main - INFO - Response: 200 - 0.534s
+2025-07-21 00:16:54,329 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-21 00:16:54,330 - main - INFO - Response: 200 - 0.001s
+2025-07-21 00:16:54,334 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-21 00:16:54,717 - main - INFO - Response: 200 - 0.383s
+2025-07-21 00:16:54,722 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-21 00:16:54,723 - main - INFO - Response: 200 - 0.001s
+2025-07-21 00:16:54,725 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-21 00:16:55,070 - main - INFO - Response: 200 - 0.344s
+2025-07-21 00:16:58,030 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-21 00:16:58,496 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (231,) (128,) 
+2025-07-21 00:16:58,519 - main - INFO - Response: 200 - 0.489s
+2025-07-21 00:31:16,905 - main - INFO - Request: OPTIONS http://localhost:8001/api/novel/system/stats
+2025-07-21 00:31:16,906 - main - INFO - Request: OPTIONS http://localhost:8001/api/novel/system/stats
+2025-07-21 00:31:16,906 - main - INFO - Response: 200 - 0.001s
+2025-07-21 00:31:16,907 - main - INFO - Response: 200 - 0.001s
+2025-07-21 00:31:16,910 - main - INFO - Request: GET http://localhost:8001/api/novel/system/stats
+2025-07-21 00:31:17,829 - mongodb_integration - INFO - Database initialized successfully
+2025-07-21 00:31:17,950 - main - INFO - Response: 200 - 1.041s
+2025-07-21 00:31:17,955 - main - INFO - Request: GET http://localhost:8001/api/novel/system/stats
+2025-07-21 00:31:18,073 - main - INFO - Response: 200 - 0.119s
+2025-07-21 00:31:19,558 - main - INFO - Request: GET http://localhost:8001/api/novel/system/stats
+2025-07-21 00:31:19,676 - main - INFO - Response: 200 - 0.118s
+2025-07-21 00:31:25,606 - main - INFO - Request: GET http://localhost:8001/api/novel/system/stats
+2025-07-21 00:31:25,724 - main - INFO - Response: 200 - 0.118s
+2025-07-21 00:31:27,471 - main - INFO - Request: GET http://localhost:8001/api/novel/system/stats
+2025-07-21 00:31:27,588 - main - INFO - Response: 200 - 0.117s
+2025-07-21 01:08:33,520 - main - INFO - Request: OPTIONS http://localhost:8001/api/novel/patients
+2025-07-21 01:08:33,522 - main - INFO - Response: 200 - 0.002s
+2025-07-21 01:08:33,525 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-21 01:08:33,745 - mongodb_integration - INFO - Patient data stored successfully: 687d45b98f95a57e6f2d3587
+2025-07-21 01:08:33,746 - main - INFO - Response: 200 - 0.221s
+2025-07-21 01:08:41,603 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-21 01:08:41,609 - main - INFO - Response: 200 - 0.006s
+2025-07-21 01:08:41,615 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-21 01:08:41,616 - main - INFO - Response: 200 - 0.001s
+2025-07-21 01:08:41,619 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-21 01:08:42,156 - main - INFO - Response: 200 - 0.537s
+2025-07-21 01:08:42,158 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-21 01:08:42,183 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-21 01:08:42,184 - main - INFO - Response: 200 - 0.001s
+2025-07-21 01:08:42,187 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-21 01:08:42,592 - main - INFO - Response: 200 - 0.434s
+2025-07-21 01:08:42,650 - main - INFO - Response: 200 - 0.463s
+2025-07-21 01:08:42,652 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-21 01:08:42,675 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-21 01:08:42,676 - main - INFO - Response: 200 - 0.001s
+2025-07-21 01:08:42,678 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-21 01:08:43,058 - main - INFO - Response: 200 - 0.406s
+2025-07-21 01:08:43,073 - main - INFO - Response: 200 - 0.395s
+2025-07-21 01:08:43,075 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-21 01:08:43,422 - main - INFO - Response: 200 - 0.346s
+2025-07-21 01:08:47,738 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/single
+2025-07-21 01:08:47,738 - main - INFO - Response: 200 - 0.001s
+2025-07-21 01:08:47,740 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-21 01:08:48,116 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (176,) (128,) 
+2025-07-21 01:08:48,137 - main - INFO - Response: 200 - 0.397s
+2025-07-21 01:08:53,006 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-21 01:08:53,353 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (231,) (128,) 
+2025-07-21 01:08:53,376 - main - INFO - Response: 200 - 0.369s
+2025-07-21 01:12:47,013 - main - INFO - Request: OPTIONS http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-21 01:12:47,014 - main - INFO - Request: OPTIONS http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-21 01:12:47,014 - main - INFO - Response: 200 - 0.001s
+2025-07-21 01:12:47,015 - main - INFO - Response: 200 - 0.001s
+2025-07-21 01:12:47,017 - main - INFO - Request: GET http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-21 01:12:47,094 - main - INFO - Response: 200 - 0.077s
+2025-07-21 01:12:47,096 - main - INFO - Request: GET http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-21 01:12:47,150 - main - INFO - Response: 200 - 0.053s
+2025-07-21 01:12:51,518 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-21 01:12:51,912 - main - INFO - Response: 200 - 0.395s
+2025-07-21 01:12:51,915 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-21 01:12:51,961 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-21 01:12:52,368 - main - INFO - Response: 200 - 0.453s
+2025-07-21 01:12:52,413 - main - INFO - Response: 200 - 0.452s
+2025-07-21 01:12:52,416 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-21 01:12:52,438 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-21 01:12:52,858 - main - INFO - Response: 200 - 0.442s
+2025-07-21 01:12:52,880 - main - INFO - Response: 200 - 0.442s
+2025-07-21 01:12:52,883 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-21 01:12:53,278 - main - INFO - Response: 200 - 0.395s
+2025-07-21 01:14:48,370 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-21 01:14:48,882 - main - INFO - Response: 200 - 0.512s
+2025-07-21 01:14:48,884 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-21 01:14:48,905 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-21 01:14:49,251 - main - INFO - Response: 200 - 0.367s
+2025-07-21 01:14:49,281 - main - INFO - Response: 200 - 0.376s
+2025-07-21 01:14:49,283 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-21 01:14:49,304 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-21 01:14:49,701 - main - INFO - Response: 200 - 0.418s
+2025-07-21 01:14:49,736 - main - INFO - Response: 200 - 0.432s
+2025-07-21 01:14:49,738 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-21 01:14:50,083 - main - INFO - Response: 200 - 0.345s
+2025-07-21 01:14:51,972 - main - INFO - Request: OPTIONS http://localhost:8001/api/novel/system/stats
+2025-07-21 01:14:51,974 - main - INFO - Request: OPTIONS http://localhost:8001/api/novel/system/stats
+2025-07-21 01:14:51,974 - main - INFO - Response: 200 - 0.002s
+2025-07-21 01:14:51,975 - main - INFO - Response: 200 - 0.002s
+2025-07-21 01:14:51,978 - main - INFO - Request: GET http://localhost:8001/api/novel/system/stats
+2025-07-21 01:14:52,096 - main - INFO - Response: 200 - 0.118s
+2025-07-21 01:14:52,099 - main - INFO - Request: GET http://localhost:8001/api/novel/system/stats
+2025-07-21 01:14:52,224 - main - INFO - Response: 200 - 0.125s
+2025-07-21 01:14:54,743 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-21 01:14:55,131 - main - INFO - Response: 200 - 0.388s
+2025-07-21 01:14:55,134 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-21 01:14:55,158 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-21 01:14:55,621 - main - INFO - Response: 200 - 0.488s
+2025-07-21 01:14:55,622 - main - INFO - Response: 200 - 0.464s
+2025-07-21 01:14:55,628 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-21 01:14:55,652 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-21 01:14:56,172 - main - INFO - Response: 200 - 0.543s
+2025-07-21 01:14:56,185 - main - INFO - Response: 200 - 0.532s
+2025-07-21 01:14:56,187 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-21 01:14:56,543 - main - INFO - Response: 200 - 0.356s
+2025-07-21 01:14:57,768 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-21 01:14:58,122 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (231,) (128,) 
+2025-07-21 01:14:58,143 - main - INFO - Response: 200 - 0.375s
+2025-07-21 01:15:01,002 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-21 01:15:01,351 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (176,) (128,) 
+2025-07-21 01:15:01,373 - main - INFO - Response: 200 - 0.371s
+2025-07-21 01:15:02,929 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-21 01:15:04,305 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (231,) (128,) 
+2025-07-21 01:15:04,327 - main - INFO - Response: 200 - 1.398s
+2025-07-21 01:17:45,435 - main - INFO - Request: GET http://localhost:8001/api/novel/system/stats
+2025-07-21 01:17:45,550 - main - INFO - Response: 200 - 0.115s
+2025-07-21 01:17:45,553 - main - INFO - Request: GET http://localhost:8001/api/novel/system/stats
+2025-07-21 01:17:45,669 - main - INFO - Response: 200 - 0.116s
+2025-07-21 01:28:14,464 - main - INFO - Request: OPTIONS http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-21 01:28:14,465 - main - INFO - Request: OPTIONS http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-21 01:28:14,465 - main - INFO - Response: 200 - 0.002s
+2025-07-21 01:28:14,466 - main - INFO - Response: 200 - 0.002s
+2025-07-21 01:28:14,472 - main - INFO - Request: GET http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-21 01:28:14,533 - main - INFO - Response: 200 - 0.061s
+2025-07-21 01:28:14,536 - main - INFO - Request: GET http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-21 01:28:14,590 - main - INFO - Response: 200 - 0.054s
+2025-07-21 01:30:04,046 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/auth/session
+2025-07-21 01:30:04,046 - main - INFO - Response: 200 - 0.001s
+2025-07-21 01:30:04,048 - main - INFO - Request: POST http://localhost:8001/api/decrypt/auth/session
+2025-07-21 01:30:04,123 - main - INFO - Response: 200 - 0.075s
+2025-07-21 01:30:04,128 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-21 01:30:04,129 - main - INFO - Response: 200 - 0.001s
+2025-07-21 01:30:04,132 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-21 01:30:04,583 - main - INFO - Response: 200 - 0.451s
+2025-07-21 01:30:04,588 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-21 01:30:04,588 - main - INFO - Response: 200 - 0.001s
+2025-07-21 01:30:04,591 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-21 01:30:04,945 - main - INFO - Response: 200 - 0.354s
+2025-07-21 01:30:04,949 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-21 01:30:04,950 - main - INFO - Response: 200 - 0.000s
+2025-07-21 01:30:04,952 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-21 01:30:05,289 - main - INFO - Response: 200 - 0.338s
+2025-07-21 01:42:50,111 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-21 01:42:50,111 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-21 01:42:50,112 - main - INFO - Response: 200 - 0.001s
+2025-07-21 01:42:50,112 - main - INFO - Response: 200 - 0.001s
+2025-07-21 01:42:50,114 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-21 01:42:50,566 - main - INFO - Response: 200 - 0.452s
+2025-07-21 01:42:50,569 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-21 01:42:50,590 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-21 01:42:50,591 - main - INFO - Response: 200 - 0.001s
+2025-07-21 01:42:50,594 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-21 01:42:50,975 - main - INFO - Response: 200 - 0.407s
+2025-07-21 01:42:51,024 - main - INFO - Response: 200 - 0.430s
+2025-07-21 01:42:51,026 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-21 01:42:51,049 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-21 01:42:51,050 - main - INFO - Response: 200 - 0.001s
+2025-07-21 01:42:51,052 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-21 01:42:51,468 - main - INFO - Response: 200 - 0.416s
+2025-07-21 01:42:51,470 - main - INFO - Response: 200 - 0.444s
+2025-07-21 01:42:51,476 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-21 01:42:51,826 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-21 01:42:51,851 - main - INFO - Response: 200 - 0.375s
+2025-07-21 01:42:52,190 - main - INFO - Response: 200 - 0.365s
+2025-07-21 01:42:52,192 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-21 01:42:52,215 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-21 01:42:52,636 - main - INFO - Response: 200 - 0.421s
+2025-07-21 01:42:52,638 - main - INFO - Response: 200 - 0.445s
+2025-07-21 01:42:52,641 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-21 01:42:52,667 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-21 01:42:53,028 - main - INFO - Response: 200 - 0.387s
+2025-07-21 01:42:53,065 - main - INFO - Response: 200 - 0.398s
+2025-07-21 01:42:53,070 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-21 01:42:53,449 - main - INFO - Response: 200 - 0.379s
+2025-07-21 01:42:54,354 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-21 01:42:54,771 - main - INFO - Response: 200 - 0.417s
+2025-07-21 01:42:54,773 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-21 01:42:54,795 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-21 01:42:55,184 - main - INFO - Response: 200 - 0.388s
+2025-07-21 01:42:55,186 - main - INFO - Response: 200 - 0.413s
+2025-07-21 01:42:55,189 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-21 01:42:55,209 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-21 01:42:55,572 - main - INFO - Response: 200 - 0.383s
+2025-07-21 01:42:55,616 - main - INFO - Response: 200 - 0.407s
+2025-07-21 01:42:55,621 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-21 01:42:55,997 - main - INFO - Response: 200 - 0.375s
+2025-07-21 01:42:57,495 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/single
+2025-07-21 01:42:57,495 - main - INFO - Response: 200 - 0.000s
+2025-07-21 01:42:57,497 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-21 01:42:57,867 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (231,) (128,) 
+2025-07-21 01:42:57,888 - main - INFO - Response: 200 - 0.391s
+2025-07-21 01:43:06,742 - main - INFO - Request: OPTIONS http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-21 01:43:06,743 - main - INFO - Response: 200 - 0.001s
+2025-07-21 01:43:06,746 - main - INFO - Request: OPTIONS http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-21 01:43:06,747 - main - INFO - Response: 200 - 0.001s
+2025-07-21 01:43:06,756 - main - INFO - Request: GET http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-21 01:43:06,813 - main - INFO - Response: 200 - 0.057s
+2025-07-21 01:43:06,815 - main - INFO - Request: GET http://localhost:8001/api/novel/patients?decrypt=false
+2025-07-21 01:43:06,867 - main - INFO - Response: 200 - 0.052s
+2025-07-21 01:46:40,720 - main - INFO - Request: OPTIONS http://localhost:8001/api/novel/system/stats
+2025-07-21 01:46:40,721 - main - INFO - Response: 200 - 0.001s
+2025-07-21 01:46:40,723 - main - INFO - Request: GET http://localhost:8001/api/novel/system/stats
+2025-07-21 01:46:40,840 - main - INFO - Response: 200 - 0.117s
+2025-07-21 02:02:04,152 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-21 02:02:04,153 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-21 02:02:04,154 - main - INFO - Response: 200 - 0.002s
+2025-07-21 02:02:04,155 - main - INFO - Response: 200 - 0.002s
+2025-07-21 02:02:04,156 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-21 02:02:04,633 - main - INFO - Response: 200 - 0.477s
+2025-07-21 02:02:04,635 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-21 02:02:04,658 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-21 02:02:04,659 - main - INFO - Response: 200 - 0.001s
+2025-07-21 02:02:04,665 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-21 02:02:05,070 - main - INFO - Response: 200 - 0.435s
+2025-07-21 02:02:05,075 - main - INFO - Response: 200 - 0.410s
+2025-07-21 02:02:05,080 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-21 02:02:05,117 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-21 02:02:05,118 - main - INFO - Response: 200 - 0.001s
+2025-07-21 02:02:05,122 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-21 02:02:05,510 - main - INFO - Response: 200 - 0.430s
+2025-07-21 02:02:05,546 - main - INFO - Response: 200 - 0.424s
+2025-07-21 02:02:05,548 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-21 02:02:05,896 - main - INFO - Response: 200 - 0.348s
+2025-07-21 02:02:06,015 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-21 02:02:06,410 - main - INFO - Response: 200 - 0.395s
+2025-07-21 02:02:06,412 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-21 02:02:06,437 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-21 02:02:06,836 - main - INFO - Response: 200 - 0.425s
+2025-07-21 02:02:06,864 - main - INFO - Response: 200 - 0.427s
+2025-07-21 02:02:06,867 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-21 02:02:06,894 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-21 02:02:07,307 - main - INFO - Response: 200 - 0.441s
+2025-07-21 02:02:07,309 - main - INFO - Response: 200 - 0.415s
+2025-07-21 02:02:07,312 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-21 02:02:07,667 - main - INFO - Response: 200 - 0.355s
+2025-07-21 02:02:17,776 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/audit/session
+2025-07-21 02:02:17,777 - main - INFO - Response: 200 - 0.001s
+2025-07-21 02:02:17,780 - main - INFO - Request: GET http://localhost:8001/api/decrypt/audit/session
+2025-07-21 02:02:17,781 - main - INFO - Response: 200 - 0.001s
+2025-07-21 02:02:17,993 - main - INFO - Request: GET http://localhost:8001/api/decrypt/audit/session
+2025-07-21 02:02:17,994 - main - INFO - Response: 200 - 0.001s
+2025-07-21 02:02:33,453 - main - INFO - Request: GET http://localhost:8001/api/decrypt/audit/session
+2025-07-21 02:02:33,453 - main - INFO - Response: 200 - 0.001s
+2025-07-21 02:03:01,851 - main - INFO - Request: OPTIONS http://localhost:8001/api/novel/system/stats
+2025-07-21 02:03:01,852 - main - INFO - Request: OPTIONS http://localhost:8001/api/novel/system/stats
+2025-07-21 02:03:01,852 - main - INFO - Response: 200 - 0.001s
+2025-07-21 02:03:01,853 - main - INFO - Response: 200 - 0.001s
+2025-07-21 02:03:01,856 - main - INFO - Request: GET http://localhost:8001/api/novel/system/stats
+2025-07-21 02:03:01,972 - main - INFO - Response: 200 - 0.117s
+2025-07-21 02:03:01,974 - main - INFO - Request: GET http://localhost:8001/api/novel/system/stats
+2025-07-21 02:03:02,092 - main - INFO - Response: 200 - 0.118s
+2025-07-21 02:10:10,860 - main - INFO - Request: GET http://localhost:8001/api/novel/system/stats
+2025-07-21 02:10:10,975 - main - INFO - Response: 200 - 0.115s
+2025-07-21 02:10:19,156 - main - INFO - Request: GET http://localhost:8001/api/novel/system/stats
+2025-07-21 02:10:19,272 - main - INFO - Response: 200 - 0.116s
+2025-07-21 02:10:21,543 - main - INFO - Request: GET http://localhost:8001/api/novel/system/stats
+2025-07-21 02:10:21,662 - main - INFO - Response: 200 - 0.119s
+2025-07-21 02:10:22,872 - main - INFO - Request: GET http://localhost:8001/api/novel/system/stats
+2025-07-21 02:10:23,014 - main - INFO - Response: 200 - 0.142s
+2025-07-21 02:10:25,636 - main - INFO - Request: GET http://localhost:8001/api/novel/system/stats
+2025-07-21 02:10:25,756 - main - INFO - Response: 200 - 0.119s
+2025-07-21 02:11:40,619 - main - INFO - Request: GET http://localhost:8001/api/novel/system/stats
+2025-07-21 02:11:40,740 - main - INFO - Response: 200 - 0.121s
+2025-07-21 02:16:45,388 - decryption_engine - INFO - Cleaned up expired decryption session: TdolcCDbwAIXt5uxXK4JP3Q_ea-S2Z_LySx1tOZ3LJI
+2025-07-21 02:16:45,388 - main - INFO - Cleaned up 1 expired decryption sessions
+2025-07-21 02:18:34,542 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-21 02:18:34,543 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-21 02:18:34,543 - main - INFO - Response: 200 - 0.001s
+2025-07-21 02:18:34,544 - main - INFO - Response: 200 - 0.001s
+2025-07-21 02:18:34,547 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-21 02:18:34,950 - main - INFO - Response: 200 - 0.403s
+2025-07-21 02:18:34,951 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-21 02:18:34,973 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-21 02:18:34,973 - main - INFO - Response: 200 - 0.001s
+2025-07-21 02:18:34,976 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-21 02:18:35,362 - main - INFO - Response: 200 - 0.385s
+2025-07-21 02:18:35,364 - main - INFO - Response: 200 - 0.413s
+2025-07-21 02:18:35,370 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-21 02:18:35,370 - main - INFO - Response: 200 - 0.001s
+2025-07-21 02:18:35,372 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-21 02:18:35,402 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-21 02:18:35,791 - main - INFO - Response: 200 - 0.419s
+2025-07-21 02:18:35,820 - main - INFO - Response: 200 - 0.417s
+2025-07-21 02:18:35,823 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-21 02:18:36,257 - main - INFO - Response: 200 - 0.434s
+2025-07-21 02:18:36,609 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-21 02:18:37,014 - main - INFO - Response: 200 - 0.405s
+2025-07-21 02:18:37,016 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-21 02:18:37,041 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-21 02:18:37,548 - main - INFO - Response: 200 - 0.532s
+2025-07-21 02:18:37,549 - main - INFO - Response: 200 - 0.508s
+2025-07-21 02:18:37,553 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-21 02:18:37,576 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-21 02:18:38,003 - main - INFO - Response: 200 - 0.450s
+2025-07-21 02:18:38,006 - main - INFO - Response: 200 - 0.430s
+2025-07-21 02:18:38,010 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-21 02:18:38,362 - main - INFO - Response: 200 - 0.351s

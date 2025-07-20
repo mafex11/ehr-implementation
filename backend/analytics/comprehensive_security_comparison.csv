@@ -1,0 +1,13 @@
+Security Feature,TDP-QIMLE,AES-256,RSA-2048,Lattice-Based
+Quantum Resistance,High (128-dim lattice + quantum layers),Low (vulnerable to Grover),Low (vulnerable to Shor),High
+Differential Privacy,"Yes (ε=1.0, δ=1e-5)",No,No,No
+Lattice-Based Security,Yes (128-dimensional),No,No,Yes
+Homomorphic Encryption,Yes (XOR-based),No,No,Limited
+Integrity Verification,Yes (Blockchain-inspired),No,No,No
+Key Evolution,Yes (Biological patterns),No,No,No
+Field-Level Adaptation,Yes (4 sensitivity levels),No,No,No
+Temporal Privacy,Yes (Time-decay),No,No,No
+Post-Quantum Security Level,Level 3 (NIST PQC Standard),Level 0,Level 0,Level 2-3
+Attack Resistance (Grover),High (128-bit equivalent),Low (64-bit equivalent),N/A,High
+Attack Resistance (Shor),High (lattice-based),N/A,Low,High
+"Privacy Budget (ε, δ)","(1.0, 1e-5)",N/A,N/A,N/A

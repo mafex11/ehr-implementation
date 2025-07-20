@@ -8,7 +8,7 @@ import { ArrowRight, Shield, Zap, Lock, Brain, Atom, Dna, Unlock, UserPlus, BarC
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-background/50">
+    <div className="min-h-screen bg-zinc-900">
       {/* Hero Section */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-grid-white/[0.02] bg-grid-16" />
@@ -16,25 +16,25 @@ export default function Home() {
           <div className="text-center space-y-8">
             <div className="space-y-4">
               <h1 className="text-5xl font-bold tracking-tight">
-                <span className="bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 bg-clip-text text-transparent">
+                <span className="text-white bg-clip-text">
                   Revolutionary Healthcare Technology
                 </span>
               </h1>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto text-white">
                 Advanced EHR privacy protection using Temporal Differential Privacy with 
                 Quantum-Inspired Multi-Layer Encryption (TDP-QIMLE)
               </p>
             </div>
             
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="text-lg px-8 py-6" asChild>
+              <Button size="lg" className="text-lg bg-zinc-900 hover:bg-zinc-800 px-8 py-6 border-2 rounded-full" asChild>
                 <Link href="/algorithm">
-                  <Brain className="mr-2 h-5 w-5" />
+                  <Brain className="mr-2 h-5 w-5 text-white" />
                   Explore Algorithm
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
-              <Button size="lg" variant="outline" className="text-lg px-8 py-6" asChild>
+              <Button size="lg" variant="outline" className="text-lg bg-zinc-900 hover:bg-zinc-800 px-8 py-6" asChild>
                 <Link href="/add-patient">
                   <Shield className="mr-2 h-5 w-5" />
                   Start Encrypting
@@ -60,7 +60,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-blue-500/50">
               <CardHeader>
-                <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center mb-4">
+                <div className="w-12 h-12 border-2 border-white rounded-lg flex items-center justify-center mb-4">
                   <Atom className="h-6 w-6 text-white" />
                 </div>
                 <CardTitle className="text-xl">Quantum-Inspired Encryption</CardTitle>
@@ -71,20 +71,20 @@ export default function Home() {
               <CardContent>
                 <div className="space-y-2 text-sm text-muted-foreground">
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                    <span>SUPERPOSITION: Complex amplitude transformations</span>
+                    <div className="w-2 h-2 bg-white rounded-full"></div>
+                    <span>SUPERPOSITION - Amplitude transformations</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
-                    <span>ENTANGLED: Position-based correlation</span>
+                    <div className="w-2 h-2 bg-white rounded-full"></div>
+                    <span>ENTANGLED - Position-based correlation</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                    <span>COLLAPSED: Phase-shift transformations</span>
+                    <div className="w-2 h-2 bg-white rounded-full"></div>
+                    <span>COLLAPSED - Phase-shift transformations</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
-                    <span>COHERENT: Amplitude-phase combination</span>
+                    <div className="w-2 h-2 bg-white rounded-full"></div>
+                    <span>COHERENT - Amplitude-phase combination</span>
                   </div>
                 </div>
               </CardContent>
@@ -92,7 +92,7 @@ export default function Home() {
 
             <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-purple-500/50">
               <CardHeader>
-                <div className="w-12 h-12 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center mb-4">
+                <div className="w-12 h-12 border-2 border-white rounded-lg flex items-center justify-center mb-4">
                   <Zap className="h-6 w-6 text-white" />
                 </div>
                 <CardTitle className="text-xl">Lattice Obfuscation</CardTitle>
@@ -103,15 +103,15 @@ export default function Home() {
               <CardContent>
                 <div className="space-y-2 text-sm text-muted-foreground">
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-purple-500 rounded-full"></div>
+                    <div className="w-2 h-2 bg-white rounded-full"></div>
                     <span>High-dimensional mathematical obfuscation</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-pink-500 rounded-full"></div>
+                    <div className="w-2 h-2 bg-white rounded-full"></div>
                     <span>Handles data of any length</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-indigo-500 rounded-full"></div>
+                    <div className="w-2 h-2 bg-white rounded-full"></div>
                     <span>Quantum-resistant security</span>
                   </div>
                 </div>
@@ -120,7 +120,7 @@ export default function Home() {
 
             <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-green-500/50">
               <CardHeader>
-                <div className="w-12 h-12 bg-gradient-to-r from-green-500 to-teal-500 rounded-lg flex items-center justify-center mb-4">
+                <div className="w-12 h-12 border-2 border-white rounded-lg flex items-center justify-center mb-4">
                   <Dna className="h-6 w-6 text-white" />
                 </div>
                 <CardTitle className="text-xl">Biological Key Evolution</CardTitle>
@@ -131,15 +131,15 @@ export default function Home() {
               <CardContent>
                 <div className="space-y-2 text-sm text-muted-foreground">
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    <div className="w-2 h-2 bg-white rounded-full"></div>
                     <span>1000-element biological sequence</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-teal-500 rounded-full"></div>
+                    <div className="w-2 h-2 bg-white rounded-full"></div>
                     <span>5% mutation rate for diversity</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
+                    <div className="w-2 h-2 bg-white rounded-full"></div>
                     <span>1000 SHA256 iterations</span>
                   </div>
                 </div>
@@ -148,7 +148,7 @@ export default function Home() {
 
             <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-orange-500/50">
               <CardHeader>
-                <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center mb-4">
+                <div className="w-12 h-12 border-2 border-white rounded-lg flex items-center justify-center mb-4">
                   <Lock className="h-6 w-6 text-white" />
                 </div>
                 <CardTitle className="text-xl">Temporal Privacy</CardTitle>
@@ -159,15 +159,15 @@ export default function Home() {
               <CardContent>
                 <div className="space-y-2 text-sm text-muted-foreground">
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-orange-500 rounded-full"></div>
+                    <div className="w-2 h-2 bg-white rounded-full"></div>
                     <span>ε=1.0, δ=1e-5 privacy budget</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+                    <div className="w-2 h-2 bg-white rounded-full"></div>
                     <span>Adaptive sensitivity scaling</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-yellow-500 rounded-full"></div>
+                    <div className="w-2 h-2 bg-white rounded-full"></div>
                     <span>Time-based privacy decay</span>
                   </div>
                 </div>
@@ -176,7 +176,7 @@ export default function Home() {
 
             <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-indigo-500/50">
               <CardHeader>
-                <div className="w-12 h-12 bg-gradient-to-r from-indigo-500 to-blue-500 rounded-lg flex items-center justify-center mb-4">
+                <div className="w-12 h-12 border-2 border-white rounded-lg flex items-center justify-center mb-4">
                   <Brain className="h-6 w-6 text-white" />
                 </div>
                 <CardTitle className="text-xl">Homomorphic Operations</CardTitle>
@@ -187,15 +187,15 @@ export default function Home() {
               <CardContent>
                 <div className="space-y-2 text-sm text-muted-foreground">
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-indigo-500 rounded-full"></div>
+                    <div className="w-2 h-2 bg-white rounded-full"></div>
                     <span>Compute on encrypted data</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                    <div className="w-2 h-2 bg-white rounded-full"></div>
                     <span>XOR-based operations</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-cyan-500 rounded-full"></div>
+                    <div className="w-2 h-2 bg-white rounded-full"></div>
                     <span>Length-preserving transforms</span>
                   </div>
                 </div>
@@ -204,7 +204,7 @@ export default function Home() {
 
             <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-teal-500/50">
               <CardHeader>
-                <div className="w-12 h-12 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-lg flex items-center justify-center mb-4">
+                <div className="w-12 h-12 border-2 border-white rounded-lg flex items-center justify-center mb-4">
                   <Shield className="h-6 w-6 text-white" />
                 </div>
                 <CardTitle className="text-xl">Blockchain Integrity</CardTitle>
@@ -215,15 +215,15 @@ export default function Home() {
               <CardContent>
                 <div className="space-y-2 text-sm text-muted-foreground">
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-teal-500 rounded-full"></div>
+                    <div className="w-2 h-2 bg-white rounded-full"></div>
                     <span>Immutable audit trail</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-cyan-500 rounded-full"></div>
+                    <div className="w-2 h-2 bg-white rounded-full"></div>
                     <span>Metadata protection</span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                    <div className="w-2 h-2 bg-white rounded-full"></div>
                     <span>Comprehensive validation</span>
                   </div>
                 </div>
@@ -249,7 +249,7 @@ export default function Home() {
             <Link href="/encrypt">
               <Card className="group hover:shadow-lg transition-all duration-300 cursor-pointer">
                 <CardHeader className="text-center">
-                  <div className="w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 border-2 border-white rounded-full flex items-center justify-center mx-auto mb-4">
                     <Lock className="h-8 w-8 text-white" />
                   </div>
                   <CardTitle className="text-lg">Encrypt Data</CardTitle>
@@ -263,7 +263,7 @@ export default function Home() {
             <Link href="/decrypt">
               <Card className="group hover:shadow-lg transition-all duration-300 cursor-pointer">
                 <CardHeader className="text-center">
-                  <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-teal-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 border-2 border-white rounded-full flex items-center justify-center mx-auto mb-4">
                     <Unlock className="h-8 w-8 text-white" />
                   </div>
                   <CardTitle className="text-lg">Decrypt Data</CardTitle>
@@ -277,7 +277,7 @@ export default function Home() {
             <Link href="/add-patient">
               <Card className="group hover:shadow-lg transition-all duration-300 cursor-pointer">
                 <CardHeader className="text-center">
-                  <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 border-2 border-white rounded-full flex items-center justify-center mx-auto mb-4">
                     <UserPlus className="h-8 w-8 text-white" />
                   </div>
                   <CardTitle className="text-lg">Add Patient</CardTitle>
@@ -291,12 +291,12 @@ export default function Home() {
             <Link href="/analytics">
               <Card className="group hover:shadow-lg transition-all duration-300 cursor-pointer">
                 <CardHeader className="text-center">
-                  <div className="w-16 h-16 bg-gradient-to-r from-orange-500 to-red-500 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <div className="w-16 h-16 border-2 border-white rounded-full flex items-center justify-center mx-auto mb-4">
                     <BarChart3 className="h-8 w-8 text-white" />
                   </div>
                   <CardTitle className="text-lg">Analytics</CardTitle>
                   <CardDescription>
-                    Privacy-preserving data analysis
+                    Privacy-preserving data analysis and records
                   </CardDescription>
                 </CardHeader>
               </Card>
@@ -319,35 +319,35 @@ export default function Home() {
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent mb-2">
+              <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r text-white bg-clip-text  mb-2">
                 v3.0.0
               </div>
-              <div className="text-sm text-muted-foreground">Algorithm Version</div>
+              <div className="text-sm text-gray-400">Algorithm Version</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent mb-2">
+              <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r text-white bg-clip-text  mb-2">
                 4
               </div>
-              <div className="text-sm text-muted-foreground">Quantum Layers</div>
+              <div className="text-sm text-gray-400">Quantum Layers</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-green-400 to-teal-500 bg-clip-text text-transparent mb-2">
+              <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r text-white bg-clip-text  mb-2">
                 128-D
               </div>
-              <div className="text-sm text-muted-foreground">Lattice Dimension</div>
+              <div className="text-sm text-gray-400">Lattice Dimension</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-orange-400 to-red-500 bg-clip-text text-transparent mb-2">
+              <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r text-white bg-clip-text  mb-2">
                 ε=1.0
               </div>
-              <div className="text-sm text-muted-foreground">Privacy Budget</div>
+              <div className="text-sm text-gray-400">Privacy Budget</div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Data Display */}
-      <section className="py-20 px-6 bg-muted/20">
+      {/* <section className="py-20 px-6 bg-muted/20">
         <div className="max-w-7xl mx-auto">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <Card>
@@ -375,7 +375,17 @@ export default function Home() {
             </Card>
           </div>
         </div>
-      </section>
+      </section> */}
+
+      <div className='flex justify-center items-center'>
+      <Button size="lg" className="text-2xl bg-zinc-900 hover:bg-zinc-800 text-white px-8 py-6 border-2 rounded-full mb-20" asChild>
+                <Link href="/algorithm">
+                  <Brain className="mr-2 h-5 w-5 text-white" />
+                  Explore Algorithm
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
+              </Button>
+      </div>
     </div>
   )
 }

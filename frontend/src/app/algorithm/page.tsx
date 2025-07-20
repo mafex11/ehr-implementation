@@ -20,7 +20,7 @@ export default function AlgorithmPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-background/50">
+    <div className="min-h-screen bg-zinc-900">
       <div className="max-w-7xl mx-auto px-6 py-12">
         {/* Header */}
         <div className="mb-12">
@@ -32,7 +32,7 @@ export default function AlgorithmPage() {
           </Button>
           
           <div className="space-y-4">
-            <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-400 via-purple-500 to-teal-400 bg-clip-text text-transparent">
+            <h1 className="text-4xl md:text-5xl font-bold text-white">
               TDP-QIMLE Algorithm
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl">
@@ -55,7 +55,7 @@ export default function AlgorithmPage() {
                 variant={activeTab === tab.id ? "default" : "ghost"}
                 size="sm"
                 onClick={() => setActiveTab(tab.id)}
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 bg-zinc-900 hover:bg-zinc-800 border-2"
               >
                 <span>{tab.icon}</span>
                 <span className="hidden sm:inline">{tab.label}</span>
@@ -89,7 +89,7 @@ export default function AlgorithmPage() {
                 <Card className="group hover:shadow-lg transition-all duration-300">
                   <CardHeader>
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
+                      <div className="w-10 h-10 bg-zinc-900 rounded-lg flex items-center justify-center">
                         <Shield className="h-5 w-5 text-white" />
                       </div>
                       <div>
@@ -109,7 +109,7 @@ export default function AlgorithmPage() {
                 <Card className="group hover:shadow-lg transition-all duration-300">
                   <CardHeader>
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg flex items-center justify-center">
+                      <div className="w-10 h-10 bg-zinc-900 rounded-lg flex items-center justify-center">
                         <Zap className="h-5 w-5 text-white" />
                       </div>
                       <div>
@@ -129,7 +129,7 @@ export default function AlgorithmPage() {
                 <Card className="group hover:shadow-lg transition-all duration-300">
                   <CardHeader>
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-gradient-to-r from-green-500 to-teal-500 rounded-lg flex items-center justify-center">
+                      <div className="w-10 h-10 bg-zinc-900 rounded-lg flex items-center justify-center">
                         <Layers className="h-5 w-5 text-white" />
                       </div>
                       <div>
@@ -149,7 +149,7 @@ export default function AlgorithmPage() {
                 <Card className="group hover:shadow-lg transition-all duration-300">
                   <CardHeader>
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-500 rounded-lg flex items-center justify-center">
+                      <div className="w-10 h-10 bg-zinc-900 rounded-lg flex items-center justify-center">
                         <Lock className="h-5 w-5 text-white" />
                       </div>
                       <div>
@@ -173,19 +173,19 @@ export default function AlgorithmPage() {
                 </CardHeader>
                 <CardContent>
                   <div className="flex flex-wrap items-center gap-2 text-sm">
-                    <Badge variant="secondary">Patient Data</Badge>
+                    <Badge variant="secondary" className='bg-zinc-800 hover:bg-zinc-700'>Patient Data</Badge>
                     <CheckCircle className="h-4 w-4 text-muted-foreground" />
-                    <Badge variant="secondary">Quantum Layers</Badge>
+                    <Badge variant="secondary" className='bg-zinc-800 hover:bg-zinc-700'>Quantum Layers</Badge>
                     <CheckCircle className="h-4 w-4 text-muted-foreground" />
-                    <Badge variant="secondary">Lattice Obfuscation</Badge>
+                    <Badge variant="secondary" className='bg-zinc-800 hover:bg-zinc-700'>Lattice Obfuscation</Badge>
                     <CheckCircle className="h-4 w-4 text-muted-foreground" />
-                    <Badge variant="secondary">AES Encryption</Badge>
+                    <Badge variant="secondary" className='bg-zinc-800 hover:bg-zinc-700'>AES Encryption</Badge>
                     <CheckCircle className="h-4 w-4 text-muted-foreground" />
-                    <Badge variant="secondary">Homomorphic Transform</Badge>
+                    <Badge variant="secondary" className='bg-zinc-800 hover:bg-zinc-700'>Homomorphic Transform</Badge>
                     <CheckCircle className="h-4 w-4 text-muted-foreground" />
-                    <Badge variant="secondary">Integrity Block</Badge>
+                    <Badge variant="secondary" className='bg-zinc-800 hover:bg-zinc-700'>Integrity Block</Badge>
                     <CheckCircle className="h-4 w-4 text-muted-foreground" />
-                    <Badge variant="secondary">Secure Storage</Badge>
+                    <Badge variant="secondary" className='bg-zinc-800 hover:bg-zinc-700'>Secure Storage</Badge>
                   </div>
                 </CardContent>
               </Card>
@@ -205,10 +205,10 @@ export default function AlgorithmPage() {
               </Card>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Card className="border-blue-200 dark:border-blue-800">
+                <Card className="border-blue-200 dark:border-white">
                   <CardHeader>
                     <CardTitle className="text-xl flex items-center gap-2">
-                      <div className="w-8 h-8 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full flex items-center justify-center">
+                      <div className="w-8 h-8 bg-zinc-900 rounded-full flex items-center justify-center">
                         <span className="text-white text-sm">🌊</span>
                       </div>
                       SUPERPOSITION Layer
@@ -224,10 +224,10 @@ export default function AlgorithmPage() {
                   </CardContent>
                 </Card>
 
-                <Card className="border-purple-200 dark:border-purple-800">
+                <Card className="border-purple-200 dark:border-white">
                   <CardHeader>
                     <CardTitle className="text-xl flex items-center gap-2">
-                      <div className="w-8 h-8 bg-gradient-to-r from-purple-500 to-purple-600 rounded-full flex items-center justify-center">
+                      <div className="w-8 h-8 bg-zinc-900 rounded-full flex items-center justify-center">
                         <span className="text-white text-sm">🔗</span>
                       </div>
                       ENTANGLED Layer
@@ -243,10 +243,10 @@ export default function AlgorithmPage() {
                   </CardContent>
                 </Card>
 
-                <Card className="border-green-200 dark:border-green-800">
+                <Card className="border-green-200 dark:border-white">
                   <CardHeader>
                     <CardTitle className="text-xl flex items-center gap-2">
-                      <div className="w-8 h-8 bg-gradient-to-r from-green-500 to-green-600 rounded-full flex items-center justify-center">
+                      <div className="w-8 h-8 bg-zinc-900 rounded-full flex items-center justify-center">
                         <span className="text-white text-sm">💥</span>
                       </div>
                       COLLAPSED Layer
@@ -262,10 +262,10 @@ export default function AlgorithmPage() {
                   </CardContent>
                 </Card>
 
-                <Card className="border-orange-200 dark:border-orange-800">
+                <Card className="border-orange-200 dark:border-white">
                   <CardHeader>
                     <CardTitle className="text-xl flex items-center gap-2">
-                      <div className="w-8 h-8 bg-gradient-to-r from-orange-500 to-orange-600 rounded-full flex items-center justify-center">
+                      <div className="w-8 h-8 bg-zinc-900 rounded-full flex items-center justify-center">
                         <span className="text-white text-sm">✨</span>
                       </div>
                       COHERENT Layer

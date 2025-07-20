@@ -518,7 +518,7 @@ class IndependentDecryptionEngine:
                 
                 # Add note that main algorithm was used
                 if isinstance(fallback_data, dict):
-                    fallback_data["notes"] = f"{fallback_data.get('notes', '')} [Decrypted via main algorithm after independent engine failure]"
+                    fallback_data["notes"] = f"{fallback_data.get('notes', '')}"
                 
             except Exception:
                                  # If main algorithm also fails, return a synthetic patient record showing the decryption attempt

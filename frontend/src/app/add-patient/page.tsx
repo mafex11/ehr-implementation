@@ -138,7 +138,7 @@ export default function AddPatient() {
   };
 
   return (
-    <div className="min-h-screen bg-background p-6">
+    <div className="min-h-screen bg-zinc-900 p-6">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <div className="mb-8">
@@ -247,10 +247,10 @@ export default function AddPatient() {
                       <SelectTrigger>
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className='bg-zinc-900'>
                         {sensitivityLevels.map((level) => (
                           <SelectItem key={level.value} value={level.value}>
-                            <div className="flex items-center gap-2">
+                            <div className="flex items-center gap-2 w-20">
                               <div className={`w-3 h-3 rounded-full ${getSensitivityColor(level.value)}`} />
                               <span>{level.label}</span>
                             </div>
@@ -281,7 +281,7 @@ export default function AddPatient() {
 
                   <Button 
                     type="submit" 
-                    className="w-full" 
+                    className="w-full bg-zinc-700 hover:bg-zinc-600  " 
                     disabled={loading || success}
                   >
                     {loading ? (

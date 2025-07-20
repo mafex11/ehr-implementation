@@ -263,7 +263,7 @@ export default function DecryptPage() {
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className='bg-zinc-950'>
                     <SelectItem value="standard">Standard</SelectItem>
                     <SelectItem value="elevated">Elevated</SelectItem>
                     <SelectItem value="admin">Administrator</SelectItem>
@@ -299,7 +299,7 @@ export default function DecryptPage() {
                 </Alert>
               )}
               
-              <Button type="submit" className="w-full" disabled={loading}>
+              <Button type="submit" className="w-full bg-zinc-700 hover:bg-zinc-600  " disabled={loading}>
                 {loading ? (
                   <>
                     <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -320,7 +320,7 @@ export default function DecryptPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background p-6">
+    <div className="min-h-screen bg-zinc-900 p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="mb-8">
@@ -350,10 +350,10 @@ export default function DecryptPage() {
         </div>
 
         <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'single' | 'bulk' | 'audit')}>
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="single">Single Patient</TabsTrigger>
-            <TabsTrigger value="bulk">Bulk Decryption</TabsTrigger>
-            <TabsTrigger value="audit">Audit Log</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-3  bg-zinc-900 border-2">
+            <TabsTrigger value="single" className='border-2'>Single Patient</TabsTrigger>
+            <TabsTrigger value="bulk" className='border-2'>Bulk Decryption</TabsTrigger>
+            <TabsTrigger value="audit" className='border-2'>Audit Log</TabsTrigger>
           </TabsList>
 
           <TabsContent value="single" className="space-y-6">

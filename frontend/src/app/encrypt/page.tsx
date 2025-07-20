@@ -209,7 +209,7 @@ export default function EncryptPage() {
   const privacyLevel = getPrivacyLevel(encryptionSettings.epsilon);
 
   return (
-    <div className="min-h-screen bg-background p-6">
+    <div className="min-h-screen bg-zinc-900 p-6">
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <div className="mb-8">
@@ -270,13 +270,13 @@ export default function EncryptPage() {
                     </div>
                   </div>
 
-                  <div className="space-y-2">
+                  <div className="space-y-2 ">
                     <Label htmlFor="diagnosis">Primary Diagnosis</Label>
                     <Select value={patientData.diagnosis} onValueChange={handleDiagnosisChange}>
-                      <SelectTrigger>
+                      <SelectTrigger >
                         <SelectValue placeholder="Select diagnosis" />
                       </SelectTrigger>
-                      <SelectContent>
+                      <SelectContent className='bg-zinc-950'>
                         {commonDiagnoses.map((diagnosis) => (
                           <SelectItem key={diagnosis} value={diagnosis}>
                             {diagnosis}
@@ -352,7 +352,7 @@ export default function EncryptPage() {
                               <SelectTrigger>
                                 <SelectValue />
                               </SelectTrigger>
-                              <SelectContent>
+                              <SelectContent className='bg-zinc-950'>
                                 <SelectItem value="TDP-QIMLE">TDP-QIMLE (Quantum-Inspired)</SelectItem>
                                 <SelectItem value="AES-256-CBC-DP">AES-256-CBC with DP</SelectItem>
                               </SelectContent>
@@ -390,7 +390,7 @@ export default function EncryptPage() {
 
                   <Button 
                     type="submit" 
-                    className="w-full" 
+                    className="w-full bg-zinc-700 hover:bg-zinc-600  " 
                     disabled={loading}
                   >
                     {loading ? (

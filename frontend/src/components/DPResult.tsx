@@ -53,11 +53,10 @@ export default function DPResult() {
 
   return (
     <div>
-      <h2 className="text-xl font-bold mb-4 text-black">Privacy-Preserving Analytics</h2>
-      
-      <div className="mb-6 p-4 border rounded bg-gray-50">
+      <h2 className="text-xl font-bold mb-4 text-white">Privacy-Preserving Analytics</h2>
+      <div className="mb-6 p-4 border rounded bg-zinc-900">
         <div className="mb-4">
-          <label className="block mb-2 font-medium text-black">
+          <label className="block mb-2 font-medium text-white">
             Privacy Protection Level (Epsilon):
             <div className="flex items-center mt-1">
               <input
@@ -77,7 +76,7 @@ export default function DPResult() {
           <div className={`text-sm font-medium ${privacyLevel.color} mt-1`}>
             Privacy Level: {privacyLevel.level}
           </div>
-          <p className="text-xs text-gray-600 mt-1">
+          <p className="text-xs text-gray-200 mt-1">
             Lower epsilon = more privacy, less accuracy. Higher epsilon = less privacy, more accuracy.
           </p>
         </div>
@@ -85,7 +84,7 @@ export default function DPResult() {
         <button
           onClick={handleQuery}
           disabled={loading}
-          className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded transition-colors disabled:bg-blue-300"
+          className="w-full px-4 py-2 bg-zinc-700 hover:bg-zinc-600 text-white rounded transition-colors disabled:bg-blue-300"
         >
           {loading ? 'Loading...' : 'Get Privacy-Protected Lab Average'}
         </button>
