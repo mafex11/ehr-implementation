@@ -21,7 +21,15 @@ class TDPQIMLEMongoStorage:
     Provides secure storage and retrieval of patient data
     """
     
-    def __init__(self, connection_string: str = "mongodb+srv://mafex:mafex@cluster0.sgapqkg.mongodb.net/", database_name: str = "secure_ehr"):
+    def __init__(self, connection_string: str = None, database_name: str = None):
+        # Use environment variables if not provided
+        if connection_string is None:
+            import os
+            connection_string = os.environ.get("MONGODB_URI", "mongodb+srv://mafex:mafex@cluster0.sgapqkg.mongodb.net/")
+        
+        if database_name is None:
+            import os
+            database_name = os.environ.get("DATABASE_NAME", "secure_ehr")
         self.client = AsyncIOMotorClient(connection_string)
         self.db = self.client[database_name]
         self.patients_collection = self.db.encrypted_patients
