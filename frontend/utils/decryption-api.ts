@@ -5,9 +5,9 @@
 
 import axios from 'axios';
 
-// Separate API instance for decryption service (same port as encryption)
+// Separate API instance for decryption service (Railway backend)
 const decryptionAPI = axios.create({
-  baseURL: 'http://localhost:8001/api/decrypt',
+  baseURL: 'https://ehr-implementation-production.up.railway.app/api/decrypt',
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
