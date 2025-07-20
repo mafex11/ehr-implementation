@@ -133,20 +133,27 @@ app = FastAPI(
     lifespan=lifespan
 )
 
-# Add CORS middleware
+# Add CORS middleware - More permissive for deployment
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://localhost:8000"],
+    allow_origins=["*"],  # Allow all origins for deployment
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Add trusted host middleware
-app.add_middleware(
-    TrustedHostMiddleware,
-    allowed_hosts=["localhost", "127.0.0.1", "*.localhost"]
-)
+# Comment out trusted host middleware for deployment
+# app.add_middleware(
+#     TrustedHostMiddleware,
+#     allowed_hosts=[
+#         "localhost", 
+#         "127.0.0.1", 
+#         "*.localhost",
+#         "*.up.railway.app",
+#         "*.railway.app",
+#         "ehr-implementation-production.up.railway.app"
+#     ]
+# )
 
 # Custom middleware for request logging
 @app.middleware("http")
@@ -441,10 +448,13 @@ async def get_documentation():
 if __name__ == "__main__":
     logger.info("Starting TDP-QIMLE development server...")
     
+    # Get port from environment variable for production deployment
+    port = int(os.environ.get("PORT", 8001))
+    
     uvicorn.run(
         "main:app",
         host="0.0.0.0",
-        port=8001,  # Different port from the original system
+        port=port,
         reload=True,
         log_level="info",
         access_log=True,
