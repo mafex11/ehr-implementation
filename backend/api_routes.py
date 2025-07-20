@@ -752,14 +752,13 @@ async def general_exception_handler(request, exc):
 
 # Health check endpoint
 @router.get("/health", response_model=Dict[str, str])
-async def health_check():
+async def health_check(
+    storage: TDPQIMLEMongoStorage = Depends(get_storage)
+):
     """
     Health check endpoint for the TDP-QIMLE system
     """
     try:
-        # Try to get storage instance
-        storage = await get_storage()
-        
         # Test database connection
         await storage.patients_collection.count_documents({})
         
@@ -772,14 +771,7 @@ async def health_check():
         
     except Exception as e:
         logging.error(f"Health check failed: {str(e)}")
-        # Return a more graceful response instead of raising an exception
-        return {
-            "status": "degraded",
-            "algorithm": "TDP-QIMLE",
-            "timestamp": datetime.now().isoformat(),
-            "database": "disconnected",
-            "error": str(e)
-        }
+        raise HTTPException(status_code=503, detail="Service unavailable")
 
 # Cleanup function
 async def cleanup_storage():
