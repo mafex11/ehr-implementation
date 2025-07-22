@@ -18,9 +18,21 @@ interface Patient {
   patient_id: string;
   name: string;
   age: number;
+  gender?: string;
+  blood_type?: string;
+  medical_condition?: string;
+  date_of_admission?: string;
+  doctor_name?: string;
+  hospital?: string;
+  insurance_provider?: string;
+  billing_amount?: string | number;
+  room_number?: string;
+  admission_type?: string;
+  discharge_date?: string;
+  medication?: string;
+  test_results?: string;
   medical_history: string[];
   current_medications: string[];
-  test_results: any;
   notes?: string;
 }
 
@@ -409,31 +421,40 @@ export default function DecryptPage() {
                   {selectedPatient ? (
                     <div className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
-                      <div>
-                          <Label className="text-sm font-medium">Name</Label>
-                          <p className="text-lg">{selectedPatient.name}</p>
-                        </div>
-                        <div>
-                          <Label className="text-sm font-medium">Age</Label>
-                          <p className="text-lg">{selectedPatient.age}</p>
-                        </div>
+                        <div><Label className="text-sm font-medium">Name</Label><p className="text-lg">{selectedPatient.name}</p></div>
+                        <div><Label className="text-sm font-medium">Age</Label><p className="text-lg">{selectedPatient.age}</p></div>
+                        <div><Label className="text-sm font-medium">Gender</Label><p className="text-lg">{selectedPatient.gender || <span className="text-muted-foreground">N/A</span>}</p></div>
+                        <div><Label className="text-sm font-medium">Blood Type</Label><p className="text-lg">{selectedPatient.blood_type || <span className="text-muted-foreground">N/A</span>}</p></div>
+                        <div><Label className="text-sm font-medium">Medical Condition</Label><p className="text-lg">{selectedPatient.medical_condition || <span className="text-muted-foreground">N/A</span>}</p></div>
+                        <div><Label className="text-sm font-medium">Date of Admission</Label><p className="text-lg">{selectedPatient.date_of_admission || <span className="text-muted-foreground">N/A</span>}</p></div>
+                        <div><Label className="text-sm font-medium">Doctor Name</Label><p className="text-lg">{selectedPatient.doctor_name || <span className="text-muted-foreground">N/A</span>}</p></div>
+                        <div><Label className="text-sm font-medium">Hospital</Label><p className="text-lg">{selectedPatient.hospital || <span className="text-muted-foreground">N/A</span>}</p></div>
+                        <div><Label className="text-sm font-medium">Insurance Provider</Label><p className="text-lg">{selectedPatient.insurance_provider || <span className="text-muted-foreground">N/A</span>}</p></div>
+                        <div><Label className="text-sm font-medium">Billing Amount</Label><p className="text-lg">{selectedPatient.billing_amount || <span className="text-muted-foreground">N/A</span>}</p></div>
+                        <div><Label className="text-sm font-medium">Room Number</Label><p className="text-lg">{selectedPatient.room_number || <span className="text-muted-foreground">N/A</span>}</p></div>
+                        <div><Label className="text-sm font-medium">Admission Type</Label><p className="text-lg">{selectedPatient.admission_type || <span className="text-muted-foreground">N/A</span>}</p></div>
+                        <div><Label className="text-sm font-medium">Discharge Date</Label><p className="text-lg">{selectedPatient.discharge_date || <span className="text-muted-foreground">N/A</span>}</p></div>
+                        <div><Label className="text-sm font-medium">Medication</Label><p className="text-lg">{selectedPatient.medication || <span className="text-muted-foreground">N/A</span>}</p></div>
+                        <div><Label className="text-sm font-medium">Test Results</Label><p className="text-lg">{selectedPatient.test_results || <span className="text-muted-foreground">N/A</span>}</p></div>
                       </div>
-                      
                       <div>
                         <Label className="text-sm font-medium">Medical History</Label>
                         <div className="flex flex-wrap gap-2 mt-1">
-                          {selectedPatient.medical_history.map((item, index) => (
+                          {selectedPatient.medical_history && selectedPatient.medical_history.length > 0 ? (
+                            selectedPatient.medical_history.map((item, index) => (
                             <Badge key={index} variant="secondary">
                               {item}
                             </Badge>
-                          ))}
+                            ))
+                          ) : (
+                            <span className="text-muted-foreground">None</span>
+                          )}
                         </div>
                       </div>
-                      
                       <div>
                         <Label className="text-sm font-medium">Current Medications</Label>
                         <div className="flex flex-wrap gap-2 mt-1">
-                          {selectedPatient.current_medications.length > 0 ? (
+                          {selectedPatient.current_medications && selectedPatient.current_medications.length > 0 ? (
                             selectedPatient.current_medications.map((med, index) => (
                               <Badge key={index} variant="outline">
                                 {med}
@@ -444,16 +465,6 @@ export default function DecryptPage() {
                           )}
                         </div>
                       </div>
-                      
-                      <div>
-                        <Label className="text-sm font-medium">Test Results</Label>
-                        <div className="mt-1 p-3 bg-muted rounded-lg">
-                          <pre className="text-sm">
-                            {JSON.stringify(selectedPatient.test_results, null, 2)}
-                          </pre>
-                        </div>
-                      </div>
-                      
                       {selectedPatient.notes && (
                         <div>
                           <Label className="text-sm font-medium">Notes</Label>

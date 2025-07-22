@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create axios instance with base configuration
 const api = axios.create({
-  baseURL: 'https://ehr-implementation-production.up.railway.app/api/novel/', // Railway backend
+  baseURL: 'http://localhost:8001/api/novel/', // Local backend on port 8001
   timeout: 30000, // 30 second timeout for encryption operations
   headers: {
     'Content-Type': 'application/json',
@@ -248,7 +248,7 @@ export const dataUtils = {
 // Health check function
 export const healthCheck = async () => {
   try {
-    const response = await axios.get('https://ehr-implementation-production.up.railway.app/api/novel/health');
+    const response = await axios.get('http://localhost:8001/api/novel/health');
     return response.data;
   } catch (error) {
     throw new Error(`Health check failed: ${error}`);
@@ -258,7 +258,7 @@ export const healthCheck = async () => {
 // System info function
 export const getSystemInfo = async () => {
   try {
-    const response = await axios.get('https://ehr-implementation-production.up.railway.app/system/info');
+    const response = await axios.get('http://localhost:8001/system/info');
     return response.data;
   } catch (error) {
     throw new Error(`Failed to get system info: ${error}`);
@@ -271,7 +271,7 @@ export const encryptionDemo = async (data: {
   diagnosis: string;
   lab_results: string;
 }) => {
-  const response = await fetch('https://ehr-implementation-production.up.railway.app/api/novel/encryption/demo', {
+  const response = await fetch('http://localhost:8001/api/novel/encryption/demo', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

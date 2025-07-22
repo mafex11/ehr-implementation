@@ -16,6 +16,10 @@ import hashlib
 import base64
 import secrets
 import time
+import io
+import csv
+import uuid
+from fastapi import UploadFile, File
 
 from mongodb_integration import TDPQIMLEMongoStorage, SensitivityLevel
 from algorithm import TDPQIMLEAlgorithm, TemporalPrivacyParams
@@ -29,19 +33,43 @@ class PatientDataRequest(BaseModel):
     patient_id: str = Field(..., description="Unique patient identifier")
     name: str = Field(..., description="Patient full name")
     age: int = Field(..., ge=0, le=150, description="Patient age")
+    gender: str = Field('', description="Gender")
+    blood_type: str = Field('', description="Blood type")
+    medical_condition: str = Field('', description="Primary medical condition")
+    date_of_admission: str = Field('', description="Date of admission")
+    doctor_name: str = Field('', description="Doctor name")
+    hospital: str = Field('', description="Hospital")
+    insurance_provider: str = Field('', description="Insurance provider")
+    billing_amount: float = Field(0.0, description="Billing amount")
+    room_number: str = Field('', description="Room number")
+    admission_type: str = Field('', description="Admission type")
+    discharge_date: str = Field('', description="Discharge date")
+    medication: str = Field('', description="Medication")
+    test_results: str = Field('', description="Test results")
     medical_history: List[str] = Field(default=[], description="List of medical conditions")
     current_medications: List[str] = Field(default=[], description="Current medications")
-    test_results: Dict[str, Any] = Field(default={}, description="Medical test results")
     notes: Optional[str] = Field(None, description="Additional notes")
     sensitivity_level: str = Field(..., description="Data sensitivity level: LOW, MEDIUM, HIGH, CRITICAL")
 
 class PatientDataResponse(BaseModel):
     patient_id: str
     name: str
-    age: Union[int, str]  # Allow both int (decrypted) and str (encrypted display)
+    age: Union[int, str]
+    gender: str = ''
+    blood_type: str = ''
+    medical_condition: str = ''
+    date_of_admission: str = ''
+    doctor_name: str = ''
+    hospital: str = ''
+    insurance_provider: str = ''
+    billing_amount: float = 0.0
+    room_number: str = ''
+    admission_type: str = ''
+    discharge_date: str = ''
+    medication: str = ''
+    test_results: str = ''
     medical_history: List[str]
     current_medications: List[str]
-    test_results: Dict[str, Any]
     notes: Optional[str]
     metadata: Dict[str, Any]
 
@@ -86,6 +114,18 @@ class EncryptionDemoResponse(BaseModel):
     encryption_steps: List[EncryptionStep]
     final_encrypted_data: str
     algorithm_info: Dict[str, Any]
+
+class PatientCSVData(BaseModel):
+    Name: str
+    Age: int
+    Gender: str
+    Blood_Type: str
+    Medical_Condition: str
+    Date_of_Admission: str
+    Doctor_Name: str
+    Hospital: str
+    Insurance_Provider: str
+    Billing_Amount: float
 
 # Global storage instance
 storage: Optional[TDPQIMLEMongoStorage] = None
@@ -142,14 +182,25 @@ async def store_patient_data(
     and stores it securely in MongoDB with multiple layers of protection.
     """
     try:
-        # Convert request to dictionary
         patient_data = {
             "patient_id": request.patient_id,
             "name": request.name,
             "age": request.age,
+            "gender": request.gender,
+            "blood_type": request.blood_type,
+            "medical_condition": request.medical_condition,
+            "date_of_admission": request.date_of_admission,
+            "doctor_name": request.doctor_name,
+            "hospital": request.hospital,
+            "insurance_provider": request.insurance_provider,
+            "billing_amount": request.billing_amount,
+            "room_number": request.room_number,
+            "admission_type": request.admission_type,
+            "discharge_date": request.discharge_date,
+            "medication": request.medication,
+            "test_results": request.test_results,
             "medical_history": request.medical_history,
             "current_medications": request.current_medications,
-            "test_results": request.test_results,
             "notes": request.notes
         }
         
@@ -204,9 +255,21 @@ async def retrieve_patient_data(
             patient_id=patient_data["patient_id"],
             name=patient_data["name"],
             age=patient_data["age"],
-            medical_history=patient_data["medical_history"],
-            current_medications=patient_data["current_medications"],
-            test_results=patient_data["test_results"],
+            gender=patient_data.get("gender", ""),
+            blood_type=patient_data.get("blood_type", ""),
+            medical_condition=patient_data.get("medical_condition", ""),
+            date_of_admission=patient_data.get("date_of_admission", ""),
+            doctor_name=patient_data.get("doctor_name", ""),
+            hospital=patient_data.get("hospital", ""),
+            insurance_provider=patient_data.get("insurance_provider", ""),
+            billing_amount=patient_data.get("billing_amount", 0.0),
+            room_number=patient_data.get("room_number", ""),
+            admission_type=patient_data.get("admission_type", ""),
+            discharge_date=patient_data.get("discharge_date", ""),
+            medication=patient_data.get("medication", ""),
+            test_results=patient_data.get("test_results", ""),
+            medical_history=patient_data.get("medical_history", []),
+            current_medications=patient_data.get("current_medications", []),
             notes=patient_data.get("notes"),
             metadata=metadata
         )
@@ -245,9 +308,21 @@ async def update_patient_data(
             "patient_id": request.patient_id,
             "name": request.name,
             "age": request.age,
+            "gender": request.gender,
+            "blood_type": request.blood_type,
+            "medical_condition": request.medical_condition,
+            "date_of_admission": request.date_of_admission,
+            "doctor_name": request.doctor_name,
+            "hospital": request.hospital,
+            "insurance_provider": request.insurance_provider,
+            "billing_amount": request.billing_amount,
+            "room_number": request.room_number,
+            "admission_type": request.admission_type,
+            "discharge_date": request.discharge_date,
+            "medication": request.medication,
+            "test_results": request.test_results,
             "medical_history": request.medical_history,
             "current_medications": request.current_medications,
-            "test_results": request.test_results,
             "notes": request.notes
         }
         
@@ -329,9 +404,21 @@ async def get_all_patients(
                     patient_id=patient["patient_id"],
                     name=patient["name"],
                     age=patient["age"],
+                    gender=patient.get("gender", ""),
+                    blood_type=patient.get("blood_type", ""),
+                    medical_condition=patient.get("medical_condition", ""),
+                    date_of_admission=patient.get("date_of_admission", ""),
+                    doctor_name=patient.get("doctor_name", ""),
+                    hospital=patient.get("hospital", ""),
+                    insurance_provider=patient.get("insurance_provider", ""),
+                    billing_amount=patient.get("billing_amount", 0.0),
+                    room_number=patient.get("room_number", ""),
+                    admission_type=patient.get("admission_type", ""),
+                    discharge_date=patient.get("discharge_date", ""),
+                    medication=patient.get("medication", ""),
+                    test_results=patient.get("test_results", ""),
                     medical_history=patient["medical_history"],
                     current_medications=patient["current_medications"],
-                    test_results=patient["test_results"],
                     notes=patient.get("notes"),
                     metadata={
                         "algorithm": "TDP-QIMLE",
@@ -349,9 +436,21 @@ async def get_all_patients(
                     patient_id=patient["patient_id"],
                     name=patient["name"],
                     age=patient["age"],
+                    gender=patient.get("gender", ""),
+                    blood_type=patient.get("blood_type", ""),
+                    medical_condition=patient.get("medical_condition", ""),
+                    date_of_admission=patient.get("date_of_admission", ""),
+                    doctor_name=patient.get("doctor_name", ""),
+                    hospital=patient.get("hospital", ""),
+                    insurance_provider=patient.get("insurance_provider", ""),
+                    billing_amount=patient.get("billing_amount", 0.0),
+                    room_number=patient.get("room_number", ""),
+                    admission_type=patient.get("admission_type", ""),
+                    discharge_date=patient.get("discharge_date", ""),
+                    medication=patient.get("medication", ""),
+                    test_results=patient.get("test_results", ""),
                     medical_history=patient["medical_history"],
                     current_medications=patient["current_medications"],
-                    test_results=patient["test_results"],
                     notes=patient["notes"],
                     metadata={
                         "algorithm": "TDP-QIMLE",
@@ -503,8 +602,16 @@ async def benchmark_algorithm_performance(
             "patient_id": f"BENCH_{int(time.time())}",
             "name": "Benchmark Patient",
             "age": 30,
-            "medical_history": ["condition1", "condition2"],
-            "current_medications": ["medication1", "medication2"],
+            "gender": "Male",
+            "blood_type": "O+",
+            "medical_condition": "Condition A",
+            "date_of_admission": datetime.now().isoformat(),
+            "doctor_name": "Dr. Test",
+            "hospital": "Hospital X",
+            "insurance_provider": "Provider Y",
+            "billing_amount": 1234.56,
+            "medical_history": ["history1", "history2"],
+            "current_medications": ["med1", "med2"],
             "test_results": {"test1": "result1", "test2": "result2"},
             "notes": "Benchmark data for performance testing"
         }
@@ -565,9 +672,18 @@ async def encryption_demo(request: EncryptionDemoRequest):
         original_data = {
             "name": request.name,
             "age": request.age,
-            "diagnosis": request.diagnosis,
-            "lab_results": request.lab_results,
-            "timestamp": datetime.now().isoformat()
+            "gender": request.gender,
+            "blood_type": request.blood_type,
+            "medical_condition": request.diagnosis,
+            "date_of_admission": datetime.now().isoformat(),
+            "doctor_name": request.doctor_name,
+            "hospital": request.hospital,
+            "insurance_provider": request.insurance_provider,
+            "billing_amount": request.billing_amount,
+            "medical_history": request.medical_history,
+            "current_medications": request.current_medications,
+            "test_results": request.test_results,
+            "notes": request.notes
         }
         
         # Initialize algorithm with proper parameters
@@ -724,6 +840,100 @@ async def encryption_demo(request: EncryptionDemoRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Encryption demo failed: {str(e)}")
 
+@router.post("/patients/upload-csv", response_model=Dict[str, Any])
+async def upload_patient_csv(
+    background_tasks: BackgroundTasks,
+    file: UploadFile = File(...),
+    storage: TDPQIMLEMongoStorage = Depends(get_storage),
+    credentials: HTTPAuthorizationCredentials = Depends(security)
+):
+    """
+    Upload and process a CSV file containing patient data
+    
+    The CSV should have these columns:
+    Name, Age, Gender, Blood Type, Medical Condition, 
+    Date of Admission, Doctor Name, Hospital, 
+    Insurance Provider, Billing Amount
+    
+    All data will be encrypted using TDP-QIMLE algorithm
+    and stored in MongoDB.
+    """
+    try:
+        if not file.filename.endswith('.csv'):
+            raise HTTPException(
+                status_code=400,
+                detail="Only CSV files are supported"
+            )
+
+        # Read and parse CSV
+        contents = await file.read()
+        csv_data = io.StringIO(contents.decode('utf-8'))
+        reader = csv.DictReader(csv_data)
+        
+        # Process each row
+        results = {
+            "total": 0,
+            "success": 0,
+            "failed": 0,
+            "errors": [],
+            "document_ids": []
+        }
+        
+        for row in reader:
+            results["total"] += 1
+            try:
+                # Convert to patient data structure
+                patient_data = {
+                    "patient_id": str(uuid.uuid4()),
+                    "name": row["Name"],
+                    "age": int(row["Age"]),
+                    "gender": row["Gender"],
+                    "blood_type": row["Blood Type"],
+                    "medical_condition": row["Medical Condition"],
+                    "date_of_admission": row["Date of Admission"],
+                    "doctor_name": row["Doctor Name"],
+                    "hospital": row["Hospital"],
+                    "insurance_provider": row["Insurance Provider"],
+                    "billing_amount": float(row["Billing Amount"]),
+                    "sensitivity_level": "HIGH"  # Default to high sensitivity
+                }
+                
+                # Store the data
+                document_id = await storage.store_patient_data(
+                    patient_data,
+                    SensitivityLevel.HIGH
+                )
+                
+                results["success"] += 1
+                results["document_ids"].append(document_id)
+                
+            except Exception as e:
+                results["failed"] += 1
+                results["errors"].append({
+                    "row": results["total"],
+                    "error": str(e)
+                })
+        
+        # Background task for integrity verification
+        background_tasks.add_task(
+            verify_bulk_storage_integrity,
+            storage,
+            results["document_ids"]
+        )
+        
+        return {
+            "message": "CSV processing completed",
+            "results": results,
+            "algorithm": "TDP-QIMLE"
+        }
+        
+    except Exception as e:
+        logging.error(f"Failed to process CSV: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"CSV processing failed: {str(e)}"
+        )
+
 # Background task functions
 async def verify_storage_integrity(storage: TDPQIMLEMongoStorage, patient_id: str):
     """Background task to verify storage integrity"""
@@ -741,6 +951,14 @@ async def verify_storage_integrity(storage: TDPQIMLEMongoStorage, patient_id: st
         
     except Exception as e:
         logging.error(f"Background integrity verification failed: {str(e)}")
+
+async def verify_bulk_storage_integrity(storage: TDPQIMLEMongoStorage, document_ids: List[str]):
+    """Verify integrity of multiple stored documents"""
+    try:
+        for doc_id in document_ids:
+            await storage.verify_document_integrity(doc_id)
+    except Exception as e:
+        logging.error(f"Bulk integrity verification failed: {str(e)}")
 
 # Error handlers (to be added to main FastAPI app)
 async def value_error_handler(request, exc):

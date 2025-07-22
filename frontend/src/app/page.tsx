@@ -1,3 +1,5 @@
+"use client"
+
 import PatientList from '../components/PatientList'
 import DPResult from '../components/DPResult'
 import Link from 'next/link'
@@ -5,36 +7,43 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { ArrowRight, Shield, Zap, Lock, Brain, Atom, Dna, Unlock, UserPlus, BarChart3 } from 'lucide-react'
+import BlurText from "../components/BlurText/BlurText";
+import ShinyText from '../components/ShinyText/ShinyText';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-zinc-900">
+    <div className="min-h-screen bg-white text-black">
       {/* Hero Section */}
       <section className="relative overflow-hidden">
         <div className="absolute inset-0 bg-grid-white/[0.02] bg-grid-16" />
         <div className="relative max-w-7xl mx-auto px-6 py-20">
           <div className="text-center space-y-8">
             <div className="space-y-4">
-              <h1 className="text-5xl font-bold tracking-tight">
-                <span className="text-white bg-clip-text">
-                  Revolutionary Healthcare Technology
-                </span>
-              </h1>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto text-white">
+
+                <BlurText
+                  text="TDP-QIMLE EHR System"
+                  delay={150}
+                  animateBy="words"
+                  direction="top"
+                  className="text-8xl mb-8 text-center items-center justify-center font-bold"
+                />
+              {/* <ShinyText text="Just some shiny text!" disabled={false} speed={5} className='custom-class' /> */}
+              
+              <p className="text-3xl font-mono text-muted-foreground max-w-5xl mx-auto text-black ">
                 Advanced EHR privacy protection using Temporal Differential Privacy with 
                 Quantum-Inspired Multi-Layer Encryption (TDP-QIMLE)
-              </p>
+              </p>  
             </div>
             
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" className="text-lg bg-zinc-900 hover:bg-zinc-800 px-8 py-6 border-2 rounded-full" asChild>
+            <div className="flex flex-col sm:flex-row gap-20 justify-center">
+              <Button size="lg" className="text-lg bg-blue-400 hover:bg-zinc-800 px-8 py-6 border-2 rounded-full" asChild>
                 <Link href="/algorithm">
-                  <Brain className="mr-2 h-5 w-5 text-white" />
+                  <Brain className="mr-2 h-5 w-5  text-black" />
                   Explore Algorithm
                   <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
-              <Button size="lg" variant="outline" className="text-lg bg-zinc-900 hover:bg-zinc-800 px-8 py-6" asChild>
+              <Button size="lg" variant="outline" className="text-lg bg-blue-400 hover:bg-zinc-500 px-8 py-6 " asChild>
                 <Link href="/add-patient">
                   <Shield className="mr-2 h-5 w-5" />
                   Start Encrypting
@@ -49,29 +58,29 @@ export default function Home() {
       <section className="py-20 px-6">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
+            <h2 className="text-3xl md:text-5xl font-bold mb-4">
               Advanced Cryptographic Features
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-2xl text-muted-foreground max-w-2xl mx-auto text-thin">
               Six revolutionary security layers working in harmony to protect your healthcare data.
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-blue-500/50">
               <CardHeader>
-                <div className="w-12 h-12 border-2 border-white rounded-lg flex items-center justify-center mb-4">
-                  <Atom className="h-6 w-6 text-white" />
+                <div className="w-12 h-12 border-2 border-black rounded-lg flex items-center justify-center mb-4">
+                  <Atom className="h-6 w-6 text-black" />
                 </div>
-                <CardTitle className="text-xl">Quantum-Inspired Encryption</CardTitle>
-                <CardDescription>
-                  4 quantum layers simulating superposition, entanglement, collapse, and coherence states
+                <CardTitle className="text-2xl font-extrabold ">Quantum-Inspired Encryption</CardTitle>
+                <CardDescription className="text-xl font-normal  ">
+                  4 quantum layers
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-2 text-sm text-muted-foreground">
+                <div className="space-y-2 text-sm border-2 p-2 rounded-md">
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-white rounded-full"></div>
+                    <div className="w-2 h-2  rounded-full "></div>
                     <span>SUPERPOSITION - Amplitude transformations</span>
                   </div>
                   <div className="flex items-center gap-2">
@@ -92,16 +101,16 @@ export default function Home() {
 
             <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-purple-500/50">
               <CardHeader>
-                <div className="w-12 h-12 border-2 border-white rounded-lg flex items-center justify-center mb-4">
-                  <Zap className="h-6 w-6 text-white" />
+                <div className="w-12 h-12 border-2 border-black rounded-lg flex items-center justify-center mb-4">
+                  <Zap className="h-6 w-6 text-black" />
                 </div>
-                <CardTitle className="text-xl">Lattice Obfuscation</CardTitle>
-                <CardDescription>
-                  128-dimensional lattice transformations with QR decomposition for numerical stability
+                <CardTitle className="text-2xl font-extrabold">Lattice Obfuscation</CardTitle>
+                <CardDescription className="text-xl font-normal">
+                  128-dimensional lattice transformation
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-2 text-sm text-muted-foreground">
+                <div className="space-y-2 text-sm border-2 p-2 rounded-md">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-white rounded-full"></div>
                     <span>High-dimensional mathematical obfuscation</span>
@@ -120,16 +129,16 @@ export default function Home() {
 
             <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-green-500/50">
               <CardHeader>
-                <div className="w-12 h-12 border-2 border-white rounded-lg flex items-center justify-center mb-4">
-                  <Dna className="h-6 w-6 text-white" />
+                <div className="w-12 h-12 border-2 border-black rounded-lg flex items-center justify-center mb-4">
+                  <Dna className="h-6 w-6 text-black" />
                 </div>
-                <CardTitle className="text-xl">Biological Key Evolution</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-2xl font-extrabold">Biological Key Evolution</CardTitle>
+                <CardDescription className="text-xl font-normal">
                   DNA-inspired key generation with golden ratio growth and mutation patterns
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-2 text-sm text-muted-foreground">
+                <div className="space-y-2 text-sm border-2 p-2 rounded-md">
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 bg-white rounded-full"></div>
                     <span>1000-element biological sequence</span>
@@ -148,18 +157,18 @@ export default function Home() {
 
             <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-orange-500/50">
               <CardHeader>
-                <div className="w-12 h-12 border-2 border-white rounded-lg flex items-center justify-center mb-4">
-                  <Lock className="h-6 w-6 text-white" />
+                <div className="w-12 h-12 border-2 border-black rounded-lg flex items-center justify-center mb-4">
+                  <Lock className="h-6 w-6 text-black" />
                 </div>
-                <CardTitle className="text-xl">Temporal Privacy</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-2xl font-extrabold">Temporal Privacy</CardTitle>
+                <CardDescription className="text-xl font-normal">
                   Time-decay differential privacy with mathematical guarantees
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-2 text-sm text-muted-foreground">
+                <div className="space-y-2 text-sm border-2 p-2 rounded-md">
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-white rounded-full"></div>
+                    <div className="w-2 h-2  rounded-full"></div>
                     <span>ε=1.0, δ=1e-5 privacy budget</span>
                   </div>
                   <div className="flex items-center gap-2">
@@ -176,18 +185,18 @@ export default function Home() {
 
             <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-indigo-500/50">
               <CardHeader>
-                <div className="w-12 h-12 border-2 border-white rounded-lg flex items-center justify-center mb-4">
-                  <Brain className="h-6 w-6 text-white" />
+                <div className="w-12 h-12 border-2 border-black rounded-lg flex items-center justify-center mb-4">
+                  <Brain className="h-6 w-6 text-black" />
                 </div>
-                <CardTitle className="text-xl">Homomorphic Operations</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-2xl font-extrabold">Homomorphic Operations</CardTitle>
+                <CardDescription className="text-xl font-normal">
                   Encrypted domain computations with mathematical reversibility
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-2 text-sm text-muted-foreground">
+                <div className="space-y-2 text-sm border-2 p-2 rounded-md">
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-white rounded-full"></div>
+                    <div className="w-2 h-2  rounded-full"></div>
                     <span>Compute on encrypted data</span>
                   </div>
                   <div className="flex items-center gap-2">
@@ -204,18 +213,18 @@ export default function Home() {
 
             <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-teal-500/50">
               <CardHeader>
-                <div className="w-12 h-12 border-2 border-white rounded-lg flex items-center justify-center mb-4">
-                  <Shield className="h-6 w-6 text-white" />
+                <div className="w-12 h-12 border-2 border-black rounded-lg flex items-center justify-center mb-4">
+                  <Shield className="h-6 w-6 text-black" />
                 </div>
-                <CardTitle className="text-xl">Blockchain Integrity</CardTitle>
-                <CardDescription>
+                <CardTitle className="text-2xl font-extrabold">Blockchain Integrity</CardTitle>
+                <CardDescription className="text-xl font-normal">
                   Tamper-proof verification with SHA256 hash chains
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-2 text-sm text-muted-foreground">
+                <div className="space-y-2 text-sm border-2 p-2 rounded-md">
                   <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-white rounded-full"></div>
+                    <div className="w-2 h-2  rounded-full"></div>
                     <span>Immutable audit trail</span>
                   </div>
                   <div className="flex items-center gap-2">
@@ -249,8 +258,8 @@ export default function Home() {
             <Link href="/encrypt">
               <Card className="group hover:shadow-lg transition-all duration-300 cursor-pointer">
                 <CardHeader className="text-center">
-                  <div className="w-16 h-16 border-2 border-white rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Lock className="h-8 w-8 text-white" />
+                  <div className="w-16 h-16 border-2 border-black rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Lock className="h-8 w-8 text-black" />
                   </div>
                   <CardTitle className="text-lg">Encrypt Data</CardTitle>
                   <CardDescription>
@@ -263,8 +272,8 @@ export default function Home() {
             <Link href="/decrypt">
               <Card className="group hover:shadow-lg transition-all duration-300 cursor-pointer">
                 <CardHeader className="text-center">
-                  <div className="w-16 h-16 border-2 border-white rounded-full flex items-center justify-center mx-auto mb-4">
-                    <Unlock className="h-8 w-8 text-white" />
+                  <div className="w-16 h-16 border-2 border-black rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Unlock className="h-8 w-8 text-black" />
                   </div>
                   <CardTitle className="text-lg">Decrypt Data</CardTitle>
                   <CardDescription>
@@ -277,8 +286,8 @@ export default function Home() {
             <Link href="/add-patient">
               <Card className="group hover:shadow-lg transition-all duration-300 cursor-pointer">
                 <CardHeader className="text-center">
-                  <div className="w-16 h-16 border-2 border-white rounded-full flex items-center justify-center mx-auto mb-4">
-                    <UserPlus className="h-8 w-8 text-white" />
+                  <div className="w-16 h-16 border-2 border-black rounded-full flex items-center justify-center mx-auto mb-4">
+                    <UserPlus className="h-8 w-8 text-black" />
                   </div>
                   <CardTitle className="text-lg">Add Patient</CardTitle>
                   <CardDescription>
@@ -291,8 +300,8 @@ export default function Home() {
             <Link href="/analytics">
               <Card className="group hover:shadow-lg transition-all duration-300 cursor-pointer">
                 <CardHeader className="text-center">
-                  <div className="w-16 h-16 border-2 border-white rounded-full flex items-center justify-center mx-auto mb-4">
-                    <BarChart3 className="h-8 w-8 text-white" />
+                  <div className="w-16 h-16 border-2 border-black rounded-full flex items-center justify-center mx-auto mb-4">
+                    <BarChart3 className="h-8 w-8 text-black" />
                   </div>
                   <CardTitle className="text-lg">Analytics</CardTitle>
                   <CardDescription>
@@ -319,28 +328,28 @@ export default function Home() {
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r text-white bg-clip-text  mb-2">
+              <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r text-black bg-clip-text  mb-2">
                 v3.0.0
               </div>
-              <div className="text-sm text-gray-400">Algorithm Version</div>
+              <div className="text-sm text-black">Algorithm Version</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r text-white bg-clip-text  mb-2">
+              <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r text-black bg-clip-text  mb-2">
                 4
               </div>
-              <div className="text-sm text-gray-400">Quantum Layers</div>
+              <div className="text-sm text-black">Quantum Layers</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r text-white bg-clip-text  mb-2">
+              <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r text-black bg-clip-text  mb-2">
                 128-D
               </div>
-              <div className="text-sm text-gray-400">Lattice Dimension</div>
+              <div className="text-sm text-black">Lattice Dimension</div>
             </div>
             <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r text-white bg-clip-text  mb-2">
+              <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r text-black bg-clip-text  mb-2">
                 ε=1.0
               </div>
-              <div className="text-sm text-gray-400">Privacy Budget</div>
+              <div className="text-sm text-black">Privacy Budget</div>
             </div>
           </div>
         </div>
