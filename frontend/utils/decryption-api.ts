@@ -7,7 +7,7 @@ import axios from 'axios';
 
 // Separate API instance for decryption service (Railway backend)
 const decryptionAPI = axios.create({
-  baseURL: 'http://localhost:8001/api/decrypt',
+  baseURL: 'https://ehr-implementation-production.up.railway.app/api/decrypt',
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
@@ -290,6 +290,19 @@ export const decryptionService = {
       return result.decrypted_patients;
     } catch (error: any) {
       throw new Error(`Patient list decryption failed: ${error.message}`);
+    }
+  },
+
+  // Fetch raw encrypted data for a patient
+  async getRawEncryptedPatient(patientId: string): Promise<any> {
+    try {
+      if (!currentSession) {
+        throw new Error('No active decryption session');
+      }
+      const response = await decryptionAPI.get(`/patient/encrypted/${patientId}`);
+      return response.data;
+    } catch (error: any) {
+      throw new Error(`Failed to fetch raw encrypted data: ${error.response?.data?.detail || error.message}`);
     }
   }
 };

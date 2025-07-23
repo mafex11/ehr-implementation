@@ -9,6 +9,7 @@ import { Badge } from "@/components/ui/badge"
 import { ArrowRight, Shield, Zap, Lock, Brain, Atom, Dna, Unlock, UserPlus, BarChart3 } from 'lucide-react'
 import BlurText from "../components/BlurText/BlurText";
 import ShinyText from '../components/ShinyText/ShinyText';
+import ScrollVelocity from '../components/ScrollVelocity/ScrollVelocity';
 
 export default function Home() {
   return (
@@ -18,7 +19,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-grid-white/[0.02] bg-grid-16" />
         <div className="relative max-w-7xl mx-auto px-6 py-20">
           <div className="text-center space-y-8">
-            <div className="space-y-4">
+            <div className="space-y-4 mt-20">
 
                 <BlurText
                   text="TDP-QIMLE EHR System"
@@ -27,9 +28,8 @@ export default function Home() {
                   direction="top"
                   className="text-8xl mb-8 text-center items-center justify-center font-bold"
                 />
-              {/* <ShinyText text="Just some shiny text!" disabled={false} speed={5} className='custom-class' /> */}
               
-              <p className="text-3xl font-mono text-muted-foreground max-w-5xl mx-auto text-black ">
+              <p className="text-3xl max-w-5xl mx-auto text-black ">
                 Advanced EHR privacy protection using Temporal Differential Privacy with 
                 Quantum-Inspired Multi-Layer Encryption (TDP-QIMLE)
               </p>  
@@ -44,7 +44,7 @@ export default function Home() {
                 </Link>
               </Button>
               <Button size="lg" variant="outline" className="text-lg bg-blue-400 hover:bg-zinc-500 px-8 py-6 " asChild>
-                <Link href="/add-patient">
+                <Link href="/encrypt">
                   <Shield className="mr-2 h-5 w-5" />
                   Start Encrypting
                 </Link>
@@ -61,19 +61,19 @@ export default function Home() {
             <h2 className="text-3xl md:text-5xl font-bold mb-4">
               Advanced Cryptographic Features
             </h2>
-            <p className="text-2xl text-muted-foreground max-w-2xl mx-auto text-thin">
+            <p className="text-2xl text-muted-foreground max-w-4xl mx-auto text-thin">
               Six revolutionary security layers working in harmony to protect your healthcare data.
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-7xl">
             <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-blue-500/50">
-              <CardHeader>
+              <CardHeader className='h-66'>
                 <div className="w-12 h-12 border-2 border-black rounded-lg flex items-center justify-center mb-4">
                   <Atom className="h-6 w-6 text-black" />
                 </div>
-                <CardTitle className="text-2xl font-extrabold ">Quantum-Inspired Encryption</CardTitle>
-                <CardDescription className="text-xl font-normal  ">
+                <CardTitle className="text-4xl font-extrabold ">Quantum-Inspired Encryption</CardTitle>
+                <CardDescription className="text-3xl font-normal  ">
                   4 quantum layers
                 </CardDescription>
               </CardHeader>
@@ -100,12 +100,12 @@ export default function Home() {
             </Card>
 
             <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-purple-500/50">
-              <CardHeader>
+              <CardHeader className='h-66'>
                 <div className="w-12 h-12 border-2 border-black rounded-lg flex items-center justify-center mb-4">
                   <Zap className="h-6 w-6 text-black" />
                 </div>
-                <CardTitle className="text-2xl font-extrabold">Lattice Obfuscation</CardTitle>
-                <CardDescription className="text-xl font-normal">
+                <CardTitle className="text-4xl font-extrabold">Lattice Obfuscation</CardTitle>
+                <CardDescription className="text-3xl font-normal">
                   128-dimensional lattice transformation
                 </CardDescription>
               </CardHeader>
@@ -128,12 +128,12 @@ export default function Home() {
             </Card>
 
             <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-green-500/50">
-              <CardHeader>
+              <CardHeader className='h-66'>
                 <div className="w-12 h-12 border-2 border-black rounded-lg flex items-center justify-center mb-4">
                   <Dna className="h-6 w-6 text-black" />
                 </div>
-                <CardTitle className="text-2xl font-extrabold">Biological Key Evolution</CardTitle>
-                <CardDescription className="text-xl font-normal">
+                <CardTitle className="text-4xl font-extrabold">Biological Key Evolution</CardTitle>
+                <CardDescription className="text-2xl font-normal">
                   DNA-inspired key generation with golden ratio growth and mutation patterns
                 </CardDescription>
               </CardHeader>
@@ -156,12 +156,12 @@ export default function Home() {
             </Card>
 
             <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-orange-500/50">
-              <CardHeader>
+              <CardHeader className='h-66'>
                 <div className="w-12 h-12 border-2 border-black rounded-lg flex items-center justify-center mb-4">
                   <Lock className="h-6 w-6 text-black" />
                 </div>
-                <CardTitle className="text-2xl font-extrabold">Temporal Privacy</CardTitle>
-                <CardDescription className="text-xl font-normal">
+                <CardTitle className="text-4xl font-extrabold">Temporal Privacy</CardTitle>
+                <CardDescription className="text-3xl font-normal">
                   Time-decay differential privacy with mathematical guarantees
                 </CardDescription>
               </CardHeader>
@@ -184,13 +184,13 @@ export default function Home() {
             </Card>
 
             <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-indigo-500/50">
-              <CardHeader>
+              <CardHeader className='h-66'>
                 <div className="w-12 h-12 border-2 border-black rounded-lg flex items-center justify-center mb-4">
                   <Brain className="h-6 w-6 text-black" />
                 </div>
-                <CardTitle className="text-2xl font-extrabold">Homomorphic Operations</CardTitle>
-                <CardDescription className="text-xl font-normal">
-                  Encrypted domain computations with mathematical reversibility
+                <CardTitle className="text-4xl font-extrabold">Homomorphic Operations</CardTitle>
+                <CardDescription className="text-3xl font-normal">
+                  Encrypted domain with mathematical reversibility
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -212,12 +212,12 @@ export default function Home() {
             </Card>
 
             <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-teal-500/50">
-              <CardHeader>
+              <CardHeader className='h-66'>
                 <div className="w-12 h-12 border-2 border-black rounded-lg flex items-center justify-center mb-4">
                   <Shield className="h-6 w-6 text-black" />
                 </div>
-                <CardTitle className="text-2xl font-extrabold">Blockchain Integrity</CardTitle>
-                <CardDescription className="text-xl font-normal">
+                <CardTitle className="text-4xl font-extrabold">Blockchain Integrity</CardTitle>
+                <CardDescription className="text-3xl font-normal">
                   Tamper-proof verification with SHA256 hash chains
                 </CardDescription>
               </CardHeader>
@@ -315,7 +315,7 @@ export default function Home() {
       </section>
 
       {/* Algorithm Stats */}
-      <section className="py-20 px-6">
+      <section className=" px-6">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">
@@ -385,9 +385,10 @@ export default function Home() {
           </div>
         </div>
       </section> */}
-
+      
       <div className='flex justify-center items-center'>
-      <Button size="lg" className="text-2xl bg-zinc-900 hover:bg-zinc-800 text-white px-8 py-6 border-2 rounded-full mb-20" asChild>
+        
+      <Button size="lg" className=" mt-10 text-2xl bg-zinc-900 hover:bg-zinc-800 text-white px-8 py-6 border-2 rounded-full mb-20" asChild>
                 <Link href="/algorithm">
                   <Brain className="mr-2 h-5 w-5 text-white" />
                   Explore Algorithm
@@ -395,6 +396,11 @@ export default function Home() {
                 </Link>
               </Button>
       </div>
+      <ScrollVelocity
+        texts={['', 'Checkout now!']} 
+        velocity={200} 
+        className=""
+      />
     </div>
   )
 }

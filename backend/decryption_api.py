@@ -337,6 +337,26 @@ async def search_encrypted_patients(
         logging.error(f"Encrypted patient search failed: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Search failed: {str(e)}")
 
+@router.get("/patient/encrypted/{patient_id}")
+async def get_encrypted_patient(
+    patient_id: str,
+    session_id: str = Depends(verify_decryption_session),
+    storage: TDPQIMLEMongoStorage = Depends(get_decryption_storage)
+):
+    """
+    Get the full encrypted MongoDB document for a patient, including encrypted_data.
+    Requires a valid decryption session.
+    """
+    try:
+        doc = await storage.patients_collection.find_one({"patient_id": patient_id})
+        if not doc:
+            raise HTTPException(status_code=404, detail="Patient not found")
+        # Remove MongoDB internal fields if present
+        doc.pop("_id", None)
+        return doc
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Failed to fetch encrypted patient: {str(e)}")
+
 @router.get("/audit/session")
 async def get_session_audit_log(
     session_id: str = Depends(verify_decryption_session)

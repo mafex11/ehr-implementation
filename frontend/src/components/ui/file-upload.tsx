@@ -52,7 +52,7 @@ export const FileUpload = ({
   });
 
   return (
-    <div className="w-full bg-zinc-800 rounded-2" {...getRootProps()}>
+    <div className="w-full bg-gray-200 rounded-2" {...getRootProps()}>
       <motion.div
         onClick={handleClick}
         whileHover="animate"
@@ -69,10 +69,10 @@ export const FileUpload = ({
           <GridPattern />
         </div> */}
         <div className="flex flex-col items-center justify-center ">
-          <p className="relative z-20 font-sans font-bold text-neutral-700 dark:text-neutral-300 text-base">
+          <p className="relative z-20 text-black text-2xl font-light">
             Upload file
           </p>
-          <p className="relative z-20 font-sans font-normal text-neutral-400 dark:text-neutral-400 text-base mt-2">
+          <p className="relative z-20 text-black text-xl font-light mt-2">
             Drag or drop your files here or click to upload
           </p>
           <div className="relative w-full mt-10 max-w-xl mx-auto">

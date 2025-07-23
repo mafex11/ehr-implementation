@@ -6,8 +6,12 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Star, Shield, Database, Layers, Zap, Lock, CheckCircle, ArrowLeft } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import BlurText from '@/components/BlurText/BlurText';
+import ScrollVelocity from '@/components/ScrollVelocity/ScrollVelocity'
 
 export default function AlgorithmPage() {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState('overview')
 
   const tabs = [
@@ -20,42 +24,48 @@ export default function AlgorithmPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-zinc-900">
-      <div className="max-w-7xl mx-auto px-6 py-12">
+    <div className="min-h-screen bg-white text-black p-6">
+      <div className="max-w-[120rem] mx-auto">
         {/* Header */}
         <div className="mb-12">
-          <Button variant="ghost" className="mb-6" asChild>
-            <Link href="/">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Back to Dashboard
-            </Link>
-          </Button>
+        <Button 
+                variant="ghost" 
+                onClick={() => router.push('/')}
+                className="mb-4 text-2xl"
+              >
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Back to Dashboard
+              </Button>
           
           <div className="space-y-4">
-            <h1 className="text-4xl md:text-5xl font-bold text-white">
-              TDP-QIMLE Algorithm
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl">
+            <BlurText
+            text="TDP-QIMLE Algorithm"
+            delay={150}
+            animateBy="words"
+            direction="top"
+            className="text-8xl mb-2 mt-20 text-center items-center justify-center font-bold"
+          />
+            <p className="text-2xl text-muted-foreground max-w-3xl text-center mx-auto">
               Temporal Differential Privacy with Quantum-Inspired Multi-Layer Encryption
             </p>
-            <div className="flex flex-wrap gap-2">
-              <Badge variant="outline">Version 3.0.0</Badge>
-              <Badge variant="outline">Post-Quantum Secure</Badge>
-              <Badge variant="outline">Research Implementation</Badge>
+            <div className="flex flex-wrap gap-2 justify-center ">
+              <Badge className='bg-zinc-800 hover:bg-zinc-700 text-xl font-extralight' variant="outline">Version 3.0.0</Badge>
+              <Badge className='bg-zinc-800 hover:bg-zinc-700 text-xl font-extralight' variant="outline">Post-Quantum Secure</Badge>
+              <Badge className='bg-zinc-800 hover:bg-zinc-700 text-xl font-extralight' variant="outline">Research Implementation</Badge>
             </div>
           </div>
         </div>
 
         {/* Tab Navigation */}
         <div className="mb-8">
-          <div className="flex flex-wrap gap-2 p-1 bg-muted rounded-lg">
+          <div className="flex flex-wrap gap-2 p-2 bg-blue-500 border-2 rounded-lg w-fit mx-auto justify-center ">
             {tabs.map(tab => (
               <Button
                 key={tab.id}
                 variant={activeTab === tab.id ? "default" : "ghost"}
                 size="sm"
                 onClick={() => setActiveTab(tab.id)}
-                className="flex items-center gap-2 bg-zinc-900 hover:bg-zinc-800 border-2"
+                className="flex items-center gap-2 border-2 text-xl hover:bg-zinc-900 hover:text-white"
               >
                 <span>{tab.icon}</span>
                 <span className="hidden sm:inline">{tab.label}</span>
@@ -70,13 +80,13 @@ export default function AlgorithmPage() {
             <div className="space-y-8">
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-2xl">Algorithm Overview</CardTitle>
-                  <CardDescription>
+                  <CardTitle className="text-4xl">Algorithm Overview</CardTitle>
+                  <CardDescription className='text-2xl mt-6 ml-6'>
                     TDP-QIMLE is a revolutionary encryption algorithm that combines cutting-edge cryptographic 
                     techniques to provide unprecedented security for healthcare data.
                   </CardDescription>
                 </CardHeader>
-                <CardContent>
+                <CardContent className='text-2xl ml-6'>
                   <p className="text-muted-foreground mb-6">
                     The algorithm integrates quantum-inspired encryption, lattice-based obfuscation, and 
                     biological pattern evolution to create a post-quantum secure system with mathematical 
@@ -89,17 +99,18 @@ export default function AlgorithmPage() {
                 <Card className="group hover:shadow-lg transition-all duration-300">
                   <CardHeader>
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-zinc-900 rounded-lg flex items-center justify-center">
-                        <Shield className="h-5 w-5 text-white" />
+                      <div className="w-10 h-10 bg-white border-2 border-black rounded-lg flex items-center justify-center">
+                        <Shield className="h-5 w-5 text-black" />
                       </div>
                       <div>
-                        <CardTitle className="text-lg">Quantum-Inspired Encryption</CardTitle>
-                        <CardDescription>Four quantum-inspired layers</CardDescription>
+                        <CardTitle className="text-2xl font-bold ">Quantum-Inspired Encryption</CardTitle>
+                      
                       </div>
                     </div>
+                    <CardDescription className='text-xl'>Four quantum-inspired layers</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-lg text-muted-foreground font-normal">
                       Simulate quantum superposition, entanglement, collapse, and coherence states 
                       for enhanced security with mathematical reversibility.
                     </p>
@@ -109,17 +120,18 @@ export default function AlgorithmPage() {
                 <Card className="group hover:shadow-lg transition-all duration-300">
                   <CardHeader>
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-zinc-900 rounded-lg flex items-center justify-center">
-                        <Zap className="h-5 w-5 text-white" />
+                      <div className="w-10 h-10 bg-white border-2 border-black rounded-lg flex items-center justify-center">
+                        <Zap className="h-5 w-5 text-black" />
                       </div>
                       <div>
-                        <CardTitle className="text-lg">Lattice Obfuscation</CardTitle>
-                        <CardDescription>128-dimensional transformations</CardDescription>
+                        <CardTitle className="text-2xl font-bold">Lattice Obfuscation</CardTitle>
+                       
                       </div>
                     </div>
+                    <CardDescription className='text-xl'>128-dimensional transformations</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-lg text-muted-foreground font-normal">
                       High-dimensional mathematical obfuscation with QR decomposition for 
                       numerical stability and quantum resistance.
                     </p>
@@ -129,17 +141,18 @@ export default function AlgorithmPage() {
                 <Card className="group hover:shadow-lg transition-all duration-300">
                   <CardHeader>
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-zinc-900 rounded-lg flex items-center justify-center">
-                        <Layers className="h-5 w-5 text-white" />
+                      <div className="w-10 h-10 bg-white border-2 border-black rounded-lg flex items-center justify-center">
+                        <Layers className="h-5 w-5 text-black" />
                       </div>
                       <div>
-                        <CardTitle className="text-lg">Biological Evolution</CardTitle>
-                        <CardDescription>DNA-inspired key generation</CardDescription>
+                        <CardTitle className="text-2xl font-bold">Biological Evolution</CardTitle>
+                      
                       </div>
                     </div>
+                    <CardDescription className='text-xl'>DNA-inspired key generation</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-lg text-muted-foreground font-normal">
                       1000-element biological sequence with golden ratio growth and 
                       5% mutation rate for dynamic, unpredictable keys.
                     </p>
@@ -149,17 +162,17 @@ export default function AlgorithmPage() {
                 <Card className="group hover:shadow-lg transition-all duration-300">
                   <CardHeader>
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-zinc-900 rounded-lg flex items-center justify-center">
-                        <Lock className="h-5 w-5 text-white" />
+                      <div className="w-10 h-10 bg-white border-2 border-black rounded-lg flex items-center justify-center">
+                        <Lock className="h-5 w-5 text-black" />
                       </div>
                       <div>
-                        <CardTitle className="text-lg">Temporal Privacy</CardTitle>
-                        <CardDescription>Time-decay mechanisms</CardDescription>
+                        <CardTitle className="text-2xl font-bold">Temporal Privacy</CardTitle>
                       </div>
                     </div>
+                    <CardDescription className='text-xl'>Time-decay mechanisms</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-lg text-muted-foreground font-normal">
                       Mathematical privacy guarantees with ε=1.0, δ=1e-5 budget 
                       and adaptive sensitivity scaling.
                     </p>
@@ -169,23 +182,23 @@ export default function AlgorithmPage() {
 
               <Card className="bg-muted/20">
                 <CardHeader>
-                  <CardTitle className="text-lg">Encryption Process Flow</CardTitle>
+                  <CardTitle className="text-4xl font-extralight">Encryption Process Flow</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="flex flex-wrap items-center gap-2 text-sm">
-                    <Badge variant="secondary" className='bg-zinc-800 hover:bg-zinc-700'>Patient Data</Badge>
+                  <div className="flex flex-wrap items-center gap-2 text-xl">
+                    <Badge variant="secondary" className='text-xl bg-white hover:bg-zinc-700 hover:text-white h-10 border-2 border-black'>Patient Data</Badge>
                     <CheckCircle className="h-4 w-4 text-muted-foreground" />
-                    <Badge variant="secondary" className='bg-zinc-800 hover:bg-zinc-700'>Quantum Layers</Badge>
+                    <Badge variant="secondary" className='text-xl bg-white hover:bg-zinc-700 hover:text-white h-10 border-2 border-black'>Quantum Layers</Badge>
                     <CheckCircle className="h-4 w-4 text-muted-foreground" />
-                    <Badge variant="secondary" className='bg-zinc-800 hover:bg-zinc-700'>Lattice Obfuscation</Badge>
+                    <Badge variant="secondary" className='text-xl bg-white hover:bg-zinc-700 hover:text-white h-10 border-2 border-black'>Lattice Obfuscation</Badge>
                     <CheckCircle className="h-4 w-4 text-muted-foreground" />
-                    <Badge variant="secondary" className='bg-zinc-800 hover:bg-zinc-700'>AES Encryption</Badge>
+                    <Badge variant="secondary" className='text-xl bg-white hover:bg-zinc-700 hover:text-white h-10 border-2 border-black'>AES Encryption</Badge>
                     <CheckCircle className="h-4 w-4 text-muted-foreground" />
-                    <Badge variant="secondary" className='bg-zinc-800 hover:bg-zinc-700'>Homomorphic Transform</Badge>
+                    <Badge variant="secondary" className='text-xl bg-white hover:bg-zinc-700 hover:text-white h-10 border-2 border-black'>Homomorphic Transform</Badge>
                     <CheckCircle className="h-4 w-4 text-muted-foreground" />
-                    <Badge variant="secondary" className='bg-zinc-800 hover:bg-zinc-700'>Integrity Block</Badge>
+                    <Badge variant="secondary" className='text-xl bg-white hover:bg-zinc-700 hover:text-white h-10 border-2 border-black'>Integrity Block</Badge>
                     <CheckCircle className="h-4 w-4 text-muted-foreground" />
-                    <Badge variant="secondary" className='bg-zinc-800 hover:bg-zinc-700'>Secure Storage</Badge>
+                    <Badge variant="secondary" className='text-xl bg-white hover:bg-zinc-700 hover:text-white h-10 border-2 border-black'>Secure Storage</Badge>
                   </div>
                 </CardContent>
               </Card>
@@ -196,8 +209,8 @@ export default function AlgorithmPage() {
             <div className="space-y-8">
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-2xl">Quantum-Inspired Encryption Layers</CardTitle>
-                  <CardDescription>
+                  <CardTitle className="text-4xl font-bold">Quantum-Inspired Encryption Layers</CardTitle>
+                  <CardDescription className='text-2xl'>
                     Four distinct quantum-inspired encryption layers, each simulating different 
                     quantum mechanical phenomena for enhanced security.
                   </CardDescription>
@@ -205,17 +218,17 @@ export default function AlgorithmPage() {
               </Card>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Card className="border-blue-200 dark:border-white">
+                <Card className="border-blue-200 dark:border-black">
                   <CardHeader>
-                    <CardTitle className="text-xl flex items-center gap-2">
-                      <div className="w-8 h-8 bg-zinc-900 rounded-full flex items-center justify-center">
-                        <span className="text-white text-sm">🌊</span>
+                    <CardTitle className="text-2xl flex items-center gap-2">
+                      <div className="w-12 h-12 bg-white border-2 border-black rounded-full flex items-center justify-center">
+                        <span className="text-black text-md">🌊</span>
                       </div>
                       SUPERPOSITION Layer
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="space-y-2 text-sm">
+                  <CardContent className="space-y-3 text-lg">
+                    <div className="space-y-2 text-lg">
                       <p><strong>Mechanism:</strong> Complex amplitude transformations</p>
                       <p><strong>Operation:</strong> XOR with real and imaginary amplitude factors</p>
                       <p><strong>Security:</strong> Simulates quantum superposition states</p>
@@ -224,17 +237,17 @@ export default function AlgorithmPage() {
                   </CardContent>
                 </Card>
 
-                <Card className="border-purple-200 dark:border-white">
+                <Card className="border-purple-200 dark:border-black">
                   <CardHeader>
-                    <CardTitle className="text-xl flex items-center gap-2">
-                      <div className="w-8 h-8 bg-zinc-900 rounded-full flex items-center justify-center">
-                        <span className="text-white text-sm">🔗</span>
+                    <CardTitle className="text-2xl flex items-center gap-2">
+                      <div className="w-12 h-12 bg-white border-2 border-black rounded-full flex items-center justify-center">
+                        <span className="text-black text-md">🔗</span>
                       </div>
                       ENTANGLED Layer
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="space-y-2 text-sm">
+                  <CardContent className="space-y-3 text-lg">
+                    <div className="space-y-2 text-lg">
                       <p><strong>Mechanism:</strong> Position-based correlation encryption</p>
                       <p><strong>Operation:</strong> XOR with position factor and entanglement key</p>
                       <p><strong>Security:</strong> Creates interdependent byte relationships</p>
@@ -243,17 +256,17 @@ export default function AlgorithmPage() {
                   </CardContent>
                 </Card>
 
-                <Card className="border-green-200 dark:border-white">
+                <Card className="border-green-200 dark:border-black">
                   <CardHeader>
-                    <CardTitle className="text-xl flex items-center gap-2">
-                      <div className="w-8 h-8 bg-zinc-900 rounded-full flex items-center justify-center">
-                        <span className="text-white text-sm">💥</span>
+                    <CardTitle className="text-2xl flex items-center gap-2">
+                      <div className="w-12 h-12 bg-white border-2 border-black rounded-full flex items-center justify-center">
+                        <span className="text-black text-md">💥</span>
                       </div>
                       COLLAPSED Layer
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="space-y-2 text-sm">
+                  <CardContent className="space-y-3 text-lg">
+                    <div className="space-y-2 text-lg">
                       <p><strong>Mechanism:</strong> Phase-shift transformations</p>
                       <p><strong>Operation:</strong> XOR with phase-derived factors</p>
                       <p><strong>Security:</strong> Simulates wave function collapse</p>
@@ -262,17 +275,17 @@ export default function AlgorithmPage() {
                   </CardContent>
                 </Card>
 
-                <Card className="border-orange-200 dark:border-white">
+                <Card className="border-orange-200 dark:border-black">
                   <CardHeader>
-                    <CardTitle className="text-xl flex items-center gap-2">
-                      <div className="w-8 h-8 bg-zinc-900 rounded-full flex items-center justify-center">
-                        <span className="text-white text-sm">✨</span>
+                    <CardTitle className="text-2xl flex items-center gap-2">
+                      <div className="w-12 h-12 bg-white border-2 border-black rounded-full flex items-center justify-center">
+                        <span className="text-black text-md">✨</span>
                       </div>
                       COHERENT Layer
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="space-y-2 text-sm">
+                  <CardContent className="space-y-3 text-lg">
+                    <div className="space-y-2 text-lg">
                       <p><strong>Mechanism:</strong> Amplitude-phase combination</p>
                       <p><strong>Operation:</strong> XOR with combined amplitude and phase factors</p>
                       <p><strong>Security:</strong> Coherent state simulation</p>
@@ -284,10 +297,10 @@ export default function AlgorithmPage() {
 
               <Card className="bg-muted/20">
                 <CardHeader>
-                  <CardTitle className="text-lg">Quantum Layer Processing</CardTitle>
+                  <CardTitle className="text-4xl font-extralight">Quantum Layer Processing</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-2 text-sm">
+                  <div className="space-y-2 text-xl">
                     <p><strong>Forward Processing:</strong> Data passes through layers 0→1→2→3</p>
                     <p><strong>Reverse Processing:</strong> Decryption reverses layers 3→2→1→0</p>
                     <p><strong>Mathematical Guarantee:</strong> All operations are XOR-based for perfect reversibility</p>
@@ -302,8 +315,8 @@ export default function AlgorithmPage() {
             <div className="space-y-8">
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-2xl">Multi-Dimensional Lattice Obfuscation</CardTitle>
-                  <CardDescription>
+                  <CardTitle className="text-4xl font-bold">Multi-Dimensional Lattice Obfuscation</CardTitle>
+                  <CardDescription className='text-2xl'>
                     High-dimensional mathematical transformations to obscure data patterns 
                     while maintaining complete recoverability.
                   </CardDescription>
@@ -313,13 +326,15 @@ export default function AlgorithmPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-xl flex items-center gap-2">
-                      <Zap className="h-5 w-5 text-purple-500" />
+                    <CardTitle className="text-2xl flex items-center gap-2">
+                      <div className="w-12 h-12 bg-white border-2 border-black rounded-full flex items-center justify-center">
+                        <Zap className="h-5 w-5 text-black" />
+                      </div>
                       Lattice Parameters
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="space-y-2 text-sm">
+                  <CardContent className="space-y-3 text-lg">
+                    <div className="space-y-2 text-lg">
                       <p><strong>Dimension:</strong> 128-dimensional lattice space</p>
                       <p><strong>Basis Generation:</strong> QR decomposition for numerical stability</p>
                       <p><strong>Noise Injection:</strong> Sensitivity-based Gaussian noise</p>
@@ -330,13 +345,15 @@ export default function AlgorithmPage() {
 
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-xl flex items-center gap-2">
-                      <Shield className="h-5 w-5 text-green-500" />
+                    <CardTitle className="text-2xl flex items-center gap-2">
+                      <div className="w-12 h-12 bg-white border-2 border-black rounded-full flex items-center justify-center">
+                        <Shield className="h-5 w-5 text-black" />
+                      </div>
                       Transformation Process
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="space-y-2 text-sm">
+                  <CardContent className="space-y-3 text-lg">
+                    <div className="space-y-2 text-lg">
                       <p><strong>Step 1:</strong> Convert data to lattice coordinates</p>
                       <p><strong>Step 2:</strong> Add sensitivity-based noise vector</p>
                       <p><strong>Step 3:</strong> Apply lattice basis transformation</p>
@@ -348,10 +365,10 @@ export default function AlgorithmPage() {
 
               <Card className="bg-blue-50/50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800">
                 <CardHeader>
-                  <CardTitle className="text-lg">Mathematical Foundation</CardTitle>
+                  <CardTitle className="text-4xl font-extralight">Mathematical Foundation</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-2 text-sm">
+                  <div className="space-y-2 text-xl">
                     <p><strong>Lattice Basis:</strong> Well-conditioned matrix generated using QR decomposition</p>
                     <p><strong>Transformation:</strong> obfuscated = basis × (data + noise)</p>
                     <p><strong>Recovery:</strong> data = stored_coordinates (exact recovery)</p>
@@ -366,8 +383,8 @@ export default function AlgorithmPage() {
             <div className="space-y-8">
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-2xl">Biological Pattern Key Evolution</CardTitle>
-                  <CardDescription>
+                  <CardTitle className="text-4xl font-bold">Biological Pattern Key Evolution</CardTitle>
+                  <CardDescription className='text-2xl'>
                     The key evolution system mimics biological processes to create dynamic, 
                     unpredictable encryption keys that evolve over time.
                   </CardDescription>
@@ -377,13 +394,15 @@ export default function AlgorithmPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-xl flex items-center gap-2">
-                      <Layers className="h-5 w-5 text-green-500" />
+                    <CardTitle className="text-2xl flex items-center gap-2">
+                      <div className="w-12 h-12 bg-white border-2 border-black rounded-full flex items-center justify-center">
+                        <Layers className="h-5 w-5 text-black" />
+                      </div>
                       DNA-Inspired Sequence
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="space-y-2 text-sm">
+                  <CardContent className="space-y-3 text-lg">
+                    <div className="space-y-2 text-lg">
                       <p><strong>Length:</strong> 1000 elements</p>
                       <p><strong>Growth Pattern:</strong> Golden ratio (φ = 1.618...)</p>
                       <p><strong>Mutation Rate:</strong> 5% for genetic diversity</p>
@@ -394,13 +413,15 @@ export default function AlgorithmPage() {
 
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-xl flex items-center gap-2">
-                      <Shield className="h-5 w-5 text-blue-500" />
+                    <CardTitle className="text-2xl flex items-center gap-2">
+                      <div className="w-12 h-12 bg-white border-2 border-black rounded-full flex items-center justify-center">
+                        <Shield className="h-5 w-5 text-black" />
+                      </div>
                       Key Evolution Process
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="space-y-2 text-sm">
+                  <CardContent className="space-y-3 text-lg">
+                    <div className="space-y-2 text-lg">
                       <p><strong>Time Index:</strong> timestamp % sequence_length</p>
                       <p><strong>Evolution Factor:</strong> biological_sequence[time_index]</p>
                       <p><strong>Key Material:</strong> master_key + evolution_factor</p>
@@ -412,10 +433,10 @@ export default function AlgorithmPage() {
 
               <Card className="bg-purple-50/50 dark:bg-purple-950/20 border-purple-200 dark:border-purple-800">
                 <CardHeader>
-                  <CardTitle className="text-lg">Biological Simulation</CardTitle>
+                  <CardTitle className="text-4xl font-extralight">Biological Simulation</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-2 text-sm">
+                  <div className="space-y-2 text-xl">
                     <p><strong>Fibonacci-like Growth:</strong> next_val = (current × φ) mod 2³²</p>
                     <p><strong>Mutation Mechanism:</strong> 5% chance of doubling based on deterministic hash</p>
                     <p><strong>Genetic Diversity:</strong> Mutations prevent sequence stagnation</p>
@@ -430,8 +451,8 @@ export default function AlgorithmPage() {
             <div className="space-y-8">
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-2xl">Advanced Security Features</CardTitle>
-                  <CardDescription>
+                  <CardTitle className="text-4xl font-bold">Advanced Security Features</CardTitle>
+                  <CardDescription className='text-2xl'>
                     TDP-QIMLE incorporates multiple layers of security mechanisms to provide 
                     comprehensive protection against various attack vectors.
                   </CardDescription>
@@ -441,13 +462,15 @@ export default function AlgorithmPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <Card className="border-red-200 dark:border-red-800">
                   <CardHeader>
-                    <CardTitle className="text-xl flex items-center gap-2">
-                      <Shield className="h-5 w-5 text-red-500" />
+                    <CardTitle className="text-2xl flex items-center gap-2">
+                      <div className="w-12 h-12 bg-white border-2 border-black rounded-full flex items-center justify-center">
+                        <Shield className="h-5 w-5 text-black" />
+                      </div>
                       Post-Quantum Security
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="space-y-2 text-sm">
+                  <CardContent className="space-y-3 text-lg">
+                    <div className="space-y-2 text-lg">
                       <p><strong>Lattice-Based:</strong> Resistant to quantum attacks</p>
                       <p><strong>Multi-Layer Defense:</strong> Multiple encryption layers</p>
                       <p><strong>Quantum-Inspired:</strong> Leverages quantum principles</p>
@@ -458,13 +481,15 @@ export default function AlgorithmPage() {
 
                 <Card className="border-blue-200 dark:border-blue-800">
                   <CardHeader>
-                    <CardTitle className="text-xl flex items-center gap-2">
-                      <Lock className="h-5 w-5 text-blue-500" />
+                    <CardTitle className="text-2xl flex items-center gap-2">
+                      <div className="w-12 h-12 bg-white border-2 border-black rounded-full flex items-center justify-center">
+                        <Lock className="h-5 w-5 text-black" />
+                      </div>
                       Cryptographic Strength
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="space-y-2 text-sm">
+                  <CardContent className="space-y-3 text-lg">
+                    <div className="space-y-2 text-lg">
                       <p><strong>AES-256:</strong> Industry-standard symmetric encryption</p>
                       <p><strong>Key Evolution:</strong> Dynamic key generation</p>
                       <p><strong>Hash Strengthening:</strong> 1000 SHA256 iterations</p>
@@ -476,10 +501,10 @@ export default function AlgorithmPage() {
 
               <Card className="bg-green-50/50 dark:bg-green-950/20 border-green-200 dark:border-green-800">
                 <CardHeader>
-                  <CardTitle className="text-lg">Attack Resistance</CardTitle>
+                  <CardTitle className="text-4xl font-extralight">Attack Resistance</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xl">
                     <div className="space-y-2">
                       <p><strong>✓ Quantum Attacks:</strong> Lattice-based resistance</p>
                       <p><strong>✓ Pattern Analysis:</strong> Multi-layer obfuscation</p>
@@ -502,8 +527,8 @@ export default function AlgorithmPage() {
             <div className="space-y-8">
               <Card>
                 <CardHeader>
-                  <CardTitle className="text-2xl">Implementation Details</CardTitle>
-                  <CardDescription>
+                  <CardTitle className="text-4xl font-bold">Implementation Details</CardTitle>
+                  <CardDescription className='text-2xl'>
                     Technical implementation specifications and performance characteristics 
                     of the TDP-QIMLE algorithm.
                   </CardDescription>
@@ -513,13 +538,15 @@ export default function AlgorithmPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-xl flex items-center gap-2">
-                      <Shield className="h-5 w-5 text-blue-500" />
+                    <CardTitle className="text-2xl flex items-center gap-2">
+                      <div className="w-12 h-12 bg-white border-2 border-black rounded-full flex items-center justify-center">
+                        <Shield className="h-5 w-5 text-black" />
+                      </div>
                       Algorithm Parameters
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="space-y-2 text-sm">
+                  <CardContent className="space-y-3 text-lg">
+                    <div className="space-y-2 text-lg">
                       <p><strong>Version:</strong> 3.0.0</p>
                       <p><strong>Lattice Dimension:</strong> 128</p>
                       <p><strong>Quantum Layers:</strong> 4</p>
@@ -532,13 +559,15 @@ export default function AlgorithmPage() {
 
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-xl flex items-center gap-2">
-                      <Shield className="h-5 w-5 text-green-500" />
+                    <CardTitle className="text-2xl flex items-center gap-2">
+                      <div className="w-12 h-12 bg-white border-2 border-black rounded-full flex items-center justify-center">
+                        <Shield className="h-5 w-5 text-black" />
+                      </div>
                       Performance Metrics
                     </CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-3">
-                    <div className="space-y-2 text-sm">
+                  <CardContent className="space-y-3 text-lg">
+                    <div className="space-y-2 text-lg">
                       <p><strong>Encryption Speed:</strong> Variable (sensitivity-dependent)</p>
                       <p><strong>Decryption Speed:</strong> Optimized for reversibility</p>
                       <p><strong>Storage Overhead:</strong> ~30-50% due to metadata</p>
@@ -551,10 +580,10 @@ export default function AlgorithmPage() {
 
               <Card className="bg-muted/20">
                 <CardHeader>
-                  <CardTitle className="text-lg">Algorithm Workflow</CardTitle>
+                  <CardTitle className="text-4xl font-extralight">Algorithm Workflow</CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-4">
+                  <div className="space-y-4 text-xl">
                     {[
                       { step: 1, title: "Data Serialization", desc: "JSON encoding of patient data", color: "bg-blue-500" },
                       { step: 2, title: "Quantum Processing", desc: "4-layer quantum-inspired encryption", color: "bg-purple-500" },
@@ -579,6 +608,11 @@ export default function AlgorithmPage() {
               </Card>
             </div>
           )}
+        </div>
+        <div className="flex justify-center mt-20 mb-20"> 
+          <Button className="bg-blue-500 text-white hover:bg-zinc-800 hover:text-white h-20 w-fill text-2xl font-bold border-2 border-black">
+            Encrypt Data Now!
+          </Button>
         </div>
       </div>
     </div>

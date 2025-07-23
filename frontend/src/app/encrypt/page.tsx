@@ -6,15 +6,19 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Progress } from '@/components/ui/progress';
-import { Loader2, Shield, Lock, Database, CheckCircle, AlertCircle, ArrowLeft, Eye, EyeOff } from 'lucide-react';
+import { Loader2, Shield, Lock, AlertCircle, ArrowLeft } from 'lucide-react';
 import api from '../../../utils/api';
 import { FileUpload } from "@/components/ui/file-upload";
-import Papa, { ParseResult, ParseError } from 'papaparse';
+import Papa, { ParseResult } from 'papaparse';
+import BlurText from '@/components/BlurText/BlurText';
+import { AnimatePresence, motion, easeInOut } from 'framer-motion';
+import ScrollVelocity from '@/components/ScrollVelocity/ScrollVelocity';
+
 
 interface PatientData {
   name: string;
@@ -59,7 +63,6 @@ export default function EncryptPage() {
   const [encryptionLogs, setEncryptionLogs] = useState<EncryptionLog[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [showAdvanced, setShowAdvanced] = useState(false);
   const [encryptionProgress, setEncryptionProgress] = useState(0);
   const [currentStep, setCurrentStep] = useState('');
   const [uploading, setUploading] = useState(false);
@@ -83,7 +86,6 @@ export default function EncryptPage() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    
     if (name === 'age' || name === 'lab_result') {
       setPatientData(prev => ({ ...prev, [name]: value === '' ? '' : parseFloat(value) }));
     } else {
@@ -107,23 +109,19 @@ export default function EncryptPage() {
       setError('Please fill in all patient data fields');
       return false;
     }
-    
     if (typeof patientData.age === 'number' && (patientData.age < 0 || patientData.age > 150)) {
       setError('Age must be between 0 and 150');
       return false;
     }
-    
     if (encryptionSettings.epsilon < 0.1 || encryptionSettings.epsilon > 10) {
       setError('Epsilon must be between 0.1 and 10');
       return false;
     }
-    
     return true;
   };
 
   const simulateEncryptionProcess = async () => {
     if (!encryptionSettings.showProcess) return;
-    
     const steps = [
       { step: 'Validating input data', delay: 500 },
       { step: 'Initializing quantum layers', delay: 800 },
@@ -134,7 +132,6 @@ export default function EncryptPage() {
       { step: 'Integrity verification', delay: 400 },
       { step: 'Storing encrypted data', delay: 300 }
     ];
-    
     for (let i = 0; i < steps.length; i++) {
       setCurrentStep(steps[i].step);
       setEncryptionProgress((i + 1) / steps.length * 100);
@@ -148,16 +145,10 @@ export default function EncryptPage() {
     setEncryptionResult(null);
     setEncryptionProgress(0);
     setCurrentStep('');
-    
     if (!validateData()) return;
-
     try {
       setLoading(true);
-      
-      // Simulate encryption process
       await simulateEncryptionProcess();
-      
-      // Prepare API data
       const apiData = {
         patient_id: `P${Date.now()}`,
         name: patientData.name,
@@ -170,9 +161,7 @@ export default function EncryptPage() {
         notes: '',
         sensitivity_level: 'HIGH'
       };
-      
-      const response = await api.post('patients', apiData);
-      
+      await api.post('patients', apiData);
       const result: EncryptionResult = {
         success: true,
         patient_id: apiData.patient_id,
@@ -181,10 +170,7 @@ export default function EncryptPage() {
         timestamp: new Date().toISOString(),
         message: 'Patient data encrypted successfully with TDP-QIMLE algorithm'
       };
-      
       setEncryptionResult(result);
-      
-      // Add to logs
       const logEntry: EncryptionLog = {
         timestamp: new Date().toISOString(),
         operation: 'ENCRYPT',
@@ -192,9 +178,7 @@ export default function EncryptPage() {
         status: 'SUCCESS',
         patient_id: result.patient_id
       };
-      
       setEncryptionLogs(prev => [logEntry, ...prev]);
-      
     } catch (err: any) {
       console.error('Encryption error:', err);
       setError(err.response?.data?.detail || 'Failed to encrypt patient data');
@@ -264,8 +248,7 @@ export default function EncryptPage() {
       complete: async (results: ParseResult<any>) => {
         const patients = results.data as any[];
         setUploading(false);
-        setCsvPreview(patients.slice(0, 5)); // Show first 5 rows as preview
-        // setTimeout(() => setCsvPreview([]), 10000); // Hide preview after 10s (optional)
+        setCsvPreview(patients.slice(0, 5));
         setEncrypting(true);
         setTotalPatients(patients.length);
         setError(null);
@@ -276,18 +259,15 @@ export default function EncryptPage() {
           const row = patients[i];
           setCurrentPatientName(row["Name"]);
           setPatientsProcessed(i + 1);
-          // Simulate step-by-step encryption for progress UI
           for (let step = 0; step < encryptionSteps.length; step++) {
             setCurrentEncryptionStep(step);
-            await new Promise(res => setTimeout(res, 200)); // Simulate step duration
+            await new Promise(res => setTimeout(res, 200));
           }
           setCurrentEncryptionStep(-1);
-          // Map CSV fields to API fields
           const apiData: any = {};
           for (const [csvKey, apiKey] of Object.entries(csvToApiFieldMap)) {
             apiData[apiKey] = row[csvKey] ?? "";
           }
-          // Add required fields not in CSV
           apiData.patient_id = `P${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
           apiData.medical_history = [apiData.medical_condition];
           apiData.current_medications = [apiData.medication];
@@ -321,392 +301,437 @@ export default function EncryptPage() {
       }
     });
   };
-  // export function FileUploadDemo() {
-  //   const [files, setFiles] = useState<File[]>([]);
 
-  //   const handleFileUpload = (files: File[]) => {
-  //     setFiles(files);
-  //     console.log(files);
-  //   };
+  // Animation variants for framer-motion
+  const tabContentVariants = {
+    initial: { opacity: 0, y: 30, scale: 0.98 },
+    animate: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.35, ease: easeInOut } },
+    exit: { opacity: 0, y: -30, scale: 0.98, transition: { duration: 0.25, ease: easeInOut } }
+  };
+
+  // --- Fix: Let the framework section shift down as the encryption in progress UI comes ---
 
   return (
-    <div className="min-h-screen bg-zinc-900 p-6">
-      <div className="max-w-6xl mx-auto">
+    <div className="min-h-screen bg-white text-black p-6">
+      <div className="max-w-screen-2xl mx-auto">
         {/* Header */}
         <div className="mb-8">
           <Button 
             variant="ghost" 
             onClick={() => router.push('/')}
-            className="mb-4"
+            className="mb-4 text-2xl"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Dashboard
           </Button>
-          <h1 className="text-4xl font-bold mb-2">Patient Data Encryption</h1>
-          <p className="text-muted-foreground text-lg">
+          <BlurText
+            text="Patient Data Encryption"
+            delay={150}
+            animateBy="words"
+            direction="top"
+            className="text-8xl mb-2 mt-20 text-center items-center justify-center font-bold"
+          />
+          <p className="text-3xl mb-30 text-center max-w-5xl mx-auto">
             Choose manual entry or upload a CSV file to encrypt patient data using TDP-QIMLE quantum-inspired encryption
           </p>
         </div>
-        <Tabs value={entryMode} onValueChange={(v) => setEntryMode(v as 'manual' | 'upload')} className="w-full max-w-2xl mx-auto  ">
-          <TabsList className="w-full flex mb-6 bg-zinc-800">
-            <TabsTrigger value="manual" className="flex-1 ">Manual Entry</TabsTrigger>
-            <TabsTrigger value="upload" className="flex-1">Upload CSV</TabsTrigger>
+        <Tabs value={entryMode} onValueChange={(v) => setEntryMode(v as 'manual' | 'upload')} className="w-full max-w-8xl mx-auto mb-24">
+          <TabsList className="w-3xl mx-auto flex mb-6 bg-blue-500 rounded-full ">
+            <TabsTrigger value="manual" className="flex-1 text-2xl font-medium">Manual Entry</TabsTrigger>
+            <TabsTrigger value="upload" className="flex-1 text-2xl font-medium">Upload CSV</TabsTrigger>
           </TabsList>
-          <TabsContent value="manual">
-        <div className="grid grid-cols-1  gap-6 ">
-          <div className="lg:col-span-2">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Shield className="w-5 h-5" />
-                  Patient Information
-                </CardTitle>
-                <CardDescription>
-                  Enter patient data to be encrypted with advanced privacy protection
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="name">Patient Name</Label>
-                      <Input
-                        id="name"
-                        name="name"
-                        value={patientData.name}
-                        onChange={handleInputChange}
-                        placeholder="Enter patient name"
-                        required
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <Label htmlFor="age">Age</Label>
-                      <Input
-                        id="age"
-                        name="age"
-                        type="number"
-                        value={patientData.age}
-                        onChange={handleInputChange}
-                        placeholder="Enter age"
-                        min="0"
-                        max="150"
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="space-y-2 ">
-                    <Label htmlFor="diagnosis">Primary Diagnosis</Label>
-                    <Select value={patientData.diagnosis} onValueChange={handleDiagnosisChange}>
-                      <SelectTrigger >
-                        <SelectValue placeholder="Select diagnosis" />
-                      </SelectTrigger>
-                      <SelectContent className='bg-zinc-950'>
-                        {commonDiagnoses.map((diagnosis) => (
-                          <SelectItem key={diagnosis} value={diagnosis}>
-                            {diagnosis}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="lab_result">Lab Result Value</Label>
-                    <Input
-                      id="lab_result"
-                      name="lab_result"
-                      type="number"
-                      step="0.01"
-                      value={patientData.lab_result}
-                      onChange={handleInputChange}
-                      placeholder="Enter lab result"
-                      required
-                    />
-                  </div>
-                  {/* Advanced Settings */}
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <Label>Advanced Settings</Label>
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setShowAdvanced(!showAdvanced)}
-                      >
-                        {showAdvanced ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                      </Button>
-                    </div>
-                    {showAdvanced && (
-                      <Card className="p-4">
-                        <div className="space-y-4">
-                          <div className="space-y-2">
-                            <Label>Privacy Level (ε = {encryptionSettings.epsilon})</Label>
-                            <Input
-                              type="range"
-                              min="0.1"
-                              max="5.0"
-                              step="0.1"
-                              value={encryptionSettings.epsilon}
-                              onChange={(e) => handleSettingsChange('epsilon', parseFloat(e.target.value))}
-                              className="w-full"
-                            />
-                            <div className="flex justify-between text-sm text-muted-foreground">
-                              <span>High Privacy</span>
-                              <Badge className={privacyLevel.color}>
-                                {privacyLevel.level}
-                              </Badge>
-                              <span>High Utility</span>
+          {/* Remove absolute positioning so the content stacks and pushes the framework section down */}
+          <div className="relative min-h-[0px] ">
+            <AnimatePresence mode="wait" initial={false}>
+              {entryMode === 'manual' && (
+                <motion.div
+                  key="manual"
+                  variants={tabContentVariants}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  className="w-full"
+                  // Removed absolute positioning
+                >
+                  <div className="grid grid-cols-1  gap-6 max-w-4xl mx-auto">
+                    <div className="lg:col-span-2">
+                      <Card>
+                        <CardHeader>
+                          <CardTitle className="flex items-center gap-2 text-3xl">
+                            <Shield className="w-8 h-8 " />
+                            Patient Information
+                          </CardTitle>
+                          <CardDescription className="text-2xl">
+                            Enter patient data to be encrypted with advanced privacy protection
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                          <form onSubmit={handleSubmit} className="space-y-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              <div className="space-y-2">
+                                <Label htmlFor="name" className='text-2xl font-normal'>Patient Name</Label>
+                                <Input
+                                  id="name"
+                                  name="name"
+                                  value={patientData.name}
+                                  onChange={handleInputChange}
+                                  placeholder="Enter patient name"
+                                  required
+                                />
+                              </div>
+                              <div className="space-y-2">
+                                <Label htmlFor="age" className='text-2xl font-normal'>Age</Label>
+                                <Input
+                                  id="age"
+                                  name="age"
+                                  type="number"
+                                  value={patientData.age}
+                                  onChange={handleInputChange}
+                                  placeholder="Enter age"
+                                  min="0"
+                                  max="150"
+                                  required
+                                />
+                              </div>
                             </div>
-                            <p className="text-sm text-muted-foreground">{privacyLevel.description}</p>
-                          </div>
-                          <div className="flex items-center justify-between">
-                            <Label>Show Encryption Process</Label>
-                            <Switch
-                              checked={encryptionSettings.showProcess}
-                              onCheckedChange={(checked) => handleSettingsChange('showProcess', checked)}
-                            />
-                          </div>
-                          <div className="space-y-2">
-                            <Label>Algorithm</Label>
-                            <Select value={encryptionSettings.algorithm} onValueChange={(value) => handleSettingsChange('algorithm', value)}>
-                              <SelectTrigger>
-                                <SelectValue />
-                              </SelectTrigger>
-                              <SelectContent className='bg-zinc-950'>
-                                <SelectItem value="TDP-QIMLE">TDP-QIMLE (Quantum-Inspired)</SelectItem>
-                                <SelectItem value="AES-256-CBC-DP">AES-256-CBC with DP</SelectItem>
-                              </SelectContent>
-                            </Select>
-                          </div>
-                        </div>
+                            <div className="space-y-2 ">
+                              <Label htmlFor="diagnosis" className='text-2xl font-normal'>Primary Diagnosis</Label>
+                              <Select value={patientData.diagnosis} onValueChange={handleDiagnosisChange}>
+                                <SelectTrigger >
+                                  <SelectValue placeholder="Select diagnosis" />
+                                </SelectTrigger>
+                                <SelectContent className='bg-zinc-950'>
+                                  {commonDiagnoses.map((diagnosis) => (
+                                    <SelectItem key={diagnosis} value={diagnosis}>
+                                      {diagnosis}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                            </div>
+                            <div className="space-y-2">
+                              <Label htmlFor="lab_result" className='text-2xl font-normal'>Lab Result Value</Label>
+                              <Input
+                                id="lab_result"
+                                name="lab_result"
+                                type="number"
+                                step="0.01"
+                                value={patientData.lab_result}
+                                onChange={handleInputChange}
+                                placeholder="Enter lab result"
+                                required
+                              />
+                            </div>
+                            {/* Advanced Settings */}
+                            <div className="space-y-4">
+                              <div className="flex items-center justify-between">
+                                <Label className='text-2xl font-normal'>Advanced Settings</Label>
+                              </div>
+                              {/* Always show advanced settings */}
+                              <Card className="p-4">
+                                <div className="space-y-4">
+                                  <div className="space-y-2">
+                                    <Label>Privacy Level (ε = {encryptionSettings.epsilon})</Label>
+                                    <Input
+                                      type="range"
+                                      min="0.1"
+                                      max="5.0"
+                                      step="0.1"
+                                      value={encryptionSettings.epsilon}
+                                      onChange={(e) => handleSettingsChange('epsilon', parseFloat(e.target.value))}
+                                      className="w-full"
+                                    />
+                                    <div className="flex justify-between text-sm text-muted-foreground">
+                                      <span>High Privacy</span>
+                                      <Badge className={privacyLevel.color}>
+                                        {privacyLevel.level}
+                                      </Badge>
+                                      <span>High Utility</span>
+                                    </div>
+                                    <p className="text-sm text-muted-foreground">{privacyLevel.description}</p>
+                                  </div>
+                                  <div className="flex items-center justify-between">
+                                    <Label>Show Encryption Process</Label>
+                                    <Switch
+                                      checked={encryptionSettings.showProcess}
+                                      onCheckedChange={(checked) => handleSettingsChange('showProcess', checked)}
+                                    />
+                                  </div>
+                                  <div className="space-y-2">
+                                    <Label>Algorithm</Label>
+                                    <Select value={encryptionSettings.algorithm} onValueChange={(value) => handleSettingsChange('algorithm', value)}>
+                                      <SelectTrigger>
+                                        <SelectValue />
+                                      </SelectTrigger>
+                                      <SelectContent className='bg-zinc-950'>
+                                        <SelectItem value="TDP-QIMLE">TDP-QIMLE (Quantum-Inspired)</SelectItem>
+                                        <SelectItem value="AES-256-CBC-DP">AES-256-CBC with DP</SelectItem>
+                                      </SelectContent>
+                                    </Select>
+                                  </div>
+                                </div>
+                              </Card>
+                            </div>
+                            {error && (
+                              <Alert variant="destructive">
+                                <AlertCircle className="h-4 w-4" />
+                                <AlertDescription>{error}</AlertDescription>
+                              </Alert>
+                            )}
+                            {loading && encryptionSettings.showProcess && (
+                              <Card className="p-4">
+                                <div className="space-y-3">
+                                  <div className="flex items-center justify-between">
+                                    <span className="text-sm font-medium">Encryption Progress</span>
+                                    <span className="text-sm text-muted-foreground">{Math.round(encryptionProgress)}%</span>
+                                  </div>
+                                  <Progress value={encryptionProgress} className="w-full" />
+                                  {currentStep && (
+                                    <p className="text-sm text-muted-foreground flex items-center gap-2">
+                                      <Loader2 className="w-4 h-4 animate-spin" />
+                                      {currentStep}
+                                    </p>
+                                  )}
+                                </div>
+                              </Card>
+                            )}
+                            <Button 
+                              type="submit" 
+                              className="w-full h-12 rounded-xl bg-blue-500 text-2xl hover:bg-zinc-600  " 
+                              disabled={loading}
+                            >
+                              {loading ? (
+                                <>
+                                  <Loader2 className="w-8 h-8 mr-2 animate-spin" />
+                                  Encrypting...
+                                </>
+                              ) : (
+                                <>
+                                  <Lock className="w-8 h-8 mr-2" />
+                                  Encrypt Patient Data
+                                </>
+                              )}
+                            </Button>
+                          </form>
+                        </CardContent>
                       </Card>
-                    )}
+                    </div>
                   </div>
-                  {error && (
-                    <Alert variant="destructive">
-                      <AlertCircle className="h-4 w-4" />
-                      <AlertDescription>{error}</AlertDescription>
-                    </Alert>
-                  )}
-                  {loading && encryptionSettings.showProcess && (
-                    <Card className="p-4">
-                      <div className="space-y-3">
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm font-medium">Encryption Progress</span>
-                          <span className="text-sm text-muted-foreground">{Math.round(encryptionProgress)}%</span>
-                        </div>
-                        <Progress value={encryptionProgress} className="w-full" />
-                        {currentStep && (
-                          <p className="text-sm text-muted-foreground flex items-center gap-2">
-                            <Loader2 className="w-4 h-4 animate-spin" />
-                            {currentStep}
-                          </p>
-                        )}
-                      </div>
-                    </Card>
-                  )}
-                  <Button 
-                    type="submit" 
-                    className="w-full bg-zinc-700 hover:bg-zinc-600  " 
-                    disabled={loading}
-                  >
-                    {loading ? (
-                      <>
-                        <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                        Encrypting...
-                      </>
-                    ) : (
-                      <>
-                        <Lock className="w-4 h-4 mr-2" />
-                        Encrypt Patient Data
-                      </>
-                    )}
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-          </TabsContent>
-          <TabsContent value="upload">
-            <div className="w-full max-w-6xl mx-auto min-h-32 border border-dashed bg-zinc-900 border-neutral-200 dark:border-neutral-800 rounded-lg flex flex-col items-center justify-center p-4">
-              <FileUpload onChange={handleFileUpload} />
-              {uploading && <div className="mt-4 text-white flex items-center"><Loader2 className="w-4 h-4 mr-2 animate-spin" />Uploading file...</div>}
-              {error && (
-                <Alert variant="destructive" className="mt-4">
-                  <AlertDescription>{error}</AlertDescription>
-                </Alert>
+                </motion.div>
               )}
-            </div>
-            {/* CSV Preview Table */}
-            {csvPreview.length > 0 && (
-              <div className="w-full max-w-2xl mx-auto mt-6 bg-zinc-800 rounded-lg p-4 overflow-x-auto">
-                <div className="font-bold text-white mb-2">CSV Data Preview (first 5 rows)</div>
-                <table className="min-w-full text-xs text-left text-zinc-200">
-                  <thead>
-                    <tr>
-                      {Object.keys(csvPreview[0]).map((key) => (
-                        <th key={key} className="px-2 py-1 border-b border-zinc-700 font-semibold">{key}</th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {csvPreview.map((row, idx) => (
-                      <tr key={idx} className="border-b border-zinc-700">
-                        {Object.values(row).map((val, i) => (
-                          <td key={i} className="px-2 py-1">{val}</td>
-                        ))}
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
+              {entryMode === 'upload' && (
+                <motion.div
+                  key="upload"
+                  variants={tabContentVariants}
+                  initial="initial"
+                  animate="animate"
+                  exit="exit"
+                  className="w-full"
+                  // Removed absolute positioning
+                >
+                  <div>
+                    <div className="w-full max-w-4xl mx-auto min-h-32 border border-dashed bg-white border-gray-500 dark:border-neutral-800 rounded-lg flex flex-col items-center justify-center p-4">
+                      <FileUpload onChange={handleFileUpload} />
+                      {uploading && <div className="mt-4 text-white flex items-center"><Loader2 className="w-4 h-4 mr-2 animate-spin" />Uploading file...</div>}
+                      {error && (
+                        <Alert variant="destructive" className="mt-4">
+                          <AlertDescription>{error}</AlertDescription>
+                        </Alert>
+                      )}
                     </div>
-            )}
-            {/* Encryption progress UI is now outside the FileUpload card */}
-            {encrypting && (
-              <div className="mt-4 text-white w-full max-w-xl mx-auto">
-                <div className="font-bold text-lg mb-2">Encryption in Progress</div>
-                <div className="mb-1">{patientsProcessed} / {totalPatients} records processed</div>
-                <div className="mb-1">{((patientsProcessed / (totalPatients || 1)) * 100).toFixed(1)}%</div>
-                <Progress value={totalPatients ? (patientsProcessed / totalPatients) * 100 : 0} className="w-full mb-4" />
-                <div className="flex  items-center w-full mb-2 gap-2 justify-center">
-                  {encryptionSteps.map((step, idx) => (
-                    <div key={step.label} className="flex flex-col items-center  ">
-                      <div className={`w-30 h-20 flex items-center justify-center text-base font-bold border-2 transition-all duration-200 rounded-md 
-                        ${currentEncryptionStep === idx ? 'bg-blue-500 border-blue-400 text-white scale-105 shadow-lg' :
-                          currentEncryptionStep > idx ? 'bg-green-500 border-green-400 text-white' : 'bg-zinc-800 border-zinc-600 text-zinc-300'}`}
-                      >
-                        {step.label}
+                    {/* CSV Preview Table */}
+                    <div className="w-full min-h-96 max-w-8xl mx-auto mt-20 bg-white rounded-xl p-4 border-2 overflow-x-auto">
+                      <div className="text-2xl font-bold text-black mb-2">CSV Data Preview (first 5 rows)</div>
+                      {csvPreview.length > 0 ? (
+                        <table className="min-w-full text-lg text-left text-black">
+                          <thead>
+                            <tr>
+                              {Object.keys(csvPreview[0]).map((key) => (
+                                <th key={key} className="px-2 py-1 border-b border-zinc-700 font-semibold">{key}</th>
+                              ))}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {csvPreview.map((row, idx) => (
+                              <tr key={idx} className="border-b border-zinc-700">
+                                {Object.values(row).map((val, i) => (
+                                  <td key={i} className="px-2 py-1">{String(val)}</td>
+                                ))}
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      ) : (
+                        <div className="text-zinc-500 text-lg italic py-8 text-center">
+                          No CSV data loaded yet. Upload a CSV file to preview its contents here.
+                        </div>
+                      )}
                     </div>
-                      <span className={`mt-2 text-xs text-center w-30 block ${currentEncryptionStep === idx ? 'text-blue-300 font-semibold' : currentEncryptionStep > idx ? 'text-green-400' : 'text-zinc-400'}`}>{step.name}</span>
-                    </div>
-                  ))}
-                    </div>
-                {/* Overall Encryption Progress Bar */}
-                {/* <div className="mt-8 w-full">
-                  <div className="flex justify-between items-center mb-1">
-                    <span className="text-sm font-medium">Overall Encryption Progress</span>
-                    <span className="text-sm font-bold ">{((patientsProcessed / (totalPatients || 1)) * 100).toFixed(1)}%</span>
+                    {/* Encryption progress UI is now outside the FileUpload card */}
+                    {encrypting && (
+                      <div className="text-black w-full max-w-2xl mx-auto mt-10">
+                        <div className="font-normal text-4xl mb-4">Encryption in Progress</div>
+                        <div className="mb-2 text-2xl">{patientsProcessed} / {totalPatients} records processed</div>
+                        <div className="mb-2">{((patientsProcessed / (totalPatients || 1)) * 100).toFixed(1)}%</div>
+                        <Progress value={totalPatients ? (patientsProcessed / totalPatients) * 100 : 0} className="w-full mb-4" />
+                        <div className="flex  items-center w-full mb-2 gap-2 justify-center">
+                          {encryptionSteps.map((step, idx) => (
+                            <div key={step.label} className="flex flex-col items-center mt-10 ">
+                              <div className={`w-50 h-20 flex items-center justify-center text-base font-bold border-2 transition-all duration-200 rounded-md 
+                                ${currentEncryptionStep === idx ? 'bg-blue-500 border-blue-400 text-white scale-105 shadow-lg' :
+                                  currentEncryptionStep > idx ? 'bg-green-500 border-green-400 text-white' : 'bg-zinc-800 border-zinc-600 text-zinc-300'}`}
+                              >
+                                {step.label}
+                              </div>
+                              <span className={`mt-2 text-lg font-bold text-center w-50 block ${currentEncryptionStep === idx ? 'text-blue-300 font-semibold' : currentEncryptionStep > idx ? 'text-green-400' : 'text-zinc-400'}`}>{step.name}</span>
+                            </div>
+                          ))}
+                        </div>
+                        {currentPatientName && <div className="flex  items-center w-full mb-2 gap-2 justify-center mt-10 text-2xl">Encrypting: <span className="font-bold">{currentPatientName}</span></div>}
+                      </div>
+                    )}
+                    {encryptionResult && (
+                      <Alert className="mt-10 max-w-2xl mx-auto">
+                        <AlertDescription className="text-2xl">{encryptionResult.message}</AlertDescription>
+                      </Alert>
+                    )}
+                    {encryptedPatients.length > 0 && (
+                      <div className="mt-10 w-full max-w-4xl max-h-full mx-auto">
+                        <h2 className="text-3xl font-bold mb-2 text-black">Encrypted Patients</h2>
+                        <div className="max-h-full overflow-y-auto border-2 border-zinc-800 rounded-xl p-4">
+                          <ul className="text-black text-xl">
+                            {encryptedPatients.map((p, idx) => (
+                              <li key={idx} className="flex items-center gap-2 border-b border-zinc-800 py-1">
+                                <span className="font-semibold ">{p.name} = {p.encrypted_name}</span>
+                                <Badge className="text-xl" variant={p.status === 'success' ? 'default' : 'destructive'}>{p.status}</Badge>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      </div>
+                    )}
                   </div>
-                  <Progress value={totalPatients ? (patientsProcessed / totalPatients) * 100 : 0} className="w-full" />
-                </div> */}
-                {currentPatientName && <div className="flex  items-center w-full mb-2 gap-2 justify-center mt-10 text-2xl">Encrypting: <span className="font-bold">{currentPatientName}</span></div>}
-              </div>
-            )}
-            {encryptionResult && (
-              <Alert className="mt-4 max-w-xl mx-auto">
-                <AlertDescription>{encryptionResult.message}</AlertDescription>
-              </Alert>
-            )}
-            {encryptedPatients.length > 0 && (
-              <div className="mt-6 w-full max-w-xl mx-auto">
-                <h2 className="text-lg font-bold mb-2 text-white">Encrypted Patients</h2>
-                <div className="max-h-64 overflow-y-auto">
-                  <ul className="text-white text-sm">
-                    {encryptedPatients.map((p, idx) => (
-                      <li key={idx} className="flex items-center gap-2 border-b border-zinc-800 py-1">
-                        <span className="font-semibold">{p.name}</span>
-                        <Badge variant={p.status === 'success' ? 'default' : 'destructive'}>{p.status}</Badge>
-                      </li>
-                    ))}
-                  </ul>
-                  </div>
-                  </div>
-            )}
-          </TabsContent>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </Tabs>
-         {/* Framework Overview Section */}
-         <div className="mb-12 mt-10">
-          <h2 className="text-3xl font-bold mb-2 text-white">Framework Overview</h2>
-          <p className="text-lg text-muted-foreground mb-8">Explore the 7 core components that make TDP-QIMLE a cutting-edge healthcare security solution</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {/* Framework Overview Section */}
+        <div className=" transition-all duration-500">
+          {/* <h2 className="font-bold mb-2 text-black text-center text-4xl">Framework Overview</h2> */}
+          <p className="text-6xl text-center font-bold mb-12">Explore the 7 core components that make TDP-QIMLE a cutting-edge healthcare security solution</p>
+          {/* Add a style block for the pop-out effect */}
+          <style jsx>{`
+            .framework-card {
+              transition: transform 0.2s cubic-bezier(.4,2,.6,1), box-shadow 0.2s cubic-bezier(.4,2,.6,1);
+              will-change: transform, box-shadow;
+            }
+            .framework-card:hover {
+              transform: translateY(-12px) scale(1.05);
+              box-shadow: 0 12px 32px 0 rgba(0,0,0,0.18), 0 2px 8px 0 rgba(0,0,0,0.12);
+              z-index: 10;
+            }
+          `}</style>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-screen-2xl mx-auto">
             {/* 1. Temporal Differential Privacy */}
-            <div className="bg-zinc-800 rounded-lg p-6 shadow">
-              <div className="flex items-center mb-2"><span className="text-2xl font-bold mr-2">1</span>
-              <span className="font-semibold">Temporal Differential Privacy</span></div>
-              <p className="text-sm mb-2">Time-decaying privacy mechanism that provides stronger protection for recent data</p>
-              <ul className="text-xs text-zinc-300 list-[tick] ml-5 mb-2" style={{ listStyleType: "'✓ '" }}>
+            <div className="framework-card bg-white rounded-lg p-6 shadow-lg border-2 h-96 mx-auto">
+              <div className="flex items-center mb-2">
+                <span className="font-bold text-3xl">Temporal Differential Privacy</span>
+              </div>
+              <p className="text-xl mb-2">Time-decaying privacy mechanism that provides stronger protection for recent data</p>
+              <ul className="text-lg list-[tick] ml-5 mb-2" style={{ listStyleType: "'✓ '" }}>
                 <li>Laplace noise injection</li>
                 <li>Time-based decay (λ=0.01)</li>
                 <li>Adaptive privacy budgets</li>
               </ul>
-              <div className="text-xs text-blue-300 font-mono">ηt = Laplace(0, 1/ε) · e^(-λ(t-t0)) · S</div>
-                  </div>
+              <div className="text-xl border-2 rounded-xl px-2 mt-4 text-blue-600 font-bold">ηt = Laplace(0, 1/ε) · e^(-λ(t-t0)) · S</div>
+            </div>
             {/* 2. Quantum-Inspired Multi-Layer Encryption */}
-            <div className="bg-zinc-800 rounded-lg p-6 shadow">
-              <div className="flex items-center mb-2"><span className="text-2xl font-bold mr-2">2</span><
-                span className="font-semibold">Quantum-Inspired Multi-Layer Encryption</span></div>
-              <p className="text-sm mb-2">Non-deterministic encryption using quantum state analogies</p>
-              <ul className="text-xs text-zinc-300 ml-5 mb-2" style={{ listStyleType: "'✓ '" }}>
+            <div className="framework-card bg-white rounded-lg p-6 shadow-lg border-2 h-96 mx-auto">
+              <div className="flex items-center mb-2">
+                <span className="font-bold text-3xl">Quantum-Inspired Multi-Layer Encryption</span>
+              </div>
+              <p className="text-xl mb-2">Non-deterministic encryption using quantum state analogies</p>
+              <ul className="text-lg list-[tick] ml-5 mb-2" style={{ listStyleType: "'✓ '" }}>
                 <li>4 quantum states</li>
                 <li>XOR operations</li>
                 <li>Phase components (α, β)</li>
               </ul>
-              <div className="text-xs text-blue-300 font-mono">Ei = Di ⊕ ⌊α·cos(φi) + β·sin(φi)⌋</div>
-                  </div>
+              <div className="text-xl border-2 rounded-xl px-2 mt-4 text-blue-600 font-bold">Ei = Di ⊕ ⌊α·cos(φi) + β·sin(φi)⌋</div>
+            </div>
             {/* 3. Lattice-Based Obfuscation */}
-            <div className="bg-zinc-800 rounded-lg p-6 shadow">
-              <div className="flex items-center mb-2"><span className="text-2xl font-bold mr-2">3</span>
-              <span className="font-semibold">Lattice-Based Obfuscation</span></div>
-              <p className="text-sm mb-2">Post-quantum security using high-dimensional lattice structures</p>
-              <ul className="text-xs text-zinc-300 list-disc ml-5 mb-2 " style={{ listStyleType: "'✓ '" }}>
+            <div className="framework-card bg-white rounded-lg p-6 shadow-lg border-2 h-96 mx-auto">
+              <div className="flex items-center mb-2">
+                <span className="font-bold text-3xl">Lattice-Based Obfuscation</span>
+              </div>
+              <p className="text-xl mb-2">Post-quantum security using high-dimensional lattice structures</p>
+              <ul className="text-lg list-[tick] ml-5 mb-2 " style={{ listStyleType: "'✓ '" }}>
                 <li>128-dimensional lattice</li>
                 <li>Random noise injection</li>
                 <li>Algebraic attack resistance</li>
               </ul>
-              <div className="text-xs text-blue-300 font-mono">y = B(x + r)</div>
-                  </div>
+              <div className="text-xl border-2 rounded-xl px-2 mt-4 text-blue-600 font-bold">y = B(x + r)</div>
+            </div>
             {/* 4. Adaptive Noise Injection */}
-            <div className="bg-zinc-800 rounded-lg p-6 shadow">
-              <div className="flex items-center mb-2"><span className="text-2xl font-bold mr-2">4</span>
-              <span className="font-semibold">Adaptive Noise Injection</span></div>
-              <p className="text-sm mb-2">Field-level sensitivity-aware noise application</p>
-              <ul className="text-xs text-zinc-300 list-disc ml-5 mb-2" style={{ listStyleType: "'✓ '" }}>
+            <div className="framework-card bg-white rounded-lg p-6 shadow-lg border-2 h-96 mx-auto">
+              <div className="flex items-center mb-2">
+                <span className="font-bold text-3xl">Adaptive Noise Injection</span>
+              </div>
+              <p className="text-xl mb-2">Field-level sensitivity-aware noise application</p>
+              <ul className="text-lg list-[tick] ml-5 mb-2" style={{ listStyleType: "'✓ '" }}>
                 <li>4 sensitivity levels</li>
                 <li>Custom noise scaling</li>
                 <li>Clinical accuracy preservation</li>
               </ul>
-              <div className="text-xs text-blue-300 font-mono">Noise levels: LOW(0.5σ), MEDIUM(1.0σ), HIGH(1.5σ), CRITICAL(2.0σ)</div>
-                </div>
+              <div className="text-xl border-2 rounded-xl px-2 mt-4 text-blue-600 font-bold">Noise levels: LOW(0.5σ), MEDIUM(1.0σ), HIGH(1.5σ), CRITICAL(2.0σ)</div>
+            </div>
             {/* 5. Partially Homomorphic Encryption */}
-            <div className="bg-zinc-800 rounded-lg p-6 shadow">
-              <div className="flex items-center mb-2"><span className="text-2xl font-bold mr-2">5</span>
-              <span className="font-semibold">Partially Homomorphic Encryption</span></div>
-              <p className="text-sm mb-2">Computation on encrypted data without decryption</p>
-              <ul className="text-xs text-zinc-300 list-disc ml-5 mb-2" style={{ listStyleType: "'✓ '" }}>
+            <div className="framework-card bg-white rounded-lg p-6 shadow-lg border-2 h-96 mx-auto">
+              <div className="flex items-center mb-2">
+                <span className="font-bold text-3xl">Partially Homomorphic Encryption</span>
+              </div>
+              <p className="text-xl mb-2">Computation on encrypted data without decryption</p>
+              <ul className="text-lg list-[tick] ml-5 mb-2" style={{ listStyleType: "'✓ '" }}>
                 <li>Cubic modular operations</li>
                 <li>Prime modulus (65537)</li>
                 <li>Privacy-preserving analytics</li>
               </ul>
-              <div className="text-xs text-blue-300 font-mono">h = m³ mod p</div>
-                        </div>
+              <div className="text-xl border-2 rounded-xl px-2 mt-4 text-blue-600 font-bold">h = m³ mod p</div>
+            </div>
             {/* 6. Blockchain-Inspired Integrity */}
-            <div className="bg-zinc-800 rounded-lg p-6 shadow">
-              <div className="flex items-center mb-2"><span className="text-2xl font-bold mr-2">6</span>
-              <span className="font-semibold">Blockchain-Inspired Integrity</span></div>
-              <p className="text-sm mb-2">Tamper-evident storage with hash chain verification</p>
-              <ul className="text-xs text-zinc-300 list-disc ml-5 mb-2" style={{ listStyleType: "'✓ '" }}>
+            <div className="framework-card bg-white rounded-lg p-6 shadow-lg border-2 h-96 mx-auto">
+              <div className="flex items-center mb-2">
+                <span className="font-bold text-3xl">Blockchain-Inspired Integrity</span>
+              </div>
+              <p className="text-xl mb-2">Tamper-evident storage with hash chain verification</p>
+              <ul className="text-lg list-[tick] ml-5 mb-2" style={{ listStyleType: "'✓ '" }}>
                 <li>SHA-256 hash chains</li>
                 <li>Proof-of-work nonce</li>
                 <li>Instant tamper detection</li>
               </ul>
-              <div className="text-xs text-blue-300 font-mono">Verification time: 0.000041s</div>
-                      </div>
+              <div className="text-xl border-2 rounded-xl px-2 mt-4 text-blue-600 font-bold">Verification time: 0.000041s</div>
+            </div>
             {/* 7. Biologically-Inspired Key Evolution */}
-            <div className="bg-zinc-800 rounded-lg p-6 shadow">
-              <div className="flex items-center mb-2"><span className="text-2xl font-bold mr-2">7</span>
-              <span className="font-semibold">Biologically-Inspired Key Evolution</span></div>
-              <p className="text-sm mb-2">Dynamic key generation using Fibonacci sequence and golden ratio</p>
-              <ul className="text-xs text-zinc-300 list-disc ml-5 mb-2" style={{ listStyleType: "'✓ '" }}>
+            <div className="framework-card bg-white rounded-lg p-6 shadow-lg border-2 h-96 mx-auto">
+              <div className="flex items-center mb-2">
+                <span className="font-bold text-3xl">Biologically-Inspired Key Evolution</span>
+              </div>
+              <p className="text-xl mb-2">Dynamic key generation using Fibonacci sequence and golden ratio</p>
+              <ul className="text-lg list-[tick] ml-5 mb-2" style={{ listStyleType: "'✓ '" }}>
                 <li>Golden ratio (φ)</li>
                 <li>Fibonacci sequences</li>
                 <li>5% mutation factor</li>
               </ul>
-              <div className="text-xs text-blue-300 font-mono">kn = (kn-1 + kn-2) · φ + μ</div>
-                  </div>
+              <div className="text-xl border-2 rounded-xl px-2 mt-4 text-blue-600 font-bold">kn = (kn-1 + kn-2) · φ + μ</div>
+            </div>
           </div>
         </div>
       </div>
-      
+      {/* <ScrollVelocity
+        texts={['', 'Checkout now!']} 
+        velocity={120} 
+        className=""
+      /> */}
     </div>
   );
 } 

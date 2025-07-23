@@ -32,12 +32,14 @@ export default function RootLayout({
           <nav className="bg-zinc-900 border-b-2 border-zinc-800">
             <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
               <div className="flex items-center space-x-2">
-                <Shield className="w-8 h-8 text-primary" />
-                <span className="text-xl font-bold">TDP-QIMLE EHR System</span>
+              <Link href="/" className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors ">
+              <Shield className="w-8 h-8 text-primary" />
+              <span className="text-xl font-bold">TDP-QIMLE EHR System</span>
+                </Link>
               </div>
 
-              <nav className="hidden md:flex space-x-8">
-                <Link href="/" className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors">
+              <nav className="hidden md:flex w-fit mx-auto space-x-8 rounded-full bg-zinc-800/90  px-8 py-2 shadow-lg transition-colors duration-200">
+                <Link href="/" className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors ">
                   <Home className="w-4 h-4" />
                   <span>Dashboard</span>
                 </Link>
@@ -60,6 +62,10 @@ export default function RootLayout({
                 <Link href="/algorithm" className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors">
                   <Star className="w-4 h-4" />
                   <span>Algorithm</span>
+                </Link>
+                <Link href="/security" className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors">
+                  <Shield className="w-4 h-4" />
+                  <span>Security</span>
                 </Link>
               </nav>
               {/* <ModeToggle /> */}

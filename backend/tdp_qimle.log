@@ -5769,3 +5769,1525 @@
 2025-07-23 00:58:26,271 - main - INFO - Response: 500 - 0.181s
 2025-07-23 00:58:29,882 - decryption_engine - INFO - Cleaned up expired decryption session: 0BtAZOnUwgCZt4egZWyNi6IZpAZPFS7IlL_7jsqp42U
 2025-07-23 00:58:29,883 - main - INFO - Cleaned up 1 expired decryption sessions
+2025-07-23 12:41:33,240 - __main__ - INFO - Starting TDP-QIMLE development server...
+2025-07-23 12:41:34,504 - main - INFO - Starting TDP-QIMLE Algorithm System...
+2025-07-23 12:41:34,504 - main - INFO - Initializing novel encryption components...
+2025-07-23 12:41:34,504 - main - INFO - Initializing independent decryption system...
+2025-07-23 12:41:34,504 - main - INFO - TDP-QIMLE system started successfully
+2025-07-23 12:41:34,505 - main - INFO - Independent decryption system started successfully
+2025-07-23 12:49:12,053 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/auth/session
+2025-07-23 12:49:12,053 - main - INFO - Response: 200 - 0.001s
+2025-07-23 12:49:12,058 - main - INFO - Request: POST http://localhost:8001/api/decrypt/auth/session
+2025-07-23 12:49:12,146 - main - INFO - Response: 200 - 0.087s
+2025-07-23 12:49:12,157 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 12:49:12,158 - main - INFO - Response: 200 - 0.001s
+2025-07-23 12:49:12,167 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 12:49:13,255 - main - INFO - Response: 200 - 1.088s
+2025-07-23 12:49:13,260 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 12:49:13,261 - main - INFO - Response: 200 - 0.001s
+2025-07-23 12:49:13,264 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 12:49:13,648 - main - INFO - Response: 200 - 0.384s
+2025-07-23 12:49:13,653 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 12:49:13,653 - main - INFO - Response: 200 - 0.000s
+2025-07-23 12:49:13,656 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 12:49:14,109 - main - INFO - Response: 200 - 0.453s
+2025-07-23 12:49:51,715 - main - INFO - Request: OPTIONS http://localhost:8001/api/novel/patients
+2025-07-23 12:49:51,716 - main - INFO - Response: 200 - 0.001s
+2025-07-23 12:49:51,719 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 12:49:52,686 - mongodb_integration - INFO - Database initialized successfully
+2025-07-23 12:49:52,930 - mongodb_integration - INFO - Patient data stored successfully: 68808d18ffc62e6d77880e4c
+2025-07-23 12:49:52,931 - main - INFO - Response: 200 - 1.211s
+2025-07-23 12:49:54,347 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 12:49:54,464 - mongodb_integration - INFO - Patient data stored successfully: 68808d1affc62e6d77880e4f
+2025-07-23 12:49:54,465 - main - INFO - Response: 200 - 0.118s
+2025-07-23 12:49:55,881 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 12:49:56,003 - mongodb_integration - INFO - Patient data stored successfully: 68808d1bffc62e6d77880e52
+2025-07-23 12:49:56,003 - main - INFO - Response: 200 - 0.123s
+2025-07-23 12:49:57,415 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 12:49:57,535 - mongodb_integration - INFO - Patient data stored successfully: 68808d1dffc62e6d77880e55
+2025-07-23 12:49:57,535 - main - INFO - Response: 200 - 0.120s
+2025-07-23 12:49:58,950 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 12:49:59,073 - mongodb_integration - INFO - Patient data stored successfully: 68808d1effc62e6d77880e58
+2025-07-23 12:49:59,073 - main - INFO - Response: 200 - 0.123s
+2025-07-23 12:50:00,485 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 12:50:00,604 - mongodb_integration - INFO - Patient data stored successfully: 68808d20ffc62e6d77880e5b
+2025-07-23 12:50:00,605 - main - INFO - Response: 200 - 0.121s
+2025-07-23 12:50:02,021 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 12:50:02,143 - mongodb_integration - INFO - Patient data stored successfully: 68808d22ffc62e6d77880e5e
+2025-07-23 12:50:02,143 - main - INFO - Response: 200 - 0.123s
+2025-07-23 12:50:03,556 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 12:50:03,676 - mongodb_integration - INFO - Patient data stored successfully: 68808d23ffc62e6d77880e61
+2025-07-23 12:50:03,676 - main - INFO - Response: 200 - 0.121s
+2025-07-23 12:50:05,089 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 12:50:05,207 - mongodb_integration - INFO - Patient data stored successfully: 68808d25ffc62e6d77880e64
+2025-07-23 12:50:05,208 - main - INFO - Response: 200 - 0.118s
+2025-07-23 12:50:06,624 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 12:50:06,740 - mongodb_integration - INFO - Patient data stored successfully: 68808d26ffc62e6d77880e67
+2025-07-23 12:50:06,741 - main - INFO - Response: 200 - 0.117s
+2025-07-23 12:50:09,881 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 12:50:10,413 - main - INFO - Response: 200 - 0.532s
+2025-07-23 12:50:10,417 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 12:50:10,717 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 12:50:10,908 - main - INFO - Response: 200 - 0.491s
+2025-07-23 12:50:11,089 - main - INFO - Response: 200 - 0.372s
+2025-07-23 12:50:11,091 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 12:50:11,113 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 12:50:11,517 - main - INFO - Response: 200 - 0.426s
+2025-07-23 12:50:11,568 - main - INFO - Response: 200 - 0.455s
+2025-07-23 12:50:11,570 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 12:50:11,961 - main - INFO - Response: 200 - 0.390s
+2025-07-23 12:50:13,542 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/single
+2025-07-23 12:50:13,543 - main - INFO - Response: 200 - 0.001s
+2025-07-23 12:50:13,546 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 12:50:13,998 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (536,) (128,) 
+2025-07-23 12:50:14,039 - main - INFO - Response: 200 - 0.493s
+2025-07-23 12:50:17,990 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 12:50:18,393 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (534,) (128,) 
+2025-07-23 12:50:18,416 - main - INFO - Response: 200 - 0.426s
+2025-07-23 12:50:22,320 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 12:50:22,702 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (524,) (128,) 
+2025-07-23 12:50:22,724 - main - INFO - Response: 200 - 0.403s
+2025-07-23 12:50:25,221 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 12:50:25,636 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (547,) (128,) 
+2025-07-23 12:50:25,663 - main - INFO - Response: 200 - 0.442s
+2025-07-23 12:50:26,553 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 12:50:26,939 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (531,) (128,) 
+2025-07-23 12:50:26,962 - main - INFO - Response: 200 - 0.409s
+2025-07-23 12:50:34,576 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/audit/session
+2025-07-23 12:50:34,576 - main - INFO - Response: 200 - 0.001s
+2025-07-23 12:50:34,579 - main - INFO - Request: GET http://localhost:8001/api/decrypt/audit/session
+2025-07-23 12:50:34,581 - main - INFO - Response: 200 - 0.001s
+2025-07-23 14:11:34,519 - decryption_engine - INFO - Cleaned up expired decryption session: Vwue4J06FLk4Xm2xaUDuqq8PSeHDxyxYMaAuPIZE9nE
+2025-07-23 14:11:34,540 - main - INFO - Cleaned up 1 expired decryption sessions
+2025-07-23 14:35:00,955 - main - INFO - Request: OPTIONS http://localhost:8001/api/novel/patients
+2025-07-23 14:35:00,961 - main - INFO - Response: 200 - 0.007s
+2025-07-23 14:35:01,146 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 14:35:01,579 - mongodb_integration - INFO - Patient data stored successfully: 6880a5bdffc62e6d77880e7a
+2025-07-23 14:35:01,580 - main - INFO - Response: 200 - 0.434s
+2025-07-23 14:35:02,996 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 14:35:03,139 - mongodb_integration - INFO - Patient data stored successfully: 6880a5bfffc62e6d77880e7d
+2025-07-23 14:35:03,140 - main - INFO - Response: 200 - 0.144s
+2025-07-23 14:35:04,550 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 14:35:04,667 - mongodb_integration - INFO - Patient data stored successfully: 6880a5c0ffc62e6d77880e80
+2025-07-23 14:35:04,668 - main - INFO - Response: 200 - 0.118s
+2025-07-23 14:35:06,080 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 14:35:06,196 - mongodb_integration - INFO - Patient data stored successfully: 6880a5c2ffc62e6d77880e83
+2025-07-23 14:35:06,197 - main - INFO - Response: 200 - 0.116s
+2025-07-23 14:35:07,611 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 14:35:07,734 - mongodb_integration - INFO - Patient data stored successfully: 6880a5c3ffc62e6d77880e86
+2025-07-23 14:35:07,736 - main - INFO - Response: 200 - 0.125s
+2025-07-23 14:35:09,149 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 14:35:09,293 - mongodb_integration - INFO - Patient data stored successfully: 6880a5c5ffc62e6d77880e89
+2025-07-23 14:35:09,294 - main - INFO - Response: 200 - 0.145s
+2025-07-23 14:35:10,709 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 14:35:10,836 - mongodb_integration - INFO - Patient data stored successfully: 6880a5c6ffc62e6d77880e8c
+2025-07-23 14:35:10,840 - main - INFO - Response: 200 - 0.131s
+2025-07-23 14:35:12,261 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 14:35:12,377 - mongodb_integration - INFO - Patient data stored successfully: 6880a5c8ffc62e6d77880e8f
+2025-07-23 14:35:12,378 - main - INFO - Response: 200 - 0.117s
+2025-07-23 14:35:13,787 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 14:35:13,906 - mongodb_integration - INFO - Patient data stored successfully: 6880a5c9ffc62e6d77880e92
+2025-07-23 14:35:13,906 - main - INFO - Response: 200 - 0.119s
+2025-07-23 14:35:15,318 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 14:35:15,436 - mongodb_integration - INFO - Patient data stored successfully: 6880a5cbffc62e6d77880e95
+2025-07-23 14:35:15,437 - main - INFO - Response: 200 - 0.119s
+2025-07-23 15:28:29,559 - main - INFO - Request: OPTIONS http://localhost:8001/api/novel/patients
+2025-07-23 15:28:29,566 - main - INFO - Response: 200 - 0.007s
+2025-07-23 15:28:29,570 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:28:29,946 - mongodb_integration - INFO - Patient data stored successfully: 6880b245ffc62e6d77880e98
+2025-07-23 15:28:29,947 - main - INFO - Response: 200 - 0.376s
+2025-07-23 15:28:31,662 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:28:31,936 - mongodb_integration - INFO - Patient data stored successfully: 6880b247ffc62e6d77880e9b
+2025-07-23 15:28:31,937 - main - INFO - Response: 200 - 0.275s
+2025-07-23 15:28:33,348 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:28:33,587 - mongodb_integration - INFO - Patient data stored successfully: 6880b249ffc62e6d77880e9e
+2025-07-23 15:28:33,588 - main - INFO - Response: 200 - 0.240s
+2025-07-23 15:28:35,003 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:28:35,128 - mongodb_integration - INFO - Patient data stored successfully: 6880b24bffc62e6d77880ea1
+2025-07-23 15:28:35,128 - main - INFO - Response: 200 - 0.125s
+2025-07-23 15:28:36,540 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:28:36,663 - mongodb_integration - INFO - Patient data stored successfully: 6880b24cffc62e6d77880ea4
+2025-07-23 15:28:36,664 - main - INFO - Response: 200 - 0.124s
+2025-07-23 15:28:38,084 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:28:38,241 - mongodb_integration - INFO - Patient data stored successfully: 6880b24effc62e6d77880ea7
+2025-07-23 15:28:38,241 - main - INFO - Response: 200 - 0.157s
+2025-07-23 15:28:39,658 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:28:39,782 - mongodb_integration - INFO - Patient data stored successfully: 6880b24fffc62e6d77880eaa
+2025-07-23 15:28:39,782 - main - INFO - Response: 200 - 0.124s
+2025-07-23 15:28:41,500 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:28:41,619 - mongodb_integration - INFO - Patient data stored successfully: 6880b251ffc62e6d77880ead
+2025-07-23 15:28:41,620 - main - INFO - Response: 200 - 0.120s
+2025-07-23 15:28:43,037 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:28:43,161 - mongodb_integration - INFO - Patient data stored successfully: 6880b253ffc62e6d77880eb0
+2025-07-23 15:28:43,161 - main - INFO - Response: 200 - 0.124s
+2025-07-23 15:28:44,572 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:28:44,696 - mongodb_integration - INFO - Patient data stored successfully: 6880b254ffc62e6d77880eb3
+2025-07-23 15:28:44,697 - main - INFO - Response: 200 - 0.125s
+2025-07-23 15:35:17,530 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:35:17,977 - mongodb_integration - INFO - Patient data stored successfully: 6880b3ddffc62e6d77880eb6
+2025-07-23 15:35:17,979 - main - INFO - Response: 200 - 0.450s
+2025-07-23 15:35:19,407 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:35:19,538 - mongodb_integration - INFO - Patient data stored successfully: 6880b3dfffc62e6d77880eb9
+2025-07-23 15:35:19,538 - main - INFO - Response: 200 - 0.132s
+2025-07-23 15:35:20,947 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:35:21,066 - mongodb_integration - INFO - Patient data stored successfully: 6880b3e0ffc62e6d77880ebc
+2025-07-23 15:35:21,066 - main - INFO - Response: 200 - 0.119s
+2025-07-23 15:35:22,477 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:35:22,606 - mongodb_integration - INFO - Patient data stored successfully: 6880b3e2ffc62e6d77880ebf
+2025-07-23 15:35:22,607 - main - INFO - Response: 200 - 0.130s
+2025-07-23 15:35:24,020 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:35:24,136 - mongodb_integration - INFO - Patient data stored successfully: 6880b3e4ffc62e6d77880ec2
+2025-07-23 15:35:24,136 - main - INFO - Response: 200 - 0.117s
+2025-07-23 15:35:25,550 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:35:25,708 - mongodb_integration - INFO - Patient data stored successfully: 6880b3e5ffc62e6d77880ec5
+2025-07-23 15:35:25,709 - main - INFO - Response: 200 - 0.159s
+2025-07-23 15:35:27,122 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:35:27,255 - mongodb_integration - INFO - Patient data stored successfully: 6880b3e7ffc62e6d77880ec8
+2025-07-23 15:35:27,256 - main - INFO - Response: 200 - 0.134s
+2025-07-23 15:35:28,668 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:35:28,826 - mongodb_integration - INFO - Patient data stored successfully: 6880b3e8ffc62e6d77880ecb
+2025-07-23 15:35:28,827 - main - INFO - Response: 200 - 0.159s
+2025-07-23 15:35:30,238 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:35:30,408 - mongodb_integration - INFO - Patient data stored successfully: 6880b3eaffc62e6d77880ece
+2025-07-23 15:35:30,408 - main - INFO - Response: 200 - 0.171s
+2025-07-23 15:35:31,820 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:35:31,971 - mongodb_integration - INFO - Patient data stored successfully: 6880b3ebffc62e6d77880ed1
+2025-07-23 15:35:31,972 - main - INFO - Response: 200 - 0.152s
+2025-07-23 15:37:26,904 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:37:27,079 - mongodb_integration - INFO - Patient data stored successfully: 6880b45effc62e6d77880ed4
+2025-07-23 15:37:27,080 - main - INFO - Response: 200 - 0.175s
+2025-07-23 15:37:28,491 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:37:28,642 - mongodb_integration - INFO - Patient data stored successfully: 6880b460ffc62e6d77880ed7
+2025-07-23 15:37:28,643 - main - INFO - Response: 200 - 0.153s
+2025-07-23 15:37:30,359 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:37:30,720 - mongodb_integration - INFO - Patient data stored successfully: 6880b462ffc62e6d77880eda
+2025-07-23 15:37:30,720 - main - INFO - Response: 200 - 0.361s
+2025-07-23 15:37:32,131 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:37:32,250 - mongodb_integration - INFO - Patient data stored successfully: 6880b464ffc62e6d77880edd
+2025-07-23 15:37:32,251 - main - INFO - Response: 200 - 0.120s
+2025-07-23 15:37:33,661 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:37:33,810 - mongodb_integration - INFO - Patient data stored successfully: 6880b465ffc62e6d77880ee0
+2025-07-23 15:37:33,811 - main - INFO - Response: 200 - 0.150s
+2025-07-23 15:37:35,226 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:37:35,357 - mongodb_integration - INFO - Patient data stored successfully: 6880b467ffc62e6d77880ee3
+2025-07-23 15:37:35,357 - main - INFO - Response: 200 - 0.132s
+2025-07-23 15:37:36,767 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:37:36,884 - mongodb_integration - INFO - Patient data stored successfully: 6880b468ffc62e6d77880ee6
+2025-07-23 15:37:36,885 - main - INFO - Response: 200 - 0.118s
+2025-07-23 15:37:38,295 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:37:38,422 - mongodb_integration - INFO - Patient data stored successfully: 6880b46affc62e6d77880ee9
+2025-07-23 15:37:38,422 - main - INFO - Response: 200 - 0.127s
+2025-07-23 15:37:39,838 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:37:39,981 - mongodb_integration - INFO - Patient data stored successfully: 6880b46bffc62e6d77880eec
+2025-07-23 15:37:39,982 - main - INFO - Response: 200 - 0.144s
+2025-07-23 15:37:41,392 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:37:41,510 - mongodb_integration - INFO - Patient data stored successfully: 6880b46dffc62e6d77880eef
+2025-07-23 15:37:41,511 - main - INFO - Response: 200 - 0.119s
+2025-07-23 15:41:05,338 - main - INFO - Request: OPTIONS http://localhost:8001/api/novel/patients
+2025-07-23 15:41:05,338 - main - INFO - Response: 200 - 0.000s
+2025-07-23 15:41:05,340 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:41:06,047 - mongodb_integration - INFO - Patient data stored successfully: 6880b539ffc62e6d77880ef2
+2025-07-23 15:41:06,048 - main - INFO - Response: 200 - 0.708s
+2025-07-23 15:41:07,462 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:41:07,579 - mongodb_integration - INFO - Patient data stored successfully: 6880b53bffc62e6d77880ef5
+2025-07-23 15:41:07,580 - main - INFO - Response: 200 - 0.119s
+2025-07-23 15:41:09,006 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:41:09,134 - mongodb_integration - INFO - Patient data stored successfully: 6880b53dffc62e6d77880ef8
+2025-07-23 15:41:09,137 - main - INFO - Response: 200 - 0.131s
+2025-07-23 15:41:10,568 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:41:10,687 - mongodb_integration - INFO - Patient data stored successfully: 6880b53effc62e6d77880efb
+2025-07-23 15:41:10,688 - main - INFO - Response: 200 - 0.119s
+2025-07-23 15:41:12,102 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:41:12,219 - mongodb_integration - INFO - Patient data stored successfully: 6880b540ffc62e6d77880efe
+2025-07-23 15:41:12,220 - main - INFO - Response: 200 - 0.118s
+2025-07-23 15:41:13,630 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:41:13,758 - mongodb_integration - INFO - Patient data stored successfully: 6880b541ffc62e6d77880f01
+2025-07-23 15:41:13,760 - main - INFO - Response: 200 - 0.130s
+2025-07-23 15:41:15,169 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:41:15,287 - mongodb_integration - INFO - Patient data stored successfully: 6880b543ffc62e6d77880f04
+2025-07-23 15:41:15,288 - main - INFO - Response: 200 - 0.119s
+2025-07-23 15:41:16,700 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:41:16,854 - mongodb_integration - INFO - Patient data stored successfully: 6880b544ffc62e6d77880f07
+2025-07-23 15:41:16,855 - main - INFO - Response: 200 - 0.155s
+2025-07-23 15:41:18,269 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:41:18,385 - mongodb_integration - INFO - Patient data stored successfully: 6880b546ffc62e6d77880f0a
+2025-07-23 15:41:18,385 - main - INFO - Response: 200 - 0.116s
+2025-07-23 15:41:19,797 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:41:19,915 - mongodb_integration - INFO - Patient data stored successfully: 6880b547ffc62e6d77880f0d
+2025-07-23 15:41:19,916 - main - INFO - Response: 200 - 0.119s
+2025-07-23 15:41:36,568 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:41:36,724 - mongodb_integration - INFO - Patient data stored successfully: 6880b558ffc62e6d77880f10
+2025-07-23 15:41:36,725 - main - INFO - Response: 200 - 0.157s
+2025-07-23 15:41:38,136 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:41:38,366 - mongodb_integration - INFO - Patient data stored successfully: 6880b55affc62e6d77880f13
+2025-07-23 15:41:38,367 - main - INFO - Response: 200 - 0.231s
+2025-07-23 15:41:39,777 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:41:40,321 - mongodb_integration - INFO - Patient data stored successfully: 6880b55bffc62e6d77880f16
+2025-07-23 15:41:40,322 - main - INFO - Response: 200 - 0.545s
+2025-07-23 15:41:41,735 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:41:41,898 - mongodb_integration - INFO - Patient data stored successfully: 6880b55dffc62e6d77880f19
+2025-07-23 15:41:41,900 - main - INFO - Response: 200 - 0.164s
+2025-07-23 15:41:43,310 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:41:43,509 - mongodb_integration - INFO - Patient data stored successfully: 6880b55fffc62e6d77880f1c
+2025-07-23 15:41:43,510 - main - INFO - Response: 200 - 0.200s
+2025-07-23 15:41:44,937 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:41:45,078 - mongodb_integration - INFO - Patient data stored successfully: 6880b560ffc62e6d77880f1f
+2025-07-23 15:41:45,078 - main - INFO - Response: 200 - 0.142s
+2025-07-23 15:41:46,489 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:41:46,630 - mongodb_integration - INFO - Patient data stored successfully: 6880b562ffc62e6d77880f22
+2025-07-23 15:41:46,630 - main - INFO - Response: 200 - 0.141s
+2025-07-23 15:41:48,051 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:41:48,221 - mongodb_integration - INFO - Patient data stored successfully: 6880b564ffc62e6d77880f25
+2025-07-23 15:41:48,222 - main - INFO - Response: 200 - 0.171s
+2025-07-23 15:41:49,646 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:41:49,766 - mongodb_integration - INFO - Patient data stored successfully: 6880b565ffc62e6d77880f28
+2025-07-23 15:41:49,767 - main - INFO - Response: 200 - 0.120s
+2025-07-23 15:41:51,178 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:41:51,311 - mongodb_integration - INFO - Patient data stored successfully: 6880b567ffc62e6d77880f2b
+2025-07-23 15:41:51,311 - main - INFO - Response: 200 - 0.133s
+2025-07-23 15:41:52,721 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:41:52,913 - mongodb_integration - INFO - Patient data stored successfully: 6880b568ffc62e6d77880f2e
+2025-07-23 15:41:52,914 - main - INFO - Response: 200 - 0.193s
+2025-07-23 15:41:54,326 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:41:54,491 - mongodb_integration - INFO - Patient data stored successfully: 6880b56affc62e6d77880f31
+2025-07-23 15:41:54,492 - main - INFO - Response: 200 - 0.166s
+2025-07-23 15:41:55,901 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:41:56,049 - mongodb_integration - INFO - Patient data stored successfully: 6880b56bffc62e6d77880f34
+2025-07-23 15:41:56,050 - main - INFO - Response: 200 - 0.149s
+2025-07-23 15:41:57,463 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:41:57,584 - mongodb_integration - INFO - Patient data stored successfully: 6880b56dffc62e6d77880f37
+2025-07-23 15:41:57,584 - main - INFO - Response: 200 - 0.122s
+2025-07-23 15:41:58,998 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:41:59,113 - mongodb_integration - INFO - Patient data stored successfully: 6880b56fffc62e6d77880f3a
+2025-07-23 15:41:59,114 - main - INFO - Response: 200 - 0.116s
+2025-07-23 15:42:00,527 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:00,653 - mongodb_integration - INFO - Patient data stored successfully: 6880b570ffc62e6d77880f3d
+2025-07-23 15:42:00,654 - main - INFO - Response: 200 - 0.127s
+2025-07-23 15:42:02,067 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:02,185 - mongodb_integration - INFO - Patient data stored successfully: 6880b572ffc62e6d77880f40
+2025-07-23 15:42:02,185 - main - INFO - Response: 200 - 0.118s
+2025-07-23 15:42:03,599 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:03,726 - mongodb_integration - INFO - Patient data stored successfully: 6880b573ffc62e6d77880f43
+2025-07-23 15:42:03,727 - main - INFO - Response: 200 - 0.128s
+2025-07-23 15:42:05,139 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:05,257 - mongodb_integration - INFO - Patient data stored successfully: 6880b575ffc62e6d77880f46
+2025-07-23 15:42:05,257 - main - INFO - Response: 200 - 0.119s
+2025-07-23 15:42:06,668 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:06,789 - mongodb_integration - INFO - Patient data stored successfully: 6880b576ffc62e6d77880f49
+2025-07-23 15:42:06,789 - main - INFO - Response: 200 - 0.122s
+2025-07-23 15:42:08,201 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:08,346 - mongodb_integration - INFO - Patient data stored successfully: 6880b578ffc62e6d77880f4c
+2025-07-23 15:42:08,347 - main - INFO - Response: 200 - 0.146s
+2025-07-23 15:42:09,759 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:10,000 - mongodb_integration - INFO - Patient data stored successfully: 6880b579ffc62e6d77880f4f
+2025-07-23 15:42:10,000 - main - INFO - Response: 200 - 0.241s
+2025-07-23 15:42:11,414 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:11,550 - mongodb_integration - INFO - Patient data stored successfully: 6880b57bffc62e6d77880f52
+2025-07-23 15:42:11,551 - main - INFO - Response: 200 - 0.136s
+2025-07-23 15:42:12,963 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:13,103 - mongodb_integration - INFO - Patient data stored successfully: 6880b57cffc62e6d77880f55
+2025-07-23 15:42:13,103 - main - INFO - Response: 200 - 0.140s
+2025-07-23 15:42:14,535 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:14,663 - mongodb_integration - INFO - Patient data stored successfully: 6880b57effc62e6d77880f58
+2025-07-23 15:42:14,663 - main - INFO - Response: 200 - 0.128s
+2025-07-23 15:42:16,073 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:16,225 - mongodb_integration - INFO - Patient data stored successfully: 6880b580ffc62e6d77880f5b
+2025-07-23 15:42:16,225 - main - INFO - Response: 200 - 0.152s
+2025-07-23 15:42:17,636 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:17,760 - mongodb_integration - INFO - Patient data stored successfully: 6880b581ffc62e6d77880f5e
+2025-07-23 15:42:17,761 - main - INFO - Response: 200 - 0.125s
+2025-07-23 15:42:19,173 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:19,294 - mongodb_integration - INFO - Patient data stored successfully: 6880b583ffc62e6d77880f61
+2025-07-23 15:42:19,295 - main - INFO - Response: 200 - 0.122s
+2025-07-23 15:42:20,706 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:20,866 - mongodb_integration - INFO - Patient data stored successfully: 6880b584ffc62e6d77880f64
+2025-07-23 15:42:20,867 - main - INFO - Response: 200 - 0.161s
+2025-07-23 15:42:22,286 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:22,415 - mongodb_integration - INFO - Patient data stored successfully: 6880b586ffc62e6d77880f67
+2025-07-23 15:42:22,415 - main - INFO - Response: 200 - 0.129s
+2025-07-23 15:42:23,829 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:23,969 - mongodb_integration - INFO - Patient data stored successfully: 6880b587ffc62e6d77880f6a
+2025-07-23 15:42:23,970 - main - INFO - Response: 200 - 0.141s
+2025-07-23 15:42:25,381 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:25,557 - mongodb_integration - INFO - Patient data stored successfully: 6880b589ffc62e6d77880f6d
+2025-07-23 15:42:25,558 - main - INFO - Response: 200 - 0.177s
+2025-07-23 15:42:26,973 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:27,127 - mongodb_integration - INFO - Patient data stored successfully: 6880b58bffc62e6d77880f70
+2025-07-23 15:42:27,128 - main - INFO - Response: 200 - 0.154s
+2025-07-23 15:42:28,581 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:28,700 - mongodb_integration - INFO - Patient data stored successfully: 6880b58cffc62e6d77880f73
+2025-07-23 15:42:28,700 - main - INFO - Response: 200 - 0.119s
+2025-07-23 15:42:30,115 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:30,232 - mongodb_integration - INFO - Patient data stored successfully: 6880b58effc62e6d77880f76
+2025-07-23 15:42:30,232 - main - INFO - Response: 200 - 0.117s
+2025-07-23 15:42:31,641 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:31,760 - mongodb_integration - INFO - Patient data stored successfully: 6880b58fffc62e6d77880f79
+2025-07-23 15:42:31,761 - main - INFO - Response: 200 - 0.119s
+2025-07-23 15:42:33,205 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:33,325 - mongodb_integration - INFO - Patient data stored successfully: 6880b591ffc62e6d77880f7c
+2025-07-23 15:42:33,337 - main - INFO - Response: 200 - 0.132s
+2025-07-23 15:42:34,754 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:34,872 - mongodb_integration - INFO - Patient data stored successfully: 6880b592ffc62e6d77880f7f
+2025-07-23 15:42:34,873 - main - INFO - Response: 200 - 0.119s
+2025-07-23 15:42:36,281 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:36,404 - mongodb_integration - INFO - Patient data stored successfully: 6880b594ffc62e6d77880f82
+2025-07-23 15:42:36,405 - main - INFO - Response: 200 - 0.124s
+2025-07-23 15:42:37,841 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:37,956 - mongodb_integration - INFO - Patient data stored successfully: 6880b595ffc62e6d77880f85
+2025-07-23 15:42:37,956 - main - INFO - Response: 200 - 0.116s
+2025-07-23 15:42:39,367 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:39,582 - mongodb_integration - INFO - Patient data stored successfully: 6880b597ffc62e6d77880f88
+2025-07-23 15:42:39,582 - main - INFO - Response: 200 - 0.215s
+2025-07-23 15:42:40,996 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:41,122 - mongodb_integration - INFO - Patient data stored successfully: 6880b599ffc62e6d77880f8b
+2025-07-23 15:42:41,122 - main - INFO - Response: 200 - 0.127s
+2025-07-23 15:42:42,547 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:42,669 - mongodb_integration - INFO - Patient data stored successfully: 6880b59affc62e6d77880f8e
+2025-07-23 15:42:42,669 - main - INFO - Response: 200 - 0.123s
+2025-07-23 15:42:44,083 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:44,211 - mongodb_integration - INFO - Patient data stored successfully: 6880b59cffc62e6d77880f91
+2025-07-23 15:42:44,212 - main - INFO - Response: 200 - 0.129s
+2025-07-23 15:42:45,622 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:45,739 - mongodb_integration - INFO - Patient data stored successfully: 6880b59dffc62e6d77880f94
+2025-07-23 15:42:45,739 - main - INFO - Response: 200 - 0.117s
+2025-07-23 15:42:47,150 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:47,303 - mongodb_integration - INFO - Patient data stored successfully: 6880b59fffc62e6d77880f97
+2025-07-23 15:42:47,303 - main - INFO - Response: 200 - 0.153s
+2025-07-23 15:42:48,716 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:48,865 - mongodb_integration - INFO - Patient data stored successfully: 6880b5a0ffc62e6d77880f9a
+2025-07-23 15:42:48,866 - main - INFO - Response: 200 - 0.150s
+2025-07-23 15:42:50,280 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:50,503 - mongodb_integration - INFO - Patient data stored successfully: 6880b5a2ffc62e6d77880f9d
+2025-07-23 15:42:50,503 - main - INFO - Response: 200 - 0.223s
+2025-07-23 15:42:51,916 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:52,046 - mongodb_integration - INFO - Patient data stored successfully: 6880b5a3ffc62e6d77880fa0
+2025-07-23 15:42:52,047 - main - INFO - Response: 200 - 0.131s
+2025-07-23 15:42:53,457 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:54,194 - mongodb_integration - INFO - Patient data stored successfully: 6880b5a5ffc62e6d77880fa3
+2025-07-23 15:42:54,195 - main - INFO - Response: 200 - 0.738s
+2025-07-23 15:42:55,610 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:55,751 - mongodb_integration - INFO - Patient data stored successfully: 6880b5a7ffc62e6d77880fa6
+2025-07-23 15:42:55,752 - main - INFO - Response: 200 - 0.141s
+2025-07-23 15:42:57,465 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:57,604 - mongodb_integration - INFO - Patient data stored successfully: 6880b5a9ffc62e6d77880fa9
+2025-07-23 15:42:57,604 - main - INFO - Response: 200 - 0.139s
+2025-07-23 15:42:59,015 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:42:59,141 - mongodb_integration - INFO - Patient data stored successfully: 6880b5abffc62e6d77880fac
+2025-07-23 15:42:59,142 - main - INFO - Response: 200 - 0.126s
+2025-07-23 15:43:00,553 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:00,700 - mongodb_integration - INFO - Patient data stored successfully: 6880b5acffc62e6d77880faf
+2025-07-23 15:43:00,700 - main - INFO - Response: 200 - 0.148s
+2025-07-23 15:43:02,111 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:02,231 - mongodb_integration - INFO - Patient data stored successfully: 6880b5aeffc62e6d77880fb2
+2025-07-23 15:43:02,231 - main - INFO - Response: 200 - 0.121s
+2025-07-23 15:43:03,641 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:03,770 - mongodb_integration - INFO - Patient data stored successfully: 6880b5afffc62e6d77880fb5
+2025-07-23 15:43:03,771 - main - INFO - Response: 200 - 0.130s
+2025-07-23 15:43:05,184 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:05,301 - mongodb_integration - INFO - Patient data stored successfully: 6880b5b1ffc62e6d77880fb8
+2025-07-23 15:43:05,302 - main - INFO - Response: 200 - 0.118s
+2025-07-23 15:43:06,709 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:06,866 - mongodb_integration - INFO - Patient data stored successfully: 6880b5b2ffc62e6d77880fbb
+2025-07-23 15:43:06,866 - main - INFO - Response: 200 - 0.157s
+2025-07-23 15:43:08,275 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:08,419 - mongodb_integration - INFO - Patient data stored successfully: 6880b5b4ffc62e6d77880fbe
+2025-07-23 15:43:08,419 - main - INFO - Response: 200 - 0.144s
+2025-07-23 15:43:09,830 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:09,948 - mongodb_integration - INFO - Patient data stored successfully: 6880b5b5ffc62e6d77880fc1
+2025-07-23 15:43:09,948 - main - INFO - Response: 200 - 0.118s
+2025-07-23 15:43:11,358 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:11,476 - mongodb_integration - INFO - Patient data stored successfully: 6880b5b7ffc62e6d77880fc4
+2025-07-23 15:43:11,477 - main - INFO - Response: 200 - 0.119s
+2025-07-23 15:43:12,888 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:13,047 - mongodb_integration - INFO - Patient data stored successfully: 6880b5b8ffc62e6d77880fc7
+2025-07-23 15:43:13,047 - main - INFO - Response: 200 - 0.159s
+2025-07-23 15:43:14,458 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:14,582 - mongodb_integration - INFO - Patient data stored successfully: 6880b5baffc62e6d77880fca
+2025-07-23 15:43:14,583 - main - INFO - Response: 200 - 0.125s
+2025-07-23 15:43:15,994 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:16,130 - mongodb_integration - INFO - Patient data stored successfully: 6880b5bcffc62e6d77880fcd
+2025-07-23 15:43:16,131 - main - INFO - Response: 200 - 0.136s
+2025-07-23 15:43:17,545 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:17,676 - mongodb_integration - INFO - Patient data stored successfully: 6880b5bdffc62e6d77880fd0
+2025-07-23 15:43:17,677 - main - INFO - Response: 200 - 0.132s
+2025-07-23 15:43:19,095 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:19,249 - mongodb_integration - INFO - Patient data stored successfully: 6880b5bfffc62e6d77880fd3
+2025-07-23 15:43:19,249 - main - INFO - Response: 200 - 0.155s
+2025-07-23 15:43:20,664 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:20,786 - mongodb_integration - INFO - Patient data stored successfully: 6880b5c0ffc62e6d77880fd6
+2025-07-23 15:43:20,787 - main - INFO - Response: 200 - 0.123s
+2025-07-23 15:43:22,199 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:22,317 - mongodb_integration - INFO - Patient data stored successfully: 6880b5c2ffc62e6d77880fd9
+2025-07-23 15:43:22,317 - main - INFO - Response: 200 - 0.118s
+2025-07-23 15:43:23,726 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:23,842 - mongodb_integration - INFO - Patient data stored successfully: 6880b5c3ffc62e6d77880fdc
+2025-07-23 15:43:23,843 - main - INFO - Response: 200 - 0.117s
+2025-07-23 15:43:25,254 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:25,371 - mongodb_integration - INFO - Patient data stored successfully: 6880b5c5ffc62e6d77880fdf
+2025-07-23 15:43:25,372 - main - INFO - Response: 200 - 0.118s
+2025-07-23 15:43:26,782 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:26,898 - mongodb_integration - INFO - Patient data stored successfully: 6880b5c6ffc62e6d77880fe2
+2025-07-23 15:43:26,899 - main - INFO - Response: 200 - 0.117s
+2025-07-23 15:43:28,309 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:28,426 - mongodb_integration - INFO - Patient data stored successfully: 6880b5c8ffc62e6d77880fe5
+2025-07-23 15:43:28,427 - main - INFO - Response: 200 - 0.118s
+2025-07-23 15:43:29,838 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:29,956 - mongodb_integration - INFO - Patient data stored successfully: 6880b5c9ffc62e6d77880fe8
+2025-07-23 15:43:29,957 - main - INFO - Response: 200 - 0.119s
+2025-07-23 15:43:31,371 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:31,500 - mongodb_integration - INFO - Patient data stored successfully: 6880b5cbffc62e6d77880feb
+2025-07-23 15:43:31,500 - main - INFO - Response: 200 - 0.129s
+2025-07-23 15:43:32,914 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:33,042 - mongodb_integration - INFO - Patient data stored successfully: 6880b5ccffc62e6d77880fee
+2025-07-23 15:43:33,042 - main - INFO - Response: 200 - 0.128s
+2025-07-23 15:43:34,456 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:34,572 - mongodb_integration - INFO - Patient data stored successfully: 6880b5ceffc62e6d77880ff1
+2025-07-23 15:43:34,572 - main - INFO - Response: 200 - 0.117s
+2025-07-23 15:43:35,984 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:36,111 - mongodb_integration - INFO - Patient data stored successfully: 6880b5d0ffc62e6d77880ff4
+2025-07-23 15:43:36,112 - main - INFO - Response: 200 - 0.128s
+2025-07-23 15:43:37,525 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:37,641 - mongodb_integration - INFO - Patient data stored successfully: 6880b5d1ffc62e6d77880ff7
+2025-07-23 15:43:37,642 - main - INFO - Response: 200 - 0.117s
+2025-07-23 15:43:39,050 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:39,167 - mongodb_integration - INFO - Patient data stored successfully: 6880b5d3ffc62e6d77880ffa
+2025-07-23 15:43:39,168 - main - INFO - Response: 200 - 0.118s
+2025-07-23 15:43:40,577 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:40,700 - mongodb_integration - INFO - Patient data stored successfully: 6880b5d4ffc62e6d77880ffd
+2025-07-23 15:43:40,701 - main - INFO - Response: 200 - 0.124s
+2025-07-23 15:43:42,114 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:42,237 - mongodb_integration - INFO - Patient data stored successfully: 6880b5d6ffc62e6d77881000
+2025-07-23 15:43:42,238 - main - INFO - Response: 200 - 0.124s
+2025-07-23 15:43:43,650 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:43,787 - mongodb_integration - INFO - Patient data stored successfully: 6880b5d7ffc62e6d77881003
+2025-07-23 15:43:43,788 - main - INFO - Response: 200 - 0.137s
+2025-07-23 15:43:45,199 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:45,319 - mongodb_integration - INFO - Patient data stored successfully: 6880b5d9ffc62e6d77881006
+2025-07-23 15:43:45,320 - main - INFO - Response: 200 - 0.121s
+2025-07-23 15:43:46,734 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:46,857 - mongodb_integration - INFO - Patient data stored successfully: 6880b5daffc62e6d77881009
+2025-07-23 15:43:46,858 - main - INFO - Response: 200 - 0.123s
+2025-07-23 15:43:48,268 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:48,385 - mongodb_integration - INFO - Patient data stored successfully: 6880b5dcffc62e6d7788100c
+2025-07-23 15:43:48,386 - main - INFO - Response: 200 - 0.118s
+2025-07-23 15:43:49,798 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:49,979 - mongodb_integration - INFO - Patient data stored successfully: 6880b5ddffc62e6d7788100f
+2025-07-23 15:43:49,980 - main - INFO - Response: 200 - 0.181s
+2025-07-23 15:43:51,389 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:51,509 - mongodb_integration - INFO - Patient data stored successfully: 6880b5dfffc62e6d77881012
+2025-07-23 15:43:51,509 - main - INFO - Response: 200 - 0.120s
+2025-07-23 15:43:52,922 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:53,044 - mongodb_integration - INFO - Patient data stored successfully: 6880b5e0ffc62e6d77881015
+2025-07-23 15:43:53,045 - main - INFO - Response: 200 - 0.122s
+2025-07-23 15:43:54,456 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:54,575 - mongodb_integration - INFO - Patient data stored successfully: 6880b5e2ffc62e6d77881018
+2025-07-23 15:43:54,576 - main - INFO - Response: 200 - 0.120s
+2025-07-23 15:43:55,990 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:56,107 - mongodb_integration - INFO - Patient data stored successfully: 6880b5e4ffc62e6d7788101b
+2025-07-23 15:43:56,108 - main - INFO - Response: 200 - 0.117s
+2025-07-23 15:43:57,518 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:57,650 - mongodb_integration - INFO - Patient data stored successfully: 6880b5e5ffc62e6d7788101e
+2025-07-23 15:43:57,651 - main - INFO - Response: 200 - 0.132s
+2025-07-23 15:43:59,065 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:43:59,205 - mongodb_integration - INFO - Patient data stored successfully: 6880b5e7ffc62e6d77881021
+2025-07-23 15:43:59,205 - main - INFO - Response: 200 - 0.140s
+2025-07-23 15:44:00,615 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:00,732 - mongodb_integration - INFO - Patient data stored successfully: 6880b5e8ffc62e6d77881024
+2025-07-23 15:44:00,734 - main - INFO - Response: 200 - 0.119s
+2025-07-23 15:44:02,148 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:02,264 - mongodb_integration - INFO - Patient data stored successfully: 6880b5eaffc62e6d77881027
+2025-07-23 15:44:02,265 - main - INFO - Response: 200 - 0.116s
+2025-07-23 15:44:03,673 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:03,789 - mongodb_integration - INFO - Patient data stored successfully: 6880b5ebffc62e6d7788102a
+2025-07-23 15:44:03,790 - main - INFO - Response: 200 - 0.117s
+2025-07-23 15:44:05,198 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:05,318 - mongodb_integration - INFO - Patient data stored successfully: 6880b5edffc62e6d7788102d
+2025-07-23 15:44:05,318 - main - INFO - Response: 200 - 0.120s
+2025-07-23 15:44:06,728 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:06,846 - mongodb_integration - INFO - Patient data stored successfully: 6880b5eeffc62e6d77881030
+2025-07-23 15:44:06,847 - main - INFO - Response: 200 - 0.119s
+2025-07-23 15:44:08,258 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:08,376 - mongodb_integration - INFO - Patient data stored successfully: 6880b5f0ffc62e6d77881033
+2025-07-23 15:44:08,377 - main - INFO - Response: 200 - 0.119s
+2025-07-23 15:44:09,789 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:09,906 - mongodb_integration - INFO - Patient data stored successfully: 6880b5f1ffc62e6d77881036
+2025-07-23 15:44:09,907 - main - INFO - Response: 200 - 0.118s
+2025-07-23 15:44:11,316 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:11,433 - mongodb_integration - INFO - Patient data stored successfully: 6880b5f3ffc62e6d77881039
+2025-07-23 15:44:11,433 - main - INFO - Response: 200 - 0.118s
+2025-07-23 15:44:12,847 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:12,989 - mongodb_integration - INFO - Patient data stored successfully: 6880b5f4ffc62e6d7788103c
+2025-07-23 15:44:12,990 - main - INFO - Response: 200 - 0.143s
+2025-07-23 15:44:14,402 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:14,523 - mongodb_integration - INFO - Patient data stored successfully: 6880b5f6ffc62e6d7788103f
+2025-07-23 15:44:14,526 - main - INFO - Response: 200 - 0.124s
+2025-07-23 15:44:15,945 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:16,069 - mongodb_integration - INFO - Patient data stored successfully: 6880b5f7ffc62e6d77881042
+2025-07-23 15:44:16,070 - main - INFO - Response: 200 - 0.126s
+2025-07-23 15:44:17,486 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:17,609 - mongodb_integration - INFO - Patient data stored successfully: 6880b5f9ffc62e6d77881045
+2025-07-23 15:44:17,610 - main - INFO - Response: 200 - 0.124s
+2025-07-23 15:44:19,025 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:19,164 - mongodb_integration - INFO - Patient data stored successfully: 6880b5fbffc62e6d77881048
+2025-07-23 15:44:19,165 - main - INFO - Response: 200 - 0.140s
+2025-07-23 15:44:20,579 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:20,733 - mongodb_integration - INFO - Patient data stored successfully: 6880b5fcffc62e6d7788104b
+2025-07-23 15:44:20,733 - main - INFO - Response: 200 - 0.154s
+2025-07-23 15:44:22,150 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:22,269 - mongodb_integration - INFO - Patient data stored successfully: 6880b5feffc62e6d7788104e
+2025-07-23 15:44:22,270 - main - INFO - Response: 200 - 0.120s
+2025-07-23 15:44:23,685 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:24,003 - mongodb_integration - INFO - Patient data stored successfully: 6880b5ffffc62e6d77881051
+2025-07-23 15:44:24,003 - main - INFO - Response: 200 - 0.318s
+2025-07-23 15:44:25,414 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:25,546 - mongodb_integration - INFO - Patient data stored successfully: 6880b601ffc62e6d77881054
+2025-07-23 15:44:25,547 - main - INFO - Response: 200 - 0.133s
+2025-07-23 15:44:26,957 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:27,076 - mongodb_integration - INFO - Patient data stored successfully: 6880b602ffc62e6d77881057
+2025-07-23 15:44:27,076 - main - INFO - Response: 200 - 0.120s
+2025-07-23 15:44:28,520 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:28,642 - mongodb_integration - INFO - Patient data stored successfully: 6880b604ffc62e6d7788105a
+2025-07-23 15:44:28,642 - main - INFO - Response: 200 - 0.122s
+2025-07-23 15:44:30,053 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:30,169 - mongodb_integration - INFO - Patient data stored successfully: 6880b606ffc62e6d7788105d
+2025-07-23 15:44:30,169 - main - INFO - Response: 200 - 0.116s
+2025-07-23 15:44:31,579 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:31,701 - mongodb_integration - INFO - Patient data stored successfully: 6880b607ffc62e6d77881060
+2025-07-23 15:44:31,702 - main - INFO - Response: 200 - 0.123s
+2025-07-23 15:44:33,116 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:33,278 - mongodb_integration - INFO - Patient data stored successfully: 6880b609ffc62e6d77881063
+2025-07-23 15:44:33,279 - main - INFO - Response: 200 - 0.163s
+2025-07-23 15:44:34,692 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:34,821 - mongodb_integration - INFO - Patient data stored successfully: 6880b60affc62e6d77881066
+2025-07-23 15:44:34,822 - main - INFO - Response: 200 - 0.130s
+2025-07-23 15:44:36,234 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:36,392 - mongodb_integration - INFO - Patient data stored successfully: 6880b60cffc62e6d77881069
+2025-07-23 15:44:36,392 - main - INFO - Response: 200 - 0.158s
+2025-07-23 15:44:37,802 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:37,933 - mongodb_integration - INFO - Patient data stored successfully: 6880b60dffc62e6d7788106c
+2025-07-23 15:44:37,934 - main - INFO - Response: 200 - 0.132s
+2025-07-23 15:44:39,352 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:39,481 - mongodb_integration - INFO - Patient data stored successfully: 6880b60fffc62e6d7788106f
+2025-07-23 15:44:39,481 - main - INFO - Response: 200 - 0.130s
+2025-07-23 15:44:40,892 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:41,019 - mongodb_integration - INFO - Patient data stored successfully: 6880b610ffc62e6d77881072
+2025-07-23 15:44:41,020 - main - INFO - Response: 200 - 0.128s
+2025-07-23 15:44:42,432 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:42,551 - mongodb_integration - INFO - Patient data stored successfully: 6880b612ffc62e6d77881075
+2025-07-23 15:44:42,552 - main - INFO - Response: 200 - 0.120s
+2025-07-23 15:44:44,420 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:44,561 - mongodb_integration - INFO - Patient data stored successfully: 6880b614ffc62e6d77881078
+2025-07-23 15:44:44,562 - main - INFO - Response: 200 - 0.142s
+2025-07-23 15:44:46,077 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:46,203 - mongodb_integration - INFO - Patient data stored successfully: 6880b616ffc62e6d7788107b
+2025-07-23 15:44:46,204 - main - INFO - Response: 200 - 0.127s
+2025-07-23 15:44:47,628 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:47,747 - mongodb_integration - INFO - Patient data stored successfully: 6880b617ffc62e6d7788107e
+2025-07-23 15:44:47,748 - main - INFO - Response: 200 - 0.120s
+2025-07-23 15:44:49,168 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:49,289 - mongodb_integration - INFO - Patient data stored successfully: 6880b619ffc62e6d77881081
+2025-07-23 15:44:49,290 - main - INFO - Response: 200 - 0.122s
+2025-07-23 15:44:50,736 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:50,857 - mongodb_integration - INFO - Patient data stored successfully: 6880b61affc62e6d77881084
+2025-07-23 15:44:50,858 - main - INFO - Response: 200 - 0.122s
+2025-07-23 15:44:52,270 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:52,385 - mongodb_integration - INFO - Patient data stored successfully: 6880b61cffc62e6d77881087
+2025-07-23 15:44:52,385 - main - INFO - Response: 200 - 0.116s
+2025-07-23 15:44:53,795 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:53,911 - mongodb_integration - INFO - Patient data stored successfully: 6880b61dffc62e6d7788108a
+2025-07-23 15:44:53,912 - main - INFO - Response: 200 - 0.117s
+2025-07-23 15:44:55,324 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:55,442 - mongodb_integration - INFO - Patient data stored successfully: 6880b61fffc62e6d7788108d
+2025-07-23 15:44:55,443 - main - INFO - Response: 200 - 0.118s
+2025-07-23 15:44:56,854 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:56,980 - mongodb_integration - INFO - Patient data stored successfully: 6880b620ffc62e6d77881090
+2025-07-23 15:44:56,981 - main - INFO - Response: 200 - 0.127s
+2025-07-23 15:44:58,392 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:44:58,511 - mongodb_integration - INFO - Patient data stored successfully: 6880b622ffc62e6d77881093
+2025-07-23 15:44:58,511 - main - INFO - Response: 200 - 0.119s
+2025-07-23 15:44:59,921 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:45:00,144 - mongodb_integration - INFO - Patient data stored successfully: 6880b623ffc62e6d77881096
+2025-07-23 15:45:00,145 - main - INFO - Response: 200 - 0.224s
+2025-07-23 15:45:01,554 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:45:01,672 - mongodb_integration - INFO - Patient data stored successfully: 6880b625ffc62e6d77881099
+2025-07-23 15:45:01,673 - main - INFO - Response: 200 - 0.119s
+2025-07-23 15:45:03,084 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:45:03,201 - mongodb_integration - INFO - Patient data stored successfully: 6880b627ffc62e6d7788109c
+2025-07-23 15:45:03,201 - main - INFO - Response: 200 - 0.117s
+2025-07-23 15:45:04,614 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:45:04,736 - mongodb_integration - INFO - Patient data stored successfully: 6880b628ffc62e6d7788109f
+2025-07-23 15:45:04,737 - main - INFO - Response: 200 - 0.123s
+2025-07-23 15:45:06,151 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:45:06,298 - mongodb_integration - INFO - Patient data stored successfully: 6880b62affc62e6d778810a2
+2025-07-23 15:45:06,299 - main - INFO - Response: 200 - 0.147s
+2025-07-23 15:45:07,710 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:45:07,830 - mongodb_integration - INFO - Patient data stored successfully: 6880b62bffc62e6d778810a5
+2025-07-23 15:45:07,830 - main - INFO - Response: 200 - 0.121s
+2025-07-23 15:45:09,241 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:45:09,361 - mongodb_integration - INFO - Patient data stored successfully: 6880b62dffc62e6d778810a8
+2025-07-23 15:45:09,362 - main - INFO - Response: 200 - 0.121s
+2025-07-23 15:45:10,778 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:45:10,909 - mongodb_integration - INFO - Patient data stored successfully: 6880b62effc62e6d778810ab
+2025-07-23 15:45:10,910 - main - INFO - Response: 200 - 0.131s
+2025-07-23 15:45:12,323 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:45:12,455 - mongodb_integration - INFO - Patient data stored successfully: 6880b630ffc62e6d778810ae
+2025-07-23 15:45:12,456 - main - INFO - Response: 200 - 0.132s
+2025-07-23 15:45:13,866 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:45:13,991 - mongodb_integration - INFO - Patient data stored successfully: 6880b631ffc62e6d778810b1
+2025-07-23 15:45:13,991 - main - INFO - Response: 200 - 0.125s
+2025-07-23 15:45:15,400 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:45:15,518 - mongodb_integration - INFO - Patient data stored successfully: 6880b633ffc62e6d778810b4
+2025-07-23 15:45:15,519 - main - INFO - Response: 200 - 0.119s
+2025-07-23 15:45:16,929 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:45:17,052 - mongodb_integration - INFO - Patient data stored successfully: 6880b634ffc62e6d778810b7
+2025-07-23 15:45:17,052 - main - INFO - Response: 200 - 0.123s
+2025-07-23 15:45:18,461 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:45:18,607 - mongodb_integration - INFO - Patient data stored successfully: 6880b636ffc62e6d778810ba
+2025-07-23 15:45:18,608 - main - INFO - Response: 200 - 0.147s
+2025-07-23 15:45:20,018 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:45:20,136 - mongodb_integration - INFO - Patient data stored successfully: 6880b638ffc62e6d778810bd
+2025-07-23 15:45:20,136 - main - INFO - Response: 200 - 0.118s
+2025-07-23 15:45:21,546 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:45:21,664 - mongodb_integration - INFO - Patient data stored successfully: 6880b639ffc62e6d778810c0
+2025-07-23 15:45:21,665 - main - INFO - Response: 200 - 0.119s
+2025-07-23 15:45:23,075 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:45:23,191 - mongodb_integration - INFO - Patient data stored successfully: 6880b63bffc62e6d778810c3
+2025-07-23 15:45:23,191 - main - INFO - Response: 200 - 0.117s
+2025-07-23 15:45:24,601 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:45:24,718 - mongodb_integration - INFO - Patient data stored successfully: 6880b63cffc62e6d778810c6
+2025-07-23 15:45:24,718 - main - INFO - Response: 200 - 0.117s
+2025-07-23 15:45:26,128 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:45:26,261 - mongodb_integration - INFO - Patient data stored successfully: 6880b63effc62e6d778810c9
+2025-07-23 15:45:26,262 - main - INFO - Response: 200 - 0.134s
+2025-07-23 15:45:27,671 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:45:27,831 - mongodb_integration - INFO - Patient data stored successfully: 6880b63fffc62e6d778810cc
+2025-07-23 15:45:27,832 - main - INFO - Response: 200 - 0.161s
+2025-07-23 15:45:29,250 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:45:29,385 - mongodb_integration - INFO - Patient data stored successfully: 6880b641ffc62e6d778810cf
+2025-07-23 15:45:29,386 - main - INFO - Response: 200 - 0.136s
+2025-07-23 15:45:30,800 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:45:30,932 - mongodb_integration - INFO - Patient data stored successfully: 6880b642ffc62e6d778810d2
+2025-07-23 15:45:30,933 - main - INFO - Response: 200 - 0.133s
+2025-07-23 15:45:32,364 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:45:32,496 - mongodb_integration - INFO - Patient data stored successfully: 6880b644ffc62e6d778810d5
+2025-07-23 15:45:32,496 - main - INFO - Response: 200 - 0.132s
+2025-07-23 15:45:33,905 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:45:34,033 - mongodb_integration - INFO - Patient data stored successfully: 6880b645ffc62e6d778810d8
+2025-07-23 15:45:34,033 - main - INFO - Response: 200 - 0.128s
+2025-07-23 15:45:35,443 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:45:35,561 - mongodb_integration - INFO - Patient data stored successfully: 6880b647ffc62e6d778810db
+2025-07-23 15:45:35,561 - main - INFO - Response: 200 - 0.118s
+2025-07-23 15:45:36,987 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:45:37,122 - mongodb_integration - INFO - Patient data stored successfully: 6880b649ffc62e6d778810de
+2025-07-23 15:45:37,123 - main - INFO - Response: 200 - 0.136s
+2025-07-23 15:45:38,536 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:45:38,676 - mongodb_integration - INFO - Patient data stored successfully: 6880b64affc62e6d778810e1
+2025-07-23 15:45:38,677 - main - INFO - Response: 200 - 0.141s
+2025-07-23 15:45:40,088 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:45:40,208 - mongodb_integration - INFO - Patient data stored successfully: 6880b64cffc62e6d778810e4
+2025-07-23 15:45:40,208 - main - INFO - Response: 200 - 0.120s
+2025-07-23 15:45:41,622 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:45:41,794 - mongodb_integration - INFO - Patient data stored successfully: 6880b64dffc62e6d778810e7
+2025-07-23 15:45:41,795 - main - INFO - Response: 200 - 0.173s
+2025-07-23 15:45:43,206 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:45:43,327 - mongodb_integration - INFO - Patient data stored successfully: 6880b64fffc62e6d778810ea
+2025-07-23 15:45:43,328 - main - INFO - Response: 200 - 0.122s
+2025-07-23 15:45:44,739 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:45:44,859 - mongodb_integration - INFO - Patient data stored successfully: 6880b650ffc62e6d778810ed
+2025-07-23 15:45:44,860 - main - INFO - Response: 200 - 0.121s
+2025-07-23 15:45:46,268 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:45:46,392 - mongodb_integration - INFO - Patient data stored successfully: 6880b652ffc62e6d778810f0
+2025-07-23 15:45:46,393 - main - INFO - Response: 200 - 0.125s
+2025-07-23 15:45:57,534 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:45:57,813 - mongodb_integration - INFO - Patient data stored successfully: 6880b65dffc62e6d778810f3
+2025-07-23 15:45:57,813 - main - INFO - Response: 200 - 0.279s
+2025-07-23 15:45:59,227 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:45:59,359 - mongodb_integration - INFO - Patient data stored successfully: 6880b65fffc62e6d778810f6
+2025-07-23 15:45:59,359 - main - INFO - Response: 200 - 0.132s
+2025-07-23 15:46:00,770 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:46:00,886 - mongodb_integration - INFO - Patient data stored successfully: 6880b660ffc62e6d778810f9
+2025-07-23 15:46:00,887 - main - INFO - Response: 200 - 0.117s
+2025-07-23 15:46:02,297 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:46:02,429 - mongodb_integration - INFO - Patient data stored successfully: 6880b662ffc62e6d778810fc
+2025-07-23 15:46:02,430 - main - INFO - Response: 200 - 0.133s
+2025-07-23 15:46:03,840 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:46:03,968 - mongodb_integration - INFO - Patient data stored successfully: 6880b663ffc62e6d778810ff
+2025-07-23 15:46:03,969 - main - INFO - Response: 200 - 0.129s
+2025-07-23 15:46:05,380 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:46:05,497 - mongodb_integration - INFO - Patient data stored successfully: 6880b665ffc62e6d77881102
+2025-07-23 15:46:05,498 - main - INFO - Response: 200 - 0.118s
+2025-07-23 15:46:06,908 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:46:07,058 - mongodb_integration - INFO - Patient data stored successfully: 6880b666ffc62e6d77881105
+2025-07-23 15:46:07,059 - main - INFO - Response: 200 - 0.152s
+2025-07-23 15:46:08,470 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:46:08,593 - mongodb_integration - INFO - Patient data stored successfully: 6880b668ffc62e6d77881108
+2025-07-23 15:46:08,594 - main - INFO - Response: 200 - 0.124s
+2025-07-23 15:46:10,005 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:46:10,122 - mongodb_integration - INFO - Patient data stored successfully: 6880b66affc62e6d7788110b
+2025-07-23 15:46:10,122 - main - INFO - Response: 200 - 0.118s
+2025-07-23 15:46:11,532 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:46:11,650 - mongodb_integration - INFO - Patient data stored successfully: 6880b66bffc62e6d7788110e
+2025-07-23 15:46:11,650 - main - INFO - Response: 200 - 0.118s
+2025-07-23 15:52:17,591 - main - INFO - Request: OPTIONS http://localhost:8001/api/novel/patients
+2025-07-23 15:52:17,591 - main - INFO - Response: 200 - 0.000s
+2025-07-23 15:52:17,593 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:52:18,318 - mongodb_integration - INFO - Patient data stored successfully: 6880b7d9ffc62e6d77881111
+2025-07-23 15:52:18,319 - main - INFO - Response: 200 - 0.726s
+2025-07-23 15:52:19,731 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:52:19,881 - mongodb_integration - INFO - Patient data stored successfully: 6880b7dbffc62e6d77881114
+2025-07-23 15:52:19,882 - main - INFO - Response: 200 - 0.151s
+2025-07-23 15:52:21,294 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:52:21,439 - mongodb_integration - INFO - Patient data stored successfully: 6880b7ddffc62e6d77881117
+2025-07-23 15:52:21,440 - main - INFO - Response: 200 - 0.145s
+2025-07-23 15:52:22,853 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:52:22,970 - mongodb_integration - INFO - Patient data stored successfully: 6880b7deffc62e6d7788111a
+2025-07-23 15:52:22,971 - main - INFO - Response: 200 - 0.118s
+2025-07-23 15:52:24,397 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:52:24,520 - mongodb_integration - INFO - Patient data stored successfully: 6880b7e0ffc62e6d7788111d
+2025-07-23 15:52:24,521 - main - INFO - Response: 200 - 0.124s
+2025-07-23 15:52:25,937 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:52:26,073 - mongodb_integration - INFO - Patient data stored successfully: 6880b7e1ffc62e6d77881120
+2025-07-23 15:52:26,074 - main - INFO - Response: 200 - 0.137s
+2025-07-23 15:52:27,484 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:52:27,602 - mongodb_integration - INFO - Patient data stored successfully: 6880b7e3ffc62e6d77881123
+2025-07-23 15:52:27,602 - main - INFO - Response: 200 - 0.119s
+2025-07-23 15:52:29,014 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:52:29,132 - mongodb_integration - INFO - Patient data stored successfully: 6880b7e5ffc62e6d77881126
+2025-07-23 15:52:29,132 - main - INFO - Response: 200 - 0.118s
+2025-07-23 15:52:30,542 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:52:30,661 - mongodb_integration - INFO - Patient data stored successfully: 6880b7e6ffc62e6d77881129
+2025-07-23 15:52:30,661 - main - INFO - Response: 200 - 0.119s
+2025-07-23 15:52:32,072 - main - INFO - Request: POST http://localhost:8001/api/novel/patients
+2025-07-23 15:52:32,204 - mongodb_integration - INFO - Patient data stored successfully: 6880b7e8ffc62e6d7788112c
+2025-07-23 15:52:32,205 - main - INFO - Response: 200 - 0.133s
+2025-07-23 15:58:26,124 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/auth/session
+2025-07-23 15:58:26,125 - main - INFO - Response: 200 - 0.001s
+2025-07-23 15:58:26,128 - main - INFO - Request: POST http://localhost:8001/api/decrypt/auth/session
+2025-07-23 15:58:26,211 - main - INFO - Response: 200 - 0.083s
+2025-07-23 15:58:26,219 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 15:58:26,221 - main - INFO - Response: 200 - 0.002s
+2025-07-23 15:58:26,225 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 15:58:26,903 - main - INFO - Response: 200 - 0.678s
+2025-07-23 15:58:26,908 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 15:58:26,908 - main - INFO - Response: 200 - 0.000s
+2025-07-23 15:58:26,910 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 15:58:27,432 - main - INFO - Response: 200 - 0.522s
+2025-07-23 15:58:27,443 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 15:58:27,443 - main - INFO - Response: 200 - 0.000s
+2025-07-23 15:58:27,445 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 15:58:27,806 - main - INFO - Response: 200 - 0.361s
+2025-07-23 16:01:13,373 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 16:01:13,981 - main - INFO - Response: 200 - 0.608s
+2025-07-23 16:01:13,990 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 16:01:14,381 - main - INFO - Response: 200 - 0.391s
+2025-07-23 16:01:14,386 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 16:01:14,759 - main - INFO - Response: 200 - 0.373s
+2025-07-23 16:01:20,962 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 16:01:21,497 - main - INFO - Response: 200 - 0.535s
+2025-07-23 16:01:21,502 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 16:01:21,915 - main - INFO - Response: 200 - 0.413s
+2025-07-23 16:01:21,923 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 16:01:22,299 - main - INFO - Response: 200 - 0.375s
+2025-07-23 16:02:12,603 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 16:02:13,437 - main - INFO - Response: 200 - 0.834s
+2025-07-23 16:02:13,443 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 16:02:13,860 - main - INFO - Response: 200 - 0.417s
+2025-07-23 16:02:13,864 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 16:02:14,267 - main - INFO - Response: 200 - 0.403s
+2025-07-23 16:03:32,141 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 16:03:32,643 - main - INFO - Response: 200 - 0.502s
+2025-07-23 16:03:32,649 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 16:03:33,033 - main - INFO - Response: 200 - 0.384s
+2025-07-23 16:03:33,038 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 16:03:33,420 - main - INFO - Response: 200 - 0.382s
+2025-07-23 16:06:04,594 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 16:06:05,073 - main - INFO - Response: 200 - 0.479s
+2025-07-23 16:06:05,076 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 16:06:05,098 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 16:06:05,718 - main - INFO - Response: 200 - 0.620s
+2025-07-23 16:06:05,724 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 16:06:05,791 - main - INFO - Response: 200 - 0.715s
+2025-07-23 16:06:05,796 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 16:06:06,135 - main - INFO - Response: 200 - 0.410s
+2025-07-23 16:06:06,164 - main - INFO - Response: 200 - 0.368s
+2025-07-23 16:06:06,172 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 16:06:06,574 - main - INFO - Response: 200 - 0.401s
+2025-07-23 16:06:27,689 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 16:06:28,233 - main - INFO - Response: 200 - 0.545s
+2025-07-23 16:06:28,236 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 16:06:28,259 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 16:06:28,894 - main - INFO - Response: 200 - 0.659s
+2025-07-23 16:06:28,911 - main - INFO - Response: 200 - 0.652s
+2025-07-23 16:06:28,913 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 16:06:28,936 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 16:06:29,427 - main - INFO - Response: 200 - 0.514s
+2025-07-23 16:06:29,458 - main - INFO - Response: 200 - 0.522s
+2025-07-23 16:06:29,460 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 16:06:29,857 - main - INFO - Response: 200 - 0.397s
+2025-07-23 16:06:45,148 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 16:06:45,640 - main - INFO - Response: 200 - 0.492s
+2025-07-23 16:06:45,642 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 16:06:45,665 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 16:06:46,124 - main - INFO - Response: 200 - 0.459s
+2025-07-23 16:06:46,128 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 16:06:46,219 - main - INFO - Response: 200 - 0.577s
+2025-07-23 16:06:46,224 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 16:06:46,540 - main - INFO - Response: 200 - 0.412s
+2025-07-23 16:06:46,610 - main - INFO - Response: 200 - 0.386s
+2025-07-23 16:06:46,615 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 16:06:47,021 - main - INFO - Response: 200 - 0.406s
+2025-07-23 16:18:38,821 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:18:38,822 - main - INFO - Response: 200 - 0.001s
+2025-07-23 16:18:38,824 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:18:41,694 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (536,) (128,) 
+2025-07-23 16:18:41,744 - main - INFO - Response: 200 - 2.920s
+2025-07-23 16:18:41,883 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:18:48,295 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (536,) (128,) 
+2025-07-23 16:18:48,317 - main - INFO - Response: 200 - 6.434s
+2025-07-23 16:20:56,980 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:20:57,464 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (531,) (128,) 
+2025-07-23 16:20:57,492 - main - INFO - Response: 200 - 0.511s
+2025-07-23 16:20:58,908 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:20:59,336 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (548,) (128,) 
+2025-07-23 16:20:59,357 - main - INFO - Response: 200 - 0.449s
+2025-07-23 16:21:01,245 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:21:01,628 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (559,) (128,) 
+2025-07-23 16:21:01,650 - main - INFO - Response: 200 - 0.406s
+2025-07-23 16:21:03,010 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:21:03,473 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (536,) (128,) 
+2025-07-23 16:21:03,495 - main - INFO - Response: 200 - 0.485s
+2025-07-23 16:21:04,569 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:21:04,953 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (531,) (128,) 
+2025-07-23 16:21:04,977 - main - INFO - Response: 200 - 0.408s
+2025-07-23 16:21:06,123 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:21:06,506 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (559,) (128,) 
+2025-07-23 16:21:06,528 - main - INFO - Response: 200 - 0.405s
+2025-07-23 16:21:11,368 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:21:11,761 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (552,) (128,) 
+2025-07-23 16:21:11,784 - main - INFO - Response: 200 - 0.415s
+2025-07-23 16:24:35,015 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 16:24:35,015 - main - INFO - Response: 200 - 0.001s
+2025-07-23 16:24:35,019 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 16:24:35,593 - main - INFO - Response: 200 - 0.574s
+2025-07-23 16:24:35,600 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 16:24:35,600 - main - INFO - Response: 200 - 0.001s
+2025-07-23 16:24:35,602 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 16:24:36,029 - main - INFO - Response: 200 - 0.427s
+2025-07-23 16:24:36,033 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 16:24:36,034 - main - INFO - Response: 200 - 0.001s
+2025-07-23 16:24:36,037 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 16:24:36,418 - main - INFO - Response: 200 - 0.381s
+2025-07-23 16:27:26,619 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:27:27,156 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (536,) (128,) 
+2025-07-23 16:27:27,178 - main - INFO - Response: 200 - 0.559s
+2025-07-23 16:29:19,804 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:29:19,805 - main - INFO - Response: 200 - 0.001s
+2025-07-23 16:29:19,806 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:29:20,185 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (534,) (128,) 
+2025-07-23 16:29:20,207 - main - INFO - Response: 200 - 0.401s
+2025-07-23 16:29:22,928 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:29:23,290 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (524,) (128,) 
+2025-07-23 16:29:23,315 - main - INFO - Response: 200 - 0.387s
+2025-07-23 16:31:33,795 - main - INFO - Shutting down TDP-QIMLE Algorithm System...
+2025-07-23 16:31:33,795 - main - INFO - Shutting down independent decryption system...
+2025-07-23 16:31:33,825 - mongodb_integration - INFO - MongoDB connection closed
+2025-07-23 16:31:33,827 - main - INFO - TDP-QIMLE system shutdown complete
+2025-07-23 16:31:40,455 - main - INFO - Starting TDP-QIMLE Algorithm System...
+2025-07-23 16:31:40,456 - main - INFO - Initializing novel encryption components...
+2025-07-23 16:31:40,456 - main - INFO - Initializing independent decryption system...
+2025-07-23 16:31:40,456 - main - INFO - TDP-QIMLE system started successfully
+2025-07-23 16:31:40,457 - main - INFO - Independent decryption system started successfully
+2025-07-23 16:32:18,561 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 16:32:18,562 - main - INFO - Response: 401 - 0.001s
+2025-07-23 16:41:04,397 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/auth/session
+2025-07-23 16:41:04,398 - main - INFO - Response: 200 - 0.001s
+2025-07-23 16:41:04,402 - main - INFO - Request: POST http://localhost:8001/api/decrypt/auth/session
+2025-07-23 16:41:04,492 - main - INFO - Response: 200 - 0.090s
+2025-07-23 16:41:04,499 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 16:41:04,499 - main - INFO - Response: 200 - 0.001s
+2025-07-23 16:41:04,505 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 16:41:05,571 - main - INFO - Response: 200 - 1.066s
+2025-07-23 16:41:05,575 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 16:41:05,576 - main - INFO - Response: 200 - 0.000s
+2025-07-23 16:41:05,578 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 16:41:05,976 - main - INFO - Response: 200 - 0.397s
+2025-07-23 16:41:05,980 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 16:41:05,980 - main - INFO - Response: 200 - 0.001s
+2025-07-23 16:41:05,983 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 16:41:06,362 - main - INFO - Response: 200 - 0.379s
+2025-07-23 16:41:06,942 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:41:06,942 - main - INFO - Response: 200 - 0.001s
+2025-07-23 16:41:06,945 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:41:07,440 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (536,) (128,) 
+2025-07-23 16:41:07,463 - main - INFO - Response: 200 - 0.518s
+2025-07-23 16:41:07,547 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/encrypted/P1753255191711_mgz8b
+2025-07-23 16:41:07,548 - main - INFO - Response: 200 - 0.001s
+2025-07-23 16:41:07,552 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255191711_mgz8b
+2025-07-23 16:41:07,970 - main - INFO - Response: 200 - 0.418s
+2025-07-23 16:43:27,674 - main - INFO - Shutting down TDP-QIMLE Algorithm System...
+2025-07-23 16:43:27,674 - main - INFO - Shutting down independent decryption system...
+2025-07-23 16:43:27,674 - main - INFO - TDP-QIMLE system shutdown complete
+2025-07-23 16:43:29,347 - main - INFO - Starting TDP-QIMLE Algorithm System...
+2025-07-23 16:43:29,347 - main - INFO - Initializing novel encryption components...
+2025-07-23 16:43:29,347 - main - INFO - Initializing independent decryption system...
+2025-07-23 16:43:29,348 - main - INFO - TDP-QIMLE system started successfully
+2025-07-23 16:43:29,348 - main - INFO - Independent decryption system started successfully
+2025-07-23 16:43:42,403 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:43:42,404 - main - INFO - Response: 401 - 0.001s
+2025-07-23 16:43:46,097 - main - INFO - Request: POST http://localhost:8001/api/decrypt/auth/session
+2025-07-23 16:43:46,175 - main - INFO - Response: 200 - 0.078s
+2025-07-23 16:43:46,184 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 16:43:46,775 - main - INFO - Response: 200 - 0.591s
+2025-07-23 16:43:46,780 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 16:43:47,170 - main - INFO - Response: 200 - 0.390s
+2025-07-23 16:43:47,175 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 16:43:47,597 - main - INFO - Response: 200 - 0.422s
+2025-07-23 16:43:48,441 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:43:48,884 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (536,) (128,) 
+2025-07-23 16:43:48,907 - main - INFO - Response: 200 - 0.466s
+2025-07-23 16:43:48,999 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255191711_mgz8b
+2025-07-23 16:43:49,399 - main - INFO - Response: 200 - 0.400s
+2025-07-23 16:44:25,190 - main - INFO - Shutting down TDP-QIMLE Algorithm System...
+2025-07-23 16:44:25,190 - main - INFO - Shutting down independent decryption system...
+2025-07-23 16:44:25,190 - main - INFO - TDP-QIMLE system shutdown complete
+2025-07-23 16:44:27,648 - main - INFO - Starting TDP-QIMLE Algorithm System...
+2025-07-23 16:44:27,649 - main - INFO - Initializing novel encryption components...
+2025-07-23 16:44:27,649 - main - INFO - Initializing independent decryption system...
+2025-07-23 16:44:27,649 - main - INFO - TDP-QIMLE system started successfully
+2025-07-23 16:44:27,650 - main - INFO - Independent decryption system started successfully
+2025-07-23 16:44:27,737 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 16:44:27,737 - main - INFO - Response: 401 - 0.001s
+2025-07-23 16:44:31,867 - main - INFO - Request: POST http://localhost:8001/api/decrypt/auth/session
+2025-07-23 16:44:31,949 - main - INFO - Response: 200 - 0.082s
+2025-07-23 16:44:31,961 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 16:44:32,633 - main - INFO - Response: 200 - 0.672s
+2025-07-23 16:44:32,639 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 16:44:33,020 - main - INFO - Response: 200 - 0.381s
+2025-07-23 16:44:33,025 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 16:44:33,394 - main - INFO - Response: 200 - 0.369s
+2025-07-23 16:44:34,759 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:44:35,266 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (536,) (128,) 
+2025-07-23 16:44:35,288 - main - INFO - Response: 200 - 0.529s
+2025-07-23 16:44:35,376 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255191711_mgz8b
+2025-07-23 16:44:35,819 - main - INFO - Response: 200 - 0.443s
+2025-07-23 16:45:43,856 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 16:45:44,361 - main - INFO - Response: 200 - 0.506s
+2025-07-23 16:45:44,367 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 16:45:44,742 - main - INFO - Response: 200 - 0.376s
+2025-07-23 16:45:44,747 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 16:45:45,137 - main - INFO - Response: 200 - 0.391s
+2025-07-23 16:46:17,149 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 16:46:17,786 - main - INFO - Response: 200 - 0.637s
+2025-07-23 16:46:17,794 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 16:46:18,223 - main - INFO - Response: 200 - 0.429s
+2025-07-23 16:46:18,228 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 16:46:18,694 - main - INFO - Response: 200 - 0.466s
+2025-07-23 16:46:57,372 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 16:46:57,862 - main - INFO - Response: 200 - 0.490s
+2025-07-23 16:46:57,869 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 16:46:58,282 - main - INFO - Response: 200 - 0.412s
+2025-07-23 16:46:58,286 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 16:46:58,687 - main - INFO - Response: 200 - 0.401s
+2025-07-23 16:47:09,775 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:47:10,187 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (536,) (128,) 
+2025-07-23 16:47:10,214 - main - INFO - Response: 200 - 0.439s
+2025-07-23 16:47:10,332 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255191711_mgz8b
+2025-07-23 16:47:10,713 - main - INFO - Response: 200 - 0.381s
+2025-07-23 16:48:14,849 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 16:48:15,451 - main - INFO - Response: 200 - 0.601s
+2025-07-23 16:48:15,744 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 16:48:16,288 - main - INFO - Response: 200 - 0.544s
+2025-07-23 16:48:16,378 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 16:48:16,842 - main - INFO - Response: 200 - 0.464s
+2025-07-23 16:48:16,848 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 16:48:17,240 - main - INFO - Response: 200 - 0.392s
+2025-07-23 16:48:19,230 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 16:48:19,725 - main - INFO - Response: 200 - 0.495s
+2025-07-23 16:48:19,732 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 16:48:20,133 - main - INFO - Response: 200 - 0.401s
+2025-07-23 16:48:20,139 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 16:48:20,536 - main - INFO - Response: 200 - 0.398s
+2025-07-23 16:48:27,729 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 16:48:28,362 - main - INFO - Response: 200 - 0.633s
+2025-07-23 16:48:28,369 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 16:48:28,780 - main - INFO - Response: 200 - 0.411s
+2025-07-23 16:48:28,787 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 16:48:29,221 - main - INFO - Response: 200 - 0.434s
+2025-07-23 16:50:29,052 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:50:29,479 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (536,) (128,) 
+2025-07-23 16:50:29,505 - main - INFO - Response: 200 - 0.453s
+2025-07-23 16:50:34,763 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 16:50:35,309 - main - INFO - Response: 200 - 0.546s
+2025-07-23 16:50:35,912 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 16:50:36,495 - main - INFO - Response: 200 - 0.583s
+2025-07-23 16:50:36,503 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 16:50:37,070 - main - INFO - Response: 200 - 0.567s
+2025-07-23 16:50:37,076 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 16:50:37,480 - main - INFO - Response: 200 - 0.404s
+2025-07-23 16:50:40,649 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:50:41,082 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (536,) (128,) 
+2025-07-23 16:50:41,108 - main - INFO - Response: 200 - 0.459s
+2025-07-23 16:50:41,199 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255191711_mgz8b
+2025-07-23 16:50:41,570 - main - INFO - Response: 200 - 0.370s
+2025-07-23 16:51:07,940 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:51:07,941 - main - INFO - Response: 200 - 0.001s
+2025-07-23 16:51:07,944 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:51:08,359 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (534,) (128,) 
+2025-07-23 16:51:08,399 - main - INFO - Response: 200 - 0.455s
+2025-07-23 16:51:08,471 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/encrypted/P1753255194343_3mqiw
+2025-07-23 16:51:08,472 - main - INFO - Response: 200 - 0.001s
+2025-07-23 16:51:08,481 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255194343_3mqiw
+2025-07-23 16:51:08,926 - main - INFO - Response: 200 - 0.445s
+2025-07-23 16:51:09,563 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:51:10,023 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (547,) (128,) 
+2025-07-23 16:51:10,045 - main - INFO - Response: 200 - 0.482s
+2025-07-23 16:51:10,093 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/encrypted/P1753255197412_f3j54
+2025-07-23 16:51:10,094 - main - INFO - Response: 200 - 0.001s
+2025-07-23 16:51:10,096 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255197412_f3j54
+2025-07-23 16:51:10,469 - main - INFO - Response: 200 - 0.373s
+2025-07-23 16:51:10,891 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:51:11,291 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (531,) (128,) 
+2025-07-23 16:51:11,313 - main - INFO - Response: 200 - 0.422s
+2025-07-23 16:51:11,363 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/encrypted/P1753255198947_7a1x9
+2025-07-23 16:51:11,363 - main - INFO - Response: 200 - 0.001s
+2025-07-23 16:51:11,366 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255198947_7a1x9
+2025-07-23 16:51:11,785 - main - INFO - Response: 200 - 0.419s
+2025-07-23 16:51:11,906 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:51:12,292 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (536,) (128,) 
+2025-07-23 16:51:12,315 - main - INFO - Response: 200 - 0.410s
+2025-07-23 16:51:12,362 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/encrypted/P1753255200482_2qh37
+2025-07-23 16:51:12,362 - main - INFO - Response: 200 - 0.001s
+2025-07-23 16:51:12,365 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255200482_2qh37
+2025-07-23 16:51:12,741 - main - INFO - Response: 200 - 0.376s
+2025-07-23 16:51:13,117 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:51:13,526 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (536,) (128,) 
+2025-07-23 16:51:13,550 - main - INFO - Response: 200 - 0.433s
+2025-07-23 16:51:13,596 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255200482_2qh37
+2025-07-23 16:51:14,004 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:51:14,033 - main - INFO - Response: 200 - 0.437s
+2025-07-23 16:51:14,411 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (536,) (128,) 
+2025-07-23 16:51:14,435 - main - INFO - Response: 200 - 0.430s
+2025-07-23 16:51:14,478 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255200482_2qh37
+2025-07-23 16:51:14,916 - main - INFO - Response: 200 - 0.438s
+2025-07-23 16:52:06,309 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:52:06,843 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (534,) (128,) 
+2025-07-23 16:52:06,868 - main - INFO - Response: 200 - 0.559s
+2025-07-23 16:52:06,907 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255194343_3mqiw
+2025-07-23 16:52:07,410 - main - INFO - Response: 200 - 0.503s
+2025-07-23 16:52:07,691 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:52:08,080 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (534,) (128,) 
+2025-07-23 16:52:08,105 - main - INFO - Response: 200 - 0.414s
+2025-07-23 16:52:08,165 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255194343_3mqiw
+2025-07-23 16:52:08,464 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:52:08,642 - main - INFO - Response: 200 - 0.477s
+2025-07-23 16:52:08,945 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (534,) (128,) 
+2025-07-23 16:52:08,971 - main - INFO - Response: 200 - 0.508s
+2025-07-23 16:52:09,017 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255194343_3mqiw
+2025-07-23 16:52:09,446 - main - INFO - Response: 200 - 0.429s
+2025-07-23 16:52:12,069 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:52:12,578 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (531,) (128,) 
+2025-07-23 16:52:12,604 - main - INFO - Response: 200 - 0.535s
+2025-07-23 16:52:12,648 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255198947_7a1x9
+2025-07-23 16:52:13,087 - main - INFO - Response: 200 - 0.439s
+2025-07-23 16:52:13,869 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:52:14,285 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (547,) (128,) 
+2025-07-23 16:52:14,314 - main - INFO - Response: 200 - 0.444s
+2025-07-23 16:52:14,366 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255197412_f3j54
+2025-07-23 16:52:14,749 - main - INFO - Response: 200 - 0.383s
+2025-07-23 16:52:15,891 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:52:16,311 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (524,) (128,) 
+2025-07-23 16:52:16,334 - main - INFO - Response: 200 - 0.443s
+2025-07-23 16:52:16,380 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/encrypted/P1753255195878_bjw0h
+2025-07-23 16:52:16,381 - main - INFO - Response: 200 - 0.001s
+2025-07-23 16:52:16,383 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255195878_bjw0h
+2025-07-23 16:52:16,760 - main - INFO - Response: 200 - 0.377s
+2025-07-23 16:52:21,496 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:52:21,875 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (548,) (128,) 
+2025-07-23 16:52:21,899 - main - INFO - Response: 200 - 0.404s
+2025-07-23 16:52:21,948 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/encrypted/P1753255202018_wvgu2
+2025-07-23 16:52:21,949 - main - INFO - Response: 200 - 0.001s
+2025-07-23 16:52:21,954 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255202018_wvgu2
+2025-07-23 16:52:22,334 - main - INFO - Response: 200 - 0.380s
+2025-07-23 16:52:23,121 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:52:23,502 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (547,) (128,) 
+2025-07-23 16:52:23,529 - main - INFO - Response: 200 - 0.408s
+2025-07-23 16:52:23,573 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255197412_f3j54
+2025-07-23 16:52:23,950 - main - INFO - Response: 200 - 0.378s
+2025-07-23 16:52:24,008 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:52:24,480 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (547,) (128,) 
+2025-07-23 16:52:24,504 - main - INFO - Response: 200 - 0.497s
+2025-07-23 16:52:24,549 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255197412_f3j54
+2025-07-23 16:52:24,924 - main - INFO - Response: 200 - 0.375s
+2025-07-23 16:52:24,926 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:52:25,328 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (547,) (128,) 
+2025-07-23 16:52:25,350 - main - INFO - Response: 200 - 0.424s
+2025-07-23 16:52:25,394 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255197412_f3j54
+2025-07-23 16:52:25,510 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:52:25,834 - main - INFO - Response: 200 - 0.440s
+2025-07-23 16:52:25,987 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (547,) (128,) 
+2025-07-23 16:52:26,010 - main - INFO - Response: 200 - 0.500s
+2025-07-23 16:52:26,061 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255197412_f3j54
+2025-07-23 16:52:26,154 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:52:26,479 - main - INFO - Response: 200 - 0.418s
+2025-07-23 16:52:26,548 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (547,) (128,) 
+2025-07-23 16:52:26,573 - main - INFO - Response: 200 - 0.420s
+2025-07-23 16:52:26,620 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255197412_f3j54
+2025-07-23 16:52:26,790 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:52:27,014 - main - INFO - Response: 200 - 0.395s
+2025-07-23 16:52:27,166 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (547,) (128,) 
+2025-07-23 16:52:27,189 - main - INFO - Response: 200 - 0.399s
+2025-07-23 16:52:27,234 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255197412_f3j54
+2025-07-23 16:52:27,629 - main - INFO - Response: 200 - 0.394s
+2025-07-23 16:55:57,909 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 16:55:57,910 - main - INFO - Response: 200 - 0.001s
+2025-07-23 16:55:57,912 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 16:55:59,549 - main - INFO - Response: 200 - 1.637s
+2025-07-23 16:55:59,554 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 16:55:59,555 - main - INFO - Response: 200 - 0.000s
+2025-07-23 16:55:59,557 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 16:56:00,116 - main - INFO - Response: 200 - 0.559s
+2025-07-23 16:56:00,121 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 16:56:00,121 - main - INFO - Response: 200 - 0.000s
+2025-07-23 16:56:00,125 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 16:56:00,541 - main - INFO - Response: 200 - 0.416s
+2025-07-23 16:56:30,396 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 16:56:31,150 - main - INFO - Response: 200 - 0.754s
+2025-07-23 16:56:31,188 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 16:56:32,177 - main - INFO - Response: 200 - 0.989s
+2025-07-23 16:56:32,183 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 16:56:33,000 - main - INFO - Response: 200 - 0.817s
+2025-07-23 16:57:33,455 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 16:57:34,478 - main - INFO - Response: 200 - 1.023s
+2025-07-23 16:57:34,487 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 16:57:35,299 - main - INFO - Response: 200 - 0.812s
+2025-07-23 16:57:35,309 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 16:57:39,433 - main - INFO - Response: 200 - 4.124s
+2025-07-23 16:57:41,017 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:57:42,502 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (536,) (128,) 
+2025-07-23 16:57:42,524 - main - INFO - Response: 200 - 1.507s
+2025-07-23 16:57:42,609 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/encrypted/P1753255191711_mgz8b
+2025-07-23 16:57:42,609 - main - INFO - Response: 200 - 0.001s
+2025-07-23 16:57:42,614 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255191711_mgz8b
+2025-07-23 16:57:43,681 - main - INFO - Response: 200 - 1.067s
+2025-07-23 16:58:44,453 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 16:58:47,150 - main - INFO - Response: 200 - 2.698s
+2025-07-23 16:58:47,156 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 16:58:48,412 - main - INFO - Response: 200 - 1.256s
+2025-07-23 16:58:48,419 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 16:58:49,507 - main - INFO - Response: 200 - 1.088s
+2025-07-23 16:58:50,708 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 16:58:52,017 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (536,) (128,) 
+2025-07-23 16:58:52,040 - main - INFO - Response: 200 - 1.332s
+2025-07-23 16:58:52,121 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255191711_mgz8b
+2025-07-23 16:58:57,287 - main - INFO - Response: 200 - 5.166s
+2025-07-23 16:59:51,646 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 16:59:54,452 - main - INFO - Response: 200 - 2.806s
+2025-07-23 16:59:54,457 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 16:59:55,476 - main - INFO - Response: 200 - 1.019s
+2025-07-23 16:59:55,481 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 16:59:55,928 - main - INFO - Response: 200 - 0.447s
+2025-07-23 16:59:57,267 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 17:00:02,395 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (531,) (128,) 
+2025-07-23 17:00:02,420 - main - INFO - Response: 200 - 5.153s
+2025-07-23 17:00:02,501 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255198947_7a1x9
+2025-07-23 17:00:05,437 - main - INFO - Response: 200 - 2.937s
+2025-07-23 17:01:21,907 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 17:01:26,162 - main - INFO - Response: 200 - 4.255s
+2025-07-23 17:01:26,174 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 17:01:27,876 - main - INFO - Response: 200 - 1.702s
+2025-07-23 17:01:27,881 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 17:01:28,383 - main - INFO - Response: 200 - 0.502s
+2025-07-23 17:01:29,584 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/single
+2025-07-23 17:01:29,585 - main - INFO - Response: 200 - 0.001s
+2025-07-23 17:01:29,588 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 17:01:30,965 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (534,) (128,) 
+2025-07-23 17:01:30,988 - main - INFO - Response: 200 - 1.400s
+2025-07-23 17:01:31,068 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/encrypted/P1753255194343_3mqiw
+2025-07-23 17:01:31,069 - main - INFO - Response: 200 - 0.001s
+2025-07-23 17:01:31,072 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255194343_3mqiw
+2025-07-23 17:01:32,253 - main - INFO - Response: 200 - 1.181s
+2025-07-23 17:03:01,966 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 17:03:02,554 - main - INFO - Response: 200 - 0.588s
+2025-07-23 17:03:02,561 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 17:03:02,962 - main - INFO - Response: 200 - 0.401s
+2025-07-23 17:03:02,967 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 17:03:03,399 - main - INFO - Response: 200 - 0.432s
+2025-07-23 17:03:05,423 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 17:03:05,894 - main - INFO - Response: 200 - 0.471s
+2025-07-23 17:03:05,896 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 17:03:05,924 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 17:03:06,441 - main - INFO - Response: 200 - 0.517s
+2025-07-23 17:03:06,446 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 17:03:06,529 - main - INFO - Response: 200 - 0.633s
+2025-07-23 17:03:06,534 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 17:03:06,957 - main - INFO - Response: 200 - 0.511s
+2025-07-23 17:03:07,145 - main - INFO - Response: 200 - 0.612s
+2025-07-23 17:03:07,155 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 17:03:07,708 - main - INFO - Response: 200 - 0.553s
+2025-07-23 17:03:09,117 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 17:03:09,489 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (547,) (128,) 
+2025-07-23 17:03:09,520 - main - INFO - Response: 200 - 0.403s
+2025-07-23 17:03:09,613 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/encrypted/P1753255197412_f3j54
+2025-07-23 17:03:09,613 - main - INFO - Response: 200 - 0.001s
+2025-07-23 17:03:09,616 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255197412_f3j54
+2025-07-23 17:03:09,986 - main - INFO - Response: 200 - 0.369s
+2025-07-23 17:03:10,910 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 17:03:11,379 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (524,) (128,) 
+2025-07-23 17:03:11,404 - main - INFO - Response: 200 - 0.494s
+2025-07-23 17:03:11,460 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/encrypted/P1753255195878_bjw0h
+2025-07-23 17:03:11,461 - main - INFO - Response: 200 - 0.001s
+2025-07-23 17:03:11,463 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255195878_bjw0h
+2025-07-23 17:03:11,839 - main - INFO - Response: 200 - 0.375s
+2025-07-23 17:03:15,181 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 17:03:15,661 - main - INFO - Response: 200 - 0.480s
+2025-07-23 17:03:15,667 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 17:03:16,041 - main - INFO - Response: 200 - 0.374s
+2025-07-23 17:03:16,045 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 17:03:16,447 - main - INFO - Response: 200 - 0.402s
+2025-07-23 17:03:17,589 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 17:03:17,981 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (536,) (128,) 
+2025-07-23 17:03:18,005 - main - INFO - Response: 200 - 0.416s
+2025-07-23 17:03:18,107 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255191711_mgz8b
+2025-07-23 17:03:18,506 - main - INFO - Response: 200 - 0.399s
+2025-07-23 17:03:56,554 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 17:03:57,021 - main - INFO - Response: 200 - 0.467s
+2025-07-23 17:03:57,027 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 17:03:57,435 - main - INFO - Response: 200 - 0.408s
+2025-07-23 17:03:57,439 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 17:03:57,827 - main - INFO - Response: 200 - 0.387s
+2025-07-23 17:03:58,671 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 17:03:59,060 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (524,) (128,) 
+2025-07-23 17:03:59,086 - main - INFO - Response: 200 - 0.415s
+2025-07-23 17:03:59,174 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255195878_bjw0h
+2025-07-23 17:03:59,607 - main - INFO - Response: 200 - 0.433s
+2025-07-23 17:04:53,683 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 17:04:54,192 - main - INFO - Response: 200 - 0.509s
+2025-07-23 17:04:54,197 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 17:04:54,584 - main - INFO - Response: 200 - 0.386s
+2025-07-23 17:04:54,589 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 17:04:54,971 - main - INFO - Response: 200 - 0.382s
+2025-07-23 17:04:57,973 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 17:04:58,445 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (547,) (128,) 
+2025-07-23 17:04:58,480 - main - INFO - Response: 200 - 0.508s
+2025-07-23 17:04:58,579 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255197412_f3j54
+2025-07-23 17:04:58,954 - main - INFO - Response: 200 - 0.375s
+2025-07-23 17:05:00,628 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 17:05:01,048 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (531,) (128,) 
+2025-07-23 17:05:01,103 - main - INFO - Response: 200 - 0.475s
+2025-07-23 17:05:01,177 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/encrypted/P1753255198947_7a1x9
+2025-07-23 17:05:01,177 - main - INFO - Response: 200 - 0.001s
+2025-07-23 17:05:01,180 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255198947_7a1x9
+2025-07-23 17:05:01,646 - main - INFO - Response: 200 - 0.466s
+2025-07-23 17:09:09,384 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/audit/session
+2025-07-23 17:09:09,385 - main - INFO - Response: 200 - 0.001s
+2025-07-23 17:09:09,387 - main - INFO - Request: GET http://localhost:8001/api/decrypt/audit/session
+2025-07-23 17:09:09,389 - main - INFO - Response: 200 - 0.002s
+2025-07-23 17:14:11,581 - main - INFO - Request: GET http://localhost:8001/api/decrypt/audit/session
+2025-07-23 17:14:11,584 - main - INFO - Response: 200 - 0.002s
+2025-07-23 17:14:13,903 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 17:14:13,904 - main - INFO - Response: 200 - 0.001s
+2025-07-23 17:14:13,908 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 17:14:14,528 - main - INFO - Response: 200 - 0.619s
+2025-07-23 17:14:14,533 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 17:14:14,533 - main - INFO - Response: 200 - 0.000s
+2025-07-23 17:14:14,538 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 17:14:14,912 - main - INFO - Response: 200 - 0.374s
+2025-07-23 17:14:14,916 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 17:14:14,917 - main - INFO - Response: 200 - 0.001s
+2025-07-23 17:14:14,921 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 17:14:15,381 - main - INFO - Response: 200 - 0.461s
+2025-07-23 17:14:18,272 - main - INFO - Request: GET http://localhost:8001/api/decrypt/audit/session
+2025-07-23 17:14:18,274 - main - INFO - Response: 200 - 0.002s
+2025-07-23 17:17:55,951 - main - INFO - Shutting down TDP-QIMLE Algorithm System...
+2025-07-23 17:17:55,952 - main - INFO - Shutting down independent decryption system...
+2025-07-23 17:17:55,952 - main - INFO - TDP-QIMLE system shutdown complete
+2025-07-23 17:17:58,185 - main - INFO - Starting TDP-QIMLE Algorithm System...
+2025-07-23 17:17:58,186 - main - INFO - Initializing novel encryption components...
+2025-07-23 17:17:58,186 - main - INFO - Initializing independent decryption system...
+2025-07-23 17:17:58,186 - main - INFO - TDP-QIMLE system started successfully
+2025-07-23 17:17:58,186 - main - INFO - Independent decryption system started successfully
+2025-07-23 17:18:24,137 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 17:18:24,138 - main - INFO - Response: 401 - 0.001s
+2025-07-23 17:18:43,061 - main - INFO - Shutting down TDP-QIMLE Algorithm System...
+2025-07-23 17:18:43,061 - main - INFO - Shutting down independent decryption system...
+2025-07-23 17:18:43,061 - main - INFO - TDP-QIMLE system shutdown complete
+2025-07-23 17:18:44,956 - main - INFO - Starting TDP-QIMLE Algorithm System...
+2025-07-23 17:18:44,957 - main - INFO - Initializing novel encryption components...
+2025-07-23 17:18:44,957 - main - INFO - Initializing independent decryption system...
+2025-07-23 17:18:44,957 - main - INFO - TDP-QIMLE system started successfully
+2025-07-23 17:18:44,957 - main - INFO - Independent decryption system started successfully
+2025-07-23 17:18:49,699 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/auth/session
+2025-07-23 17:18:49,700 - main - INFO - Response: 200 - 0.001s
+2025-07-23 17:18:49,704 - main - INFO - Request: POST http://localhost:8001/api/decrypt/auth/session
+2025-07-23 17:18:49,781 - main - INFO - Response: 200 - 0.077s
+2025-07-23 17:18:49,785 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 17:18:50,412 - main - INFO - Response: 200 - 0.626s
+2025-07-23 17:18:50,419 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 17:18:50,823 - main - INFO - Response: 200 - 0.404s
+2025-07-23 17:18:50,830 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 17:18:51,260 - main - INFO - Response: 200 - 0.430s
+2025-07-23 17:18:55,405 - main - INFO - Request: GET http://localhost:8001/api/decrypt/audit/session
+2025-07-23 17:18:55,406 - main - INFO - Response: 200 - 0.001s
+2025-07-23 17:18:56,392 - main - INFO - Request: GET http://localhost:8001/api/decrypt/audit/session
+2025-07-23 17:18:56,393 - main - INFO - Response: 200 - 0.001s
+2025-07-23 17:18:56,767 - main - INFO - Request: GET http://localhost:8001/api/decrypt/audit/session
+2025-07-23 17:18:56,768 - main - INFO - Response: 200 - 0.001s
+2025-07-23 17:18:58,470 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/single
+2025-07-23 17:18:58,470 - main - INFO - Response: 200 - 0.001s
+2025-07-23 17:18:58,473 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 17:18:58,860 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (536,) (128,) 
+2025-07-23 17:18:58,894 - main - INFO - Response: 200 - 0.421s
+2025-07-23 17:18:58,992 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/encrypted/P1753255191711_mgz8b
+2025-07-23 17:18:58,993 - main - INFO - Response: 200 - 0.001s
+2025-07-23 17:18:58,996 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255191711_mgz8b
+2025-07-23 17:18:59,386 - main - INFO - Response: 200 - 0.390s
+2025-07-23 17:19:56,916 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 17:19:57,502 - main - INFO - Response: 200 - 0.586s
+2025-07-23 17:19:57,508 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 17:19:57,932 - main - INFO - Response: 200 - 0.423s
+2025-07-23 17:19:57,941 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 17:19:58,360 - main - INFO - Response: 200 - 0.420s
+2025-07-23 17:20:05,548 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/audit/session
+2025-07-23 17:20:05,548 - main - INFO - Response: 200 - 0.000s
+2025-07-23 17:20:05,551 - main - INFO - Request: GET http://localhost:8001/api/decrypt/audit/session
+2025-07-23 17:20:05,552 - main - INFO - Response: 200 - 0.001s
+2025-07-23 17:20:09,557 - main - INFO - Request: GET http://localhost:8001/api/decrypt/audit/session
+2025-07-23 17:20:09,558 - main - INFO - Response: 200 - 0.001s
+2025-07-23 17:20:10,914 - main - INFO - Request: GET http://localhost:8001/api/decrypt/audit/session
+2025-07-23 17:20:10,916 - main - INFO - Response: 200 - 0.001s
+2025-07-23 17:20:11,397 - main - INFO - Request: GET http://localhost:8001/api/decrypt/audit/session
+2025-07-23 17:20:11,399 - main - INFO - Response: 200 - 0.002s
+2025-07-23 17:20:15,081 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 17:20:15,488 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (524,) (128,) 
+2025-07-23 17:20:15,521 - main - INFO - Response: 200 - 0.440s
+2025-07-23 17:20:15,602 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/encrypted/P1753255195878_bjw0h
+2025-07-23 17:20:15,602 - main - INFO - Response: 200 - 0.001s
+2025-07-23 17:20:15,605 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255195878_bjw0h
+2025-07-23 17:20:15,983 - main - INFO - Response: 200 - 0.379s
+2025-07-23 17:20:16,001 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 17:20:16,378 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (547,) (128,) 
+2025-07-23 17:20:16,414 - main - INFO - Response: 200 - 0.413s
+2025-07-23 17:20:16,476 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/encrypted/P1753255197412_f3j54
+2025-07-23 17:20:16,476 - main - INFO - Response: 200 - 0.001s
+2025-07-23 17:20:16,480 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255197412_f3j54
+2025-07-23 17:20:16,857 - main - INFO - Response: 200 - 0.377s
+2025-07-23 17:20:17,010 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 17:20:17,394 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (531,) (128,) 
+2025-07-23 17:20:17,419 - main - INFO - Response: 200 - 0.409s
+2025-07-23 17:20:17,475 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/encrypted/P1753255198947_7a1x9
+2025-07-23 17:20:17,475 - main - INFO - Response: 200 - 0.000s
+2025-07-23 17:20:17,478 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255198947_7a1x9
+2025-07-23 17:20:17,872 - main - INFO - Response: 200 - 0.395s
+2025-07-23 17:20:19,576 - main - INFO - Request: GET http://localhost:8001/api/decrypt/audit/session
+2025-07-23 17:20:19,578 - main - INFO - Response: 200 - 0.001s
+2025-07-23 17:20:45,588 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 17:20:46,171 - main - INFO - Response: 200 - 0.583s
+2025-07-23 17:20:46,177 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 17:20:46,570 - main - INFO - Response: 200 - 0.393s
+2025-07-23 17:20:46,581 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 17:20:47,109 - main - INFO - Response: 200 - 0.528s
+2025-07-23 17:22:22,979 - main - INFO - Request: GET http://localhost:8001/api/decrypt/audit/session
+2025-07-23 17:22:22,980 - main - INFO - Response: 200 - 0.001s
+2025-07-23 17:23:39,455 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 17:23:39,850 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (536,) (128,) 
+2025-07-23 17:23:39,875 - main - INFO - Response: 200 - 0.420s
+2025-07-23 17:23:39,950 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255191711_mgz8b
+2025-07-23 17:23:40,333 - main - INFO - Response: 200 - 0.383s
+2025-07-23 17:23:51,032 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 17:23:51,434 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (547,) (128,) 
+2025-07-23 17:23:51,460 - main - INFO - Response: 200 - 0.427s
+2025-07-23 17:23:51,507 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255197412_f3j54
+2025-07-23 17:23:51,903 - main - INFO - Response: 200 - 0.397s
+2025-07-23 17:24:58,515 - main - INFO - Request: POST http://localhost:8001/api/decrypt/patient/single
+2025-07-23 17:24:59,001 - decryption_engine - ERROR - Independent decryption failed: operands could not be broadcast together with shapes (524,) (128,) 
+2025-07-23 17:24:59,029 - main - INFO - Response: 200 - 0.514s
+2025-07-23 17:24:59,075 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/encrypted/P1753255195878_bjw0h
+2025-07-23 17:24:59,467 - main - INFO - Response: 200 - 0.392s
+2025-07-23 17:26:22,854 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 17:26:22,855 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 17:26:22,855 - main - INFO - Response: 200 - 0.001s
+2025-07-23 17:26:22,857 - main - INFO - Response: 200 - 0.002s
+2025-07-23 17:26:22,859 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 17:26:23,331 - main - INFO - Response: 200 - 0.471s
+2025-07-23 17:26:23,332 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 17:26:23,356 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 17:26:23,357 - main - INFO - Response: 200 - 0.001s
+2025-07-23 17:26:23,360 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 17:26:23,812 - main - INFO - Response: 200 - 0.452s
+2025-07-23 17:26:23,817 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 17:26:23,818 - main - INFO - Response: 200 - 0.001s
+2025-07-23 17:26:23,821 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 17:26:23,877 - main - INFO - Response: 200 - 0.545s
+2025-07-23 17:26:23,898 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 17:26:24,207 - main - INFO - Response: 200 - 0.386s
+2025-07-23 17:26:24,303 - main - INFO - Response: 200 - 0.405s
+2025-07-23 17:26:24,307 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 17:26:24,700 - main - INFO - Response: 200 - 0.393s
+2025-07-23 17:26:26,572 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 17:26:27,095 - main - INFO - Response: 200 - 0.522s
+2025-07-23 17:26:27,096 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 17:26:27,119 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 17:26:27,531 - main - INFO - Response: 200 - 0.412s
+2025-07-23 17:26:27,535 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 17:26:27,605 - main - INFO - Response: 200 - 0.508s
+2025-07-23 17:26:27,610 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 17:26:28,001 - main - INFO - Response: 200 - 0.466s
+2025-07-23 17:26:28,082 - main - INFO - Response: 200 - 0.472s
+2025-07-23 17:26:28,086 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 17:26:28,492 - main - INFO - Response: 200 - 0.406s
+2025-07-23 17:29:36,757 - main - INFO - Request: GET http://localhost:8001/api/decrypt/audit/session
+2025-07-23 17:29:36,758 - main - INFO - Response: 200 - 0.001s
+2025-07-23 17:46:29,974 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 17:46:29,975 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 17:46:29,976 - main - INFO - Response: 200 - 0.002s
+2025-07-23 17:46:29,977 - main - INFO - Response: 200 - 0.002s
+2025-07-23 17:46:29,980 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 17:46:30,468 - main - INFO - Response: 200 - 0.488s
+2025-07-23 17:46:30,470 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 17:46:30,491 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 17:46:30,492 - main - INFO - Response: 200 - 0.001s
+2025-07-23 17:46:30,495 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 17:46:30,961 - main - INFO - Response: 200 - 0.467s
+2025-07-23 17:46:30,971 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 17:46:30,973 - main - INFO - Response: 200 - 0.001s
+2025-07-23 17:46:30,980 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 17:46:31,057 - main - INFO - Response: 200 - 0.587s
+2025-07-23 17:46:31,066 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 17:46:31,383 - main - INFO - Response: 200 - 0.403s
+2025-07-23 17:46:31,470 - main - INFO - Response: 200 - 0.404s
+2025-07-23 17:46:31,476 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 17:46:31,869 - main - INFO - Response: 200 - 0.393s
+2025-07-23 18:16:34,767 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 18:16:34,768 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 18:16:34,768 - main - INFO - Response: 200 - 0.001s
+2025-07-23 18:16:34,769 - main - INFO - Response: 200 - 0.001s
+2025-07-23 18:16:34,771 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 18:16:35,351 - main - INFO - Response: 200 - 0.580s
+2025-07-23 18:16:35,353 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=HIGH&limit=20
+2025-07-23 18:16:35,379 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 18:16:35,379 - main - INFO - Response: 200 - 0.001s
+2025-07-23 18:16:35,382 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 18:16:35,911 - main - INFO - Response: 200 - 0.529s
+2025-07-23 18:16:35,915 - main - INFO - Request: OPTIONS http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 18:16:35,916 - main - INFO - Response: 200 - 0.001s
+2025-07-23 18:16:35,919 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 18:16:35,948 - main - INFO - Response: 200 - 0.595s
+2025-07-23 18:16:35,970 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=MEDIUM&limit=20
+2025-07-23 18:16:36,366 - main - INFO - Response: 200 - 0.447s
+2025-07-23 18:16:36,383 - main - INFO - Response: 200 - 0.413s
+2025-07-23 18:16:36,403 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=LOW&limit=10
+2025-07-23 18:16:36,802 - main - INFO - Response: 200 - 0.399s
+2025-07-23 18:48:44,959 - decryption_engine - INFO - Cleaned up expired decryption session: jdc-vUldG-NL6TTo5eYewOy1OMaSYz_qvNf6TrBYaGA
+2025-07-23 18:48:44,960 - main - INFO - Cleaned up 1 expired decryption sessions
+2025-07-23 18:55:46,973 - main - INFO - Shutting down TDP-QIMLE Algorithm System...
+2025-07-23 18:55:46,973 - main - INFO - Shutting down independent decryption system...
+2025-07-23 18:55:46,974 - main - INFO - TDP-QIMLE system shutdown complete
+2025-07-23 18:57:53,706 - __main__ - INFO - Starting TDP-QIMLE development server...
+2025-07-23 18:57:55,438 - main - INFO - Starting TDP-QIMLE Algorithm System...
+2025-07-23 18:57:55,439 - main - INFO - Initializing novel encryption components...
+2025-07-23 18:57:55,439 - main - INFO - Initializing independent decryption system...
+2025-07-23 18:57:55,439 - main - INFO - TDP-QIMLE system started successfully
+2025-07-23 18:57:55,439 - main - INFO - Independent decryption system started successfully
+2025-07-23 19:00:37,155 - main - INFO - Shutting down TDP-QIMLE Algorithm System...
+2025-07-23 19:00:37,155 - main - INFO - Shutting down independent decryption system...
+2025-07-23 19:00:37,156 - main - INFO - TDP-QIMLE system shutdown complete

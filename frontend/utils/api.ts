@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create axios instance with base configuration
 const api = axios.create({
-  baseURL: 'http://localhost:8001/api/novel/', // Local backend on port 8001
+  baseURL: 'https://ehr-implementation-production.up.railway.app/api/novel/', // Deployed backend
   timeout: 30000, // 30 second timeout for encryption operations
   headers: {
     'Content-Type': 'application/json',
