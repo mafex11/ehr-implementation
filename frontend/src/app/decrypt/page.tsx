@@ -413,20 +413,20 @@ export default function DecryptPage() {
               <Button 
                 variant="ghost" 
                 onClick={() => router.push('/')}
-                className="mb-4 text-2xl"
+                className="mb-4 text-md lg:text-2xl md:text-2xl sm:text-2xl"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
                 Back to Dashboard
               </Button>
              
-              <p className="text-muted-foreground text-2xl ml-10">
+              <p className="text-muted-foreground md:text-2xl sm:text-2xl lg:text-2xl ml-10">
                 Secure access to encrypted patient records using TDP-QIMLE
               </p>
             </div>
             <div className="text-right max-w-xl">
-              <p className="text-md text-muted-foreground">Session: {session?.session_id?.substring(0, 100)}...</p>              
+              <p className="sm:text-md lg:text-md text-muted-foreground">Session: {session?.session_id?.substring(0, 10)}...</p>              
               <p className="text-md text-muted-foreground">Clearance: {session?.clearance_level}</p>
-              <Button variant="outline" size="sm" onClick={handleLogout} className="mt-2 text-xl text-white h-10">
+              <Button variant="outline" size="sm" onClick={handleLogout} className="mt-2 text-md text-white h-10">
                 Logout
               </Button>
             </div>
@@ -438,13 +438,13 @@ export default function DecryptPage() {
             delay={150}
             animateBy="words"
             direction="top"
-            className="text-8xl mb-2 mt-20 text-center items-center justify-center font-bold"
+            className="md:text-8xl text-5xl lg:text-8xl mb-2 mt-20 text-center items-center justify-center font-bold"
           />
         <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'single' | 'bulk' | 'audit')}>
           <TabsList className="grid w-full grid-cols-3  bg-blue-500 border-2 rounded-full mt-10 mb-10 max-w-4xl mx-auto">
-            <TabsTrigger value="single" className='border-2 text-xl'>Single Patient</TabsTrigger>
-            <TabsTrigger value="bulk" className='border-2 text-xl'>Bulk Decryption</TabsTrigger>
-            <TabsTrigger value="audit" className='border-2 text-xl'>Audit Log</TabsTrigger>
+            <TabsTrigger value="single" className='border-2  lg:text-xl md:text-lg'>Single Patient</TabsTrigger>
+            <TabsTrigger value="bulk" className='border-2  lg:text-xl md:text-lg'>Bulk Decryption</TabsTrigger>
+            <TabsTrigger value="audit" className='border-2  lg:text-xl md:text-lg'>Audit Log</TabsTrigger>
           </TabsList>
 
           <TabsContent value="single" className="space-y-6">

@@ -32,12 +32,13 @@ export default function RootLayout({
           <nav className="bg-zinc-900 border-b-2 border-zinc-800">
             <div className="max-w-7xl mx-auto flex justify-between items-center px-6 py-4">
               <div className="flex items-center space-x-2">
-              <Link href="/" className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors ">
-              <Shield className="w-8 h-8 text-primary" />
-              <span className="text-xl font-bold">TDP-QIMLE EHR System</span>
+                <Link href="/" className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors ">
+                  <Shield className="w-8 h-8 text-primary" />
+                  <span className="text-xl font-bold hidden sm:inline">TDP-QIMLE EHR System</span>
                 </Link>
               </div>
 
+              {/* Desktop Nav */}
               <nav className="hidden md:flex w-fit mx-auto space-x-8 rounded-full bg-zinc-800/90  px-8 py-2 shadow-lg transition-colors duration-200">
                 <Link href="/" className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors ">
                   <Home className="w-4 h-4" />
@@ -49,7 +50,7 @@ export default function RootLayout({
                 </Link> */}
                 <Link href="/encrypt" className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors">
                   <Lock className="w-4 h-4" />
-                  <span>Add Patient/Encrypt Data</span>
+                  <span>Encrypt Data</span>
                 </Link>
                 <Link href="/decrypt" className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors">
                   <Unlock className="w-4 h-4" />
@@ -66,6 +67,25 @@ export default function RootLayout({
                 <Link href="/security" className="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors">
                   <Shield className="w-4 h-4" />
                   <span>Security</span>
+                </Link>
+              </nav>
+
+              {/* Mobile Nav: only icons, visible on mobile (below md) */}
+              <nav className="flex md:hidden w-fit mx-auto space-x-6 rounded-full bg-zinc-800/90 px-4 py-2 shadow-lg transition-colors duration-200">
+                <Link href="/" className="flex items-center text-muted-foreground hover:text-foreground transition-colors ">
+                  <Home className="w-6 h-6" />
+                </Link>
+                <Link href="/encrypt" className="flex items-center text-muted-foreground hover:text-foreground transition-colors">
+                  <Lock className="w-6 h-6" />
+                </Link>
+                <Link href="/decrypt" className="flex items-center text-muted-foreground hover:text-foreground transition-colors">
+                  <Unlock className="w-6 h-6" />
+                </Link>
+                <Link href="/algorithm" className="flex items-center text-muted-foreground hover:text-foreground transition-colors">
+                  <Star className="w-6 h-6" />
+                </Link>
+                <Link href="/security" className="flex items-center text-muted-foreground hover:text-foreground transition-colors">
+                  <Shield className="w-6 h-6" />
                 </Link>
               </nav>
               {/* <ModeToggle /> */}

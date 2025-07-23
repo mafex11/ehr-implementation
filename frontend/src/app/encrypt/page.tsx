@@ -329,14 +329,14 @@ export default function EncryptPage() {
             delay={150}
             animateBy="words"
             direction="top"
-            className="text-8xl mb-2 mt-20 text-center items-center justify-center font-bold"
+            className=" text-5xl lg:text-8xl sm:text-5xl md:text-5xl mb-2 mt-20 text-center items-center justify-center font-bold"
           />
-          <p className="text-3xl mb-30 text-center max-w-5xl mx-auto">
+          <p className="md:text-3xl sm:text-3xl lg:text-5xl mb-30 text-center max-w-5xl mx-auto">
             Choose manual entry or upload a CSV file to encrypt patient data using TDP-QIMLE quantum-inspired encryption
           </p>
         </div>
-        <Tabs value={entryMode} onValueChange={(v) => setEntryMode(v as 'manual' | 'upload')} className="w-full max-w-8xl mx-auto mb-24">
-          <TabsList className="w-3xl mx-auto flex mb-6 bg-blue-500 rounded-full ">
+        <Tabs value={entryMode} onValueChange={(v) => setEntryMode(v as 'manual' | 'upload')} className="w-full max-w-4xl mx-auto mb-24">
+          <TabsList className=" w-full mx-auto flex mb-6 bg-blue-500 rounded-full">
             <TabsTrigger value="manual" className="flex-1 text-2xl font-medium">Manual Entry</TabsTrigger>
             <TabsTrigger value="upload" className="flex-1 text-2xl font-medium">Upload CSV</TabsTrigger>
           </TabsList>
@@ -619,7 +619,7 @@ export default function EncryptPage() {
         {/* Framework Overview Section */}
         <div className=" transition-all duration-500">
           {/* <h2 className="font-bold mb-2 text-black text-center text-4xl">Framework Overview</h2> */}
-          <p className="text-6xl text-center font-bold mb-12">Explore the 7 core components that make TDP-QIMLE a cutting-edge healthcare security solution</p>
+          <p className="md:text-6xl text-3xl lg:text-6xl text-center font-bold mb-12">Explore the 7 core components that make TDP-QIMLE a cutting-edge healthcare security solution</p>
           {/* Add a style block for the pop-out effect */}
           <style jsx>{`
             .framework-card {
@@ -639,7 +639,7 @@ export default function EncryptPage() {
                 <span className="font-bold text-3xl">Temporal Differential Privacy</span>
               </div>
               <p className="text-xl mb-2">Time-decaying privacy mechanism that provides stronger protection for recent data</p>
-              <ul className="text-lg list-[tick] ml-5 mb-2" style={{ listStyleType: "'✓ '" }}>
+              <ul className="text-md list-[tick] ml-5 mb-2" style={{ listStyleType: "'✓ '" }}>
                 <li>Laplace noise injection</li>
                 <li>Time-based decay (λ=0.01)</li>
                 <li>Adaptive privacy budgets</li>

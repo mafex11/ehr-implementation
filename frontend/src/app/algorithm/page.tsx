@@ -43,9 +43,9 @@ export default function AlgorithmPage() {
             delay={150}
             animateBy="words"
             direction="top"
-            className="text-8xl mb-2 mt-20 text-center items-center justify-center font-bold"
+            className="md:text-8xl text-5xl lg:text-8xl mb-2 mt-20 text-center items-center justify-center font-bold"
           />
-            <p className="text-2xl text-muted-foreground max-w-3xl text-center mx-auto">
+            <p className="text-xl md:text-2xl sm:text-2xl lg:text-2xl text-muted-foreground max-w-3xl text-center mx-auto">
               Temporal Differential Privacy with Quantum-Inspired Multi-Layer Encryption
             </p>
             <div className="flex flex-wrap gap-2 justify-center ">
