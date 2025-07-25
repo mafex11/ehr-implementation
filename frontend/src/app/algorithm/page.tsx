@@ -610,9 +610,11 @@ export default function AlgorithmPage() {
           )}
         </div>
         <div className="flex justify-center mt-20 mb-20"> 
-          <Button className="bg-blue-500 text-white hover:bg-zinc-800 hover:text-white h-20 w-fill text-2xl font-bold border-2 border-black">
-            Encrypt Data Now!
-          </Button>
+          <Link href="/encrypt" passHref legacyBehavior>
+            <Button as="a" className="bg-blue-500 text-white hover:bg-zinc-800 hover:text-white h-20 w-fill text-2xl font-bold border-2 border-black">
+              Encrypt Data Now!
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
