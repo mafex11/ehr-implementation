@@ -9701,3 +9701,6 @@
 2025-07-26 17:41:19,060 - main - INFO - Response: 200 - 0.001s
 2025-07-26 17:41:19,062 - main - INFO - Request: GET http://localhost:8001/api/decrypt/patient/search/encrypted?sensitivity_level=CRITICAL&limit=10000
 2025-07-26 17:41:20,289 - main - INFO - Response: 200 - 1.227s
+2025-07-26 17:49:06,917 - main - INFO - Shutting down TDP-QIMLE Algorithm System...
+2025-07-26 17:49:06,917 - main - INFO - Shutting down independent decryption system...
+2025-07-26 17:49:06,918 - main - INFO - TDP-QIMLE system shutdown complete

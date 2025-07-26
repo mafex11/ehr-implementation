@@ -184,7 +184,17 @@ export const decryptionService = {
       }
       
       // Use the same approach as single patient decryption to avoid broadcasting errors
-      const results = {
+      type DecryptionResult = 
+        | { patient_id: string; status: string; data: any; metadata: any; error?: undefined; }
+        | { patient_id: string; status: string; error: any; data?: undefined; metadata?: undefined; };
+
+      const results: {
+        decrypted_patients: DecryptionResult[];
+        failed_patients: DecryptionResult[];
+        total_processed: number;
+        success_count: number;
+        failure_count: number;
+      } = {
         decrypted_patients: [],
         failed_patients: [],
         total_processed: 0,
