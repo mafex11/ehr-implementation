@@ -67,9 +67,21 @@ export const encryptionAPI = {
         patient_id: patientData.patient_id || `P${Date.now()}`,
         name: patientData.name,
         age: patientData.age,
-        medical_history: patientData.medical_history || [patientData.diagnosis],
+        gender: patientData.gender || '',
+        blood_type: patientData.blood_type || '',
+        medical_condition: patientData.medical_condition || patientData.diagnosis || '',
+        date_of_admission: patientData.date_of_admission || '',
+        doctor_name: patientData.doctor_name || '',
+        hospital: patientData.hospital || '',
+        insurance_provider: patientData.insurance_provider || '',
+        billing_amount: patientData.billing_amount || 0.0,
+        room_number: patientData.room_number || '',
+        admission_type: patientData.admission_type || '',
+        discharge_date: patientData.discharge_date || '',
+        medication: patientData.medication || '',
+        test_results: patientData.test_results || String(patientData.lab_result || ''),
+        medical_history: patientData.medical_history || [patientData.diagnosis || ''],
         current_medications: patientData.current_medications || [],
-        test_results: patientData.test_results || { lab_result: patientData.lab_result },
         notes: patientData.notes || '',
         sensitivity_level: sensitivity
       };
@@ -77,6 +89,16 @@ export const encryptionAPI = {
       return response.data;
     } catch (error) {
       throw new Error(`Encryption failed: ${error}`);
+    }
+  },
+
+  // Encrypt and store multiple patients in bulk
+  encryptPatientsBulk: async (patients: any[]) => {
+    try {
+      const response = await api.post('patients/bulk', patients);
+      return response.data;
+    } catch (error) {
+      throw new Error(`Bulk encryption failed: ${error}`);
     }
   },
 

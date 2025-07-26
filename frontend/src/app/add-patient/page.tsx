@@ -74,11 +74,21 @@ export default function AddPatient() {
         patient_id: `P${Date.now()}`,
         name: formData.name,
         age: Number(formData.age),
+        gender: '',
+        blood_type: '',
+        medical_condition: formData.diagnosis,
+        date_of_admission: '',
+        doctor_name: '',
+        hospital: '',
+        insurance_provider: '',
+        billing_amount: 0.0,
+        room_number: '',
+        admission_type: '',
+        discharge_date: '',
+        medication: '',
+        test_results: String(formData.lab_result),
         medical_history: [formData.diagnosis],
         current_medications: [],
-        test_results: {
-          lab_result: Number(formData.lab_result)
-        },
         notes: formData.notes,
         sensitivity_level: formData.sensitivity_level
       };

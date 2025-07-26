@@ -238,6 +238,34 @@ export default function Home() {
                 </div>
               </CardContent>
             </Card>
+
+            <Card className="group hover:shadow-lg transition-all duration-300 border-2 hover:border-green-500/50">
+              <CardHeader className='h-66'>
+                <div className="w-12 h-12 border-2 border-black rounded-lg flex items-center justify-center mb-4">
+                  <Dna className="h-6 w-6 text-black" />
+                </div>
+                <CardTitle className="text-4xl font-extrabold">Adaptive Noise Injection</CardTitle>
+                <CardDescription className="text-2xl font-normal">
+                Field-level sensitivity-aware noise application                 </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-2 text-sm border-2 p-2 rounded-md">
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-white rounded-full"></div>
+                    <span>4 sensitivity levels</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-white rounded-full"></div>
+                    <span>Custom noise scaling</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 bg-white rounded-full"></div>
+                    <span>Clinical accuracy preservation</span>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
           </div>
         </div>
       </section>

@@ -318,7 +318,7 @@ async def search_encrypted_patients(
             encrypted_patients.append({
                 "patient_id": doc["patient_id"],
                 "encrypted_at": doc["created_at"],
-                "sensitivity_level": doc["encryption_metadata"]["sensitivity_level"],
+                "sensitivity_level": storage._get_sensitivity_name(doc["encryption_metadata"]["sensitivity_level"]),
                 "algorithm_version": doc["encryption_metadata"]["version"],
                 "has_integrity_block": "integrity_block" in doc["encryption_metadata"]
             })

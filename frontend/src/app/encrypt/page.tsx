@@ -12,7 +12,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Progress } from '@/components/ui/progress';
 import { Loader2, Shield, Lock, AlertCircle, ArrowLeft } from 'lucide-react';
-import api from '../../../utils/api';
+import api, { encryptionAPI } from '../../../utils/api';
 import { FileUpload } from "@/components/ui/file-upload";
 import Papa, { ParseResult } from 'papaparse';
 import BlurText from '@/components/BlurText/BlurText';
@@ -56,7 +56,8 @@ export default function EncryptPage() {
   const [encryptionSettings, setEncryptionSettings] = useState({
     epsilon: 1.0,
     showProcess: true,
-    algorithm: 'TDP-QIMLE'
+    algorithm: 'TDP-QIMLE',
+    sensitivityLevel: 'MEDIUM'
   });
   
   const [encryptionResult, setEncryptionResult] = useState<EncryptionResult | null>(null);
@@ -95,6 +96,10 @@ export default function EncryptPage() {
 
   const handleDiagnosisChange = (value: string) => {
     setPatientData(prev => ({ ...prev, diagnosis: value }));
+    
+    // Auto-update sensitivity level based on diagnosis
+    const autoSensitivityLevel = getSensitivityLevelForCondition(value);
+    setEncryptionSettings(prev => ({ ...prev, sensitivityLevel: autoSensitivityLevel }));
   };
 
   const handleSettingsChange = (name: string, value: any) => {
@@ -153,13 +158,23 @@ export default function EncryptPage() {
         patient_id: `P${Date.now()}`,
         name: patientData.name,
         age: Number(patientData.age),
+        gender: '',
+        blood_type: '',
+        medical_condition: patientData.diagnosis,
+        date_of_admission: '',
+        doctor_name: '',
+        hospital: '',
+        insurance_provider: '',
+        billing_amount: 0.0,
+        room_number: '',
+        admission_type: '',
+        discharge_date: '',
+        medication: '',
+        test_results: String(patientData.lab_result),
         medical_history: [patientData.diagnosis],
         current_medications: [],
-        test_results: {
-          lab_result: Number(patientData.lab_result)
-        },
         notes: '',
-        sensitivity_level: 'HIGH'
+        sensitivity_level: encryptionSettings.sensitivityLevel
       };
       await api.post('patients', apiData);
       const result: EncryptionResult = {
@@ -181,7 +196,22 @@ export default function EncryptPage() {
       setEncryptionLogs(prev => [logEntry, ...prev]);
     } catch (err: any) {
       console.error('Encryption error:', err);
-      setError(err.response?.data?.detail || 'Failed to encrypt patient data');
+      let errorMessage = 'Failed to encrypt patient data';
+      
+      if (err.response?.data?.detail) {
+        // Handle validation errors from FastAPI
+        if (Array.isArray(err.response.data.detail)) {
+          errorMessage = err.response.data.detail.map((error: any) => 
+            `${error.loc?.join('.')}: ${error.msg}`
+          ).join(', ');
+        } else {
+          errorMessage = err.response.data.detail;
+        }
+      } else if (err.message) {
+        errorMessage = err.message;
+      }
+      
+      setError(errorMessage);
     } finally {
       setLoading(false);
       setEncryptionProgress(0);
@@ -202,6 +232,140 @@ export default function EncryptPage() {
     'Migraine',
     'Other'
   ];
+
+  // Medical condition sensitivity mapping
+  const getSensitivityLevelForCondition = (medicalCondition: string): string => {
+    const condition = medicalCondition.toLowerCase().trim();
+    
+    // CRITICAL sensitivity conditions (highest protection needed)
+    const criticalConditions = [
+      'cancer', 'hiv', 'aids', 'hepatitis c', 'hepatitis b', 'tuberculosis', 'tb',
+      'mental health', 'psychiatric', 'suicide', 'self-harm', 'addiction',
+      'sexual assault', 'domestic violence', 'child abuse', 'elder abuse',
+      'genetic disorder', 'rare disease', 'terminal illness', 'palliative care',
+      'organ transplant', 'bone marrow', 'stem cell', 'experimental treatment',
+      'clinical trial', 'research subject', 'prisoner', 'witness protection'
+    ];
+    
+    // HIGH sensitivity conditions
+    const highConditions = [
+      'diabetes', 'hypertension', 'heart disease', 'coronary artery disease',
+      'stroke', 'heart attack', 'myocardial infarction', 'congestive heart failure',
+      'chronic kidney disease', 'dialysis', 'kidney failure', 'liver disease',
+      'cirrhosis', 'lung cancer', 'breast cancer', 'prostate cancer', 'colon cancer',
+      'leukemia', 'lymphoma', 'melanoma', 'brain tumor', 'spinal cord injury',
+      'paralysis', 'amputation', 'severe burn', 'trauma', 'emergency surgery',
+      'icu', 'intensive care', 'ventilator', 'coma', 'seizure', 'epilepsy',
+      'multiple sclerosis', 'parkinson', 'alzheimer', 'dementia', 'als',
+      'cystic fibrosis', 'sickle cell', 'hemophilia', 'thalassemia',
+      'autoimmune', 'lupus', 'rheumatoid arthritis', 'crohn', 'ulcerative colitis',
+      'celiac', 'gluten', 'allergy', 'anaphylaxis', 'asthma', 'copd',
+      'emphysema', 'bronchitis', 'pneumonia', 'covid', 'coronavirus',
+      'infectious disease', 'mrsa', 'viral infection', 'bacterial infection',
+      'fungal infection', 'parasitic infection', 'std', 'sti', 'gonorrhea',
+      'chlamydia', 'syphilis', 'herpes', 'hpv', 'pregnancy', 'abortion',
+      'miscarriage', 'stillbirth', 'premature birth', 'birth defect',
+      'developmental delay', 'autism', 'adhd', 'learning disability',
+      'disability', 'wheelchair', 'blind', 'deaf', 'deafness', 'blindness'
+    ];
+    
+    // MEDIUM sensitivity conditions
+    const mediumConditions = [
+      'obesity', 'overweight', 'weight loss', 'diet', 'nutrition',
+      'vitamin deficiency', 'anemia', 'iron deficiency', 'calcium deficiency',
+      'vitamin d', 'vitamin b12', 'folic acid', 'mineral deficiency',
+      'cholesterol', 'high cholesterol', 'triglycerides', 'lipid disorder',
+      'thyroid', 'hypothyroidism', 'hyperthyroidism', 'goiter',
+      'adrenal', 'cushing', 'addison', 'pituitary', 'hormone disorder',
+      'menopause', 'andropause', 'fertility', 'infertility', 'ivf',
+      'gynecology', 'obstetrics', 'women health', 'men health',
+      'pediatric', 'child health', 'adolescent', 'teen health',
+      'geriatric', 'elderly', 'aging', 'senior health',
+      'dental', 'oral health', 'tooth', 'gum disease', 'cavity',
+      'vision', 'eye', 'ophthalmology', 'optometry', 'glasses', 'contact lens',
+      'dermatology', 'skin', 'acne', 'eczema', 'psoriasis', 'rash',
+      'orthopedic', 'bone', 'joint', 'muscle', 'tendon', 'ligament',
+      'physical therapy', 'rehabilitation', 'rehab', 'occupational therapy',
+      'speech therapy', 'respiratory therapy', 'cardiac rehab',
+      'sleep disorder', 'insomnia', 'sleep apnea', 'narcolepsy',
+      'headache', 'migraine', 'cluster headache', 'tension headache',
+      'back pain', 'neck pain', 'shoulder pain', 'knee pain', 'hip pain',
+      'arthritis', 'osteoarthritis', 'rheumatoid arthritis', 'gout',
+      'fibromyalgia', 'chronic pain', 'pain management', 'analgesic',
+      'gastroenterology', 'stomach', 'intestine', 'digestive', 'indigestion',
+      'acid reflux', 'gerd', 'ulcer', 'gastritis', 'colitis', 'diverticulitis',
+      'gallbladder', 'gallstone', 'pancreas', 'pancreatitis',
+      'urology', 'kidney stone', 'bladder', 'prostate', 'urinary',
+      'incontinence', 'uti', 'urinary tract infection'
+    ];
+    
+    // LOW sensitivity conditions (routine, non-sensitive)
+    const lowConditions = [
+      'checkup', 'physical', 'annual exam', 'routine', 'preventive',
+      'vaccination', 'vaccine', 'immunization', 'flu shot', 'covid vaccine',
+      'blood pressure', 'bp', 'temperature', 'temp', 'pulse', 'heart rate',
+      'respiratory rate', 'oxygen saturation', 'o2 sat', 'weight', 'height',
+      'bmi', 'body mass index', 'waist circumference', 'body fat',
+      'blood test', 'lab test', 'cbc', 'complete blood count',
+      'chemistry panel', 'metabolic panel', 'lipid panel', 'thyroid panel',
+      'urinalysis', 'urine test', 'stool test', 'fecal test',
+      'x-ray', 'radiology', 'imaging', 'ct scan', 'mri', 'ultrasound',
+      'ecg', 'ekg', 'electrocardiogram', 'echocardiogram', 'stress test',
+      'treadmill test', 'exercise test', 'pulmonary function test',
+      'spirometry', 'peak flow', 'allergy test', 'skin test', 'patch test',
+      'biopsy', 'tissue sample', 'mole removal', 'wart removal',
+      'minor surgery', 'outpatient', 'day surgery', 'local anesthesia',
+      'stitches', 'suture', 'bandage', 'dressing', 'wound care',
+      'follow-up', 'post-op', 'postoperative', 'recovery', 'healing',
+      'medication refill', 'prescription', 'drug', 'pill', 'tablet',
+      'capsule', 'liquid', 'injection', 'shot', 'needle', 'syringe',
+      'supplement', 'vitamin', 'herb', 'natural', 'alternative medicine',
+      'acupuncture', 'chiropractic', 'massage', 'physical therapy',
+      'exercise', 'fitness', 'workout', 'gym', 'sports', 'athletic',
+      'nutrition', 'diet', 'food', 'meal', 'calorie', 'protein', 'carb',
+      'fat', 'fiber', 'vitamin', 'mineral', 'supplement', 'probiotic',
+      'lifestyle', 'smoking', 'alcohol', 'drug use', 'substance abuse',
+      'stress', 'anxiety', 'depression', 'mood', 'emotion', 'mental health',
+      'counseling', 'therapy', 'psychotherapy', 'cognitive behavioral',
+      'meditation', 'mindfulness', 'relaxation', 'yoga', 'tai chi',
+      'social support', 'family', 'relationship', 'marriage', 'divorce',
+      'work', 'job', 'occupation', 'employment', 'disability', 'insurance',
+      'financial', 'economic', 'housing', 'homeless', 'transportation',
+      'education', 'school', 'college', 'university', 'degree', 'certificate',
+      'legal', 'law', 'court', 'judge', 'lawyer', 'attorney', 'advocate'
+    ];
+    
+    // Check for critical conditions first (highest priority)
+    for (const critical of criticalConditions) {
+      if (condition.includes(critical)) {
+        return 'CRITICAL';
+      }
+    }
+    
+    // Check for high sensitivity conditions
+    for (const high of highConditions) {
+      if (condition.includes(high)) {
+        return 'HIGH';
+      }
+    }
+    
+    // Check for medium sensitivity conditions
+    for (const medium of mediumConditions) {
+      if (condition.includes(medium)) {
+        return 'MEDIUM';
+      }
+    }
+    
+    // Check for low sensitivity conditions
+    for (const low of lowConditions) {
+      if (condition.includes(low)) {
+        return 'LOW';
+      }
+    }
+    
+    // Default to MEDIUM if no specific condition is found
+    return 'MEDIUM';
+  };
 
   const getPrivacyLevel = (epsilon: number) => {
     if (epsilon <= 0.5) return { level: 'Very High', color: 'bg-green-500', description: 'Maximum privacy protection' };
@@ -252,47 +416,62 @@ export default function EncryptPage() {
         setEncrypting(true);
         setTotalPatients(patients.length);
         setError(null);
-        let successCount = 0;
-        let failCount = 0;
         let encryptedList: any[] = [];
-        for (let i = 0; i < patients.length; i++) {
-          const row = patients[i];
-          setCurrentPatientName(row["Name"]);
-          setPatientsProcessed(i + 1);
-          for (let step = 0; step < encryptionSteps.length; step++) {
-            setCurrentEncryptionStep(step);
-            await new Promise(res => setTimeout(res, 200));
-          }
-          setCurrentEncryptionStep(-1);
+        // Build apiData array for all patients
+        const apiDataArray = patients.map((row, i) => {
           const apiData: any = {};
           for (const [csvKey, apiKey] of Object.entries(csvToApiFieldMap)) {
             apiData[apiKey] = row[csvKey] ?? "";
           }
           apiData.patient_id = `P${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
-          apiData.medical_history = [apiData.medical_condition];
-          apiData.current_medications = [apiData.medication];
+          apiData.medical_history = [apiData.medical_condition || ""];
+          apiData.current_medications = [apiData.medication || ""];
           apiData.notes = "";
-          apiData.sensitivity_level = row["Sensitivity Level"] || "HIGH";
-          try {
-            await api.post('patients', apiData);
-            successCount++;
-            encryptedList.push({ ...apiData, status: 'success' });
-          } catch (err) {
-            failCount++;
-            encryptedList.push({ ...apiData, status: 'failed' });
-          }
-        }
-        setEncrypting(false);
-        setCurrentPatientName(null);
-        setEncryptionResult({
-          success: failCount === 0,
-          patient_id: '',
-          encrypted: true,
-          epsilon_used: encryptionSettings.epsilon,
-          timestamp: new Date().toISOString(),
-          message: `Encryption complete. Success: ${successCount}, Failed: ${failCount}`
+          // Auto-determine sensitivity level based on medical condition
+          const medicalCondition = row["Medical Condition"] || row["medical_condition"] || "";
+          const autoSensitivityLevel = getSensitivityLevelForCondition(medicalCondition);
+          apiData.sensitivity_level = row["Sensitivity Level"] || autoSensitivityLevel;
+          // Ensure all required fields have default values
+          apiData.gender = apiData.gender || "";
+          apiData.blood_type = apiData.blood_type || "";
+          apiData.medical_condition = apiData.medical_condition || "";
+          apiData.date_of_admission = apiData.date_of_admission || "";
+          apiData.doctor_name = apiData.doctor_name || "";
+          apiData.hospital = apiData.hospital || "";
+          apiData.insurance_provider = apiData.insurance_provider || "";
+          apiData.billing_amount = parseFloat(apiData.billing_amount) || 0.0;
+          apiData.room_number = apiData.room_number || "";
+          apiData.admission_type = apiData.admission_type || "";
+          apiData.discharge_date = apiData.discharge_date || "";
+          apiData.medication = apiData.medication || "";
+          apiData.test_results = apiData.test_results || "";
+          return apiData;
         });
-        setEncryptedPatients(encryptedList);
+        // Call the bulk endpoint
+        try {
+          const results: any[] = await encryptionAPI.encryptPatientsBulk(apiDataArray);
+          let successCount = 0;
+          let failCount = 0;
+          encryptedList = results.map((res: any, idx: number) => {
+            if (res.status === 'success') successCount++;
+            else failCount++;
+            return { ...apiDataArray[idx], status: res.status, error: res.error };
+          });
+          setEncrypting(false);
+          setCurrentPatientName(null);
+          setEncryptionResult({
+            success: failCount === 0,
+            patient_id: '',
+            encrypted: true,
+            epsilon_used: encryptionSettings.epsilon,
+            timestamp: new Date().toISOString(),
+            message: `Encryption complete. Success: ${successCount}, Failed: ${failCount}`
+          });
+          setEncryptedPatients(encryptedList);
+        } catch (err: any) {
+          setEncrypting(false);
+          setError('Bulk encryption failed: ' + (err.message || err.toString()));
+        }
       },
       error: (error: Error, file: File) => {
         setError('Failed to parse CSV: ' + error.message);
@@ -353,9 +532,9 @@ export default function EncryptPage() {
                   className="w-full"
                   // Removed absolute positioning
                 >
-                  <div className="grid grid-cols-1  gap-6 max-w-4xl mx-auto">
-                    <div className="lg:col-span-2">
-                      <Card>
+                  <div>
+                    <div className="w-full max-w-4xl mx-auto">
+                      <Card className="p-6 mb-8">
                         <CardHeader>
                           <CardTitle className="flex items-center gap-2 text-3xl">
                             <Shield className="w-8 h-8 " />
@@ -450,6 +629,33 @@ export default function EncryptPage() {
                                     </div>
                                     <p className="text-sm text-muted-foreground">{privacyLevel.description}</p>
                                   </div>
+                                  <div className="space-y-2">
+                                    <Label>Sensitivity Level</Label>
+                                    <Select 
+                                      value={encryptionSettings.sensitivityLevel} 
+                                      onValueChange={(value) => handleSettingsChange('sensitivityLevel', value)}
+                                    >
+                                      <SelectTrigger>
+                                        <SelectValue placeholder="Select sensitivity level" />
+                                      </SelectTrigger>
+                                      <SelectContent className='bg-zinc-950'>
+                                        <SelectItem value="LOW">Low (Level 1)</SelectItem>
+                                        <SelectItem value="MEDIUM">Medium (Level 2)</SelectItem>
+                                        <SelectItem value="HIGH">High (Level 3)</SelectItem>
+                                        <SelectItem value="CRITICAL">Critical (Level 4)</SelectItem>
+                                      </SelectContent>
+                                    </Select>
+                                    <div className="flex items-center gap-2">
+                                      <p className="text-sm text-muted-foreground">
+                                        Higher sensitivity levels provide stronger encryption and privacy protection
+                                      </p>
+                                      {patientData.diagnosis && (
+                                        <Badge variant="secondary" className="text-xs">
+                                          Auto-detected from diagnosis
+                                        </Badge>
+                                      )}
+                                    </div>
+                                  </div>
                                   <div className="flex items-center justify-between">
                                     <Label>Show Encryption Process</Label>
                                     <Switch
@@ -515,6 +721,66 @@ export default function EncryptPage() {
                           </form>
                         </CardContent>
                       </Card>
+                      {/* Show summary after encryption for manual entry */}
+                      {encryptionResult && (
+                        <Card className="mt-10 max-w-5xl mx-auto border-green-200 bg-green-50">
+                          <CardHeader>
+                            <CardTitle className="flex items-center gap-2 text-green-800 text-2xl">
+                              <Shield className="w-6 h-6 text-green-600" />
+                              Encryption Successful
+                            </CardTitle>
+                          </CardHeader>
+                          <CardContent className="space-y-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                              <div className="space-y-2">
+                                <Label className="text-sm font-semibold text-green-700">Patient Name</Label>
+                                <p className="text-xl font-bold text-green-900">{patientData.name}</p>
+                              </div>
+                              <div className="space-y-2">
+                                <Label className="text-sm font-semibold text-green-700">Patient ID</Label>
+                                <div className="flex items-center gap-2">
+                                  <p className="text-xl font-bold text-green-900">{encryptionResult.patient_id}</p>
+                                  <Button
+                                    variant="outline"
+                                    size="sm"
+                                    onClick={() => navigator.clipboard.writeText(encryptionResult.patient_id)}
+                                    className="text-xs"
+                                  >
+                                    Copy
+                                  </Button>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="mt-4 p-3 bg-green-100 rounded-lg">
+                              <p className="text-green-800 font-medium text-lg">{encryptionResult.message}</p>
+                            </div>
+                            <div className="flex gap-2 mt-4">
+                              <Button
+                                onClick={() => {
+                                  setEncryptionResult(null);
+                                  setPatientData({
+                                    name: '',
+                                    age: '',
+                                    diagnosis: '',
+                                    lab_result: ''
+                                  });
+                                  setEncryptionSettings(prev => ({ ...prev, sensitivityLevel: 'MEDIUM' }));
+                                }}
+                                variant="outline"
+                                className="flex-1 bg-black hover:bg-green-700 text-white"
+                              >
+                                Encrypt Another Patient
+                              </Button>
+                              <Button
+                                onClick={() => router.push('/decrypt')}
+                                className="flex-1 bg-black hover:bg-green-700 text-white"
+                              >
+                                View Encrypted Data
+                              </Button>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      )}
                     </div>
                   </div>
                 </motion.div>
@@ -543,24 +809,68 @@ export default function EncryptPage() {
                     <div className="w-full min-h-96 max-w-8xl mx-auto mt-20 bg-white rounded-xl p-4 border-2 overflow-x-auto">
                       <div className="text-2xl font-bold text-black mb-2">CSV Data Preview (first 5 rows)</div>
                       {csvPreview.length > 0 ? (
-                        <table className="min-w-full text-lg text-left text-black">
-                          <thead>
-                            <tr>
-                              {Object.keys(csvPreview[0]).map((key) => (
-                                <th key={key} className="px-2 py-1 border-b border-zinc-700 font-semibold">{key}</th>
-                              ))}
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {csvPreview.map((row, idx) => (
-                              <tr key={idx} className="border-b border-zinc-700">
-                                {Object.values(row).map((val, i) => (
-                                  <td key={i} className="px-2 py-1">{String(val)}</td>
+                        <>
+                          <table className="min-w-full text-lg text-left text-black">
+                            <thead>
+                              <tr>
+                                {Object.keys(csvPreview[0]).map((key) => (
+                                  <th key={key} className="px-2 py-1 border-b border-zinc-700 font-semibold">{key}</th>
                                 ))}
+                                <th className="px-2 py-1 border-b border-zinc-700 font-semibold">Auto-Detected Sensitivity</th>
                               </tr>
-                            ))}
-                          </tbody>
-                        </table>
+                            </thead>
+                            <tbody>
+                              {csvPreview.map((row, idx) => {
+                                const medicalCondition = row["Medical Condition"] || row["medical_condition"] || "";
+                                const autoSensitivity = getSensitivityLevelForCondition(medicalCondition);
+                                const sensitivityColors = {
+                                  'LOW': 'bg-green-100 text-green-800',
+                                  'MEDIUM': 'bg-yellow-100 text-yellow-800',
+                                  'HIGH': 'bg-orange-100 text-orange-800',
+                                  'CRITICAL': 'bg-red-100 text-red-800'
+                                };
+                                
+                                return (
+                                  <tr key={idx} className="border-b border-zinc-700">
+                                    {Object.values(row).map((val, i) => (
+                                      <td key={i} className="px-2 py-1">{String(val)}</td>
+                                    ))}
+                                    <td className="px-2 py-1">
+                                      <Badge className={`${sensitivityColors[autoSensitivity as keyof typeof sensitivityColors]} font-semibold`}>
+                                        {autoSensitivity}
+                                      </Badge>
+                                    </td>
+                                  </tr>
+                                );
+                              })}
+                            </tbody>
+                          </table>
+                          <div className="mt-4 p-4 bg-blue-50 rounded-lg">
+                            <h3 className="text-lg font-semibold text-blue-900 mb-2">Sensitivity Level Auto-Detection</h3>
+                            <p className="text-blue-800 text-sm">
+                              Sensitivity levels are automatically determined based on medical conditions. 
+                              You can override this by adding a "Sensitivity Level" column to your CSV file.
+                            </p>
+                            <div className="mt-2 grid grid-cols-2 md:grid-cols-4 gap-2 text-xs">
+                              <div className="flex items-center gap-1">
+                                <div className="w-3 h-3 bg-green-500 rounded"></div>
+                                <span>LOW: Routine checkups, vaccinations</span>
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <div className="w-3 h-3 bg-yellow-500 rounded"></div>
+                                <span>MEDIUM: Common conditions, obesity</span>
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <div className="w-3 h-3 bg-orange-500 rounded"></div>
+                                <span>HIGH: Diabetes, heart disease, cancer</span>
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <div className="w-3 h-3 bg-red-500 rounded"></div>
+                                <span>CRITICAL: HIV, mental health, abuse</span>
+                              </div>
+                            </div>
+                          </div>
+                        </>
                       ) : (
                         <div className="text-zinc-500 text-lg italic py-8 text-center">
                           No CSV data loaded yet. Upload a CSV file to preview its contents here.
