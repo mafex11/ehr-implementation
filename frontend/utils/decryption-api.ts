@@ -183,8 +183,60 @@ export const decryptionService = {
         throw new Error('No active decryption session');
       }
       
-      const response = await decryptionAPI.post('/patient/bulk', request);
-      return response.data;
+      // Use the same approach as single patient decryption to avoid broadcasting errors
+      const results = {
+        decrypted_patients: [],
+        failed_patients: [],
+        total_processed: 0,
+        success_count: 0,
+        failure_count: 0
+      };
+      
+      const batchSize = request.batch_size || 5;
+      
+      for (let i = 0; i < request.patient_ids.length; i += batchSize) {
+        const batch = request.patient_ids.slice(i, i + batchSize);
+        
+        // Process batch in parallel
+        const batchPromises = batch.map(async (patientId) => {
+          try {
+            const decryptedPatient = await this.decryptSinglePatient({
+              patient_id: patientId,
+              decryption_method: request.decryption_method || 'full_independent',
+              audit_reason: request.audit_reason
+            });
+            
+            return {
+              patient_id: patientId,
+              status: 'success',
+              data: decryptedPatient.decrypted_data,
+              metadata: decryptedPatient.decryption_metadata
+            };
+          } catch (error: any) {
+            return {
+              patient_id: patientId,
+              status: 'failed',
+              error: error.message
+            };
+          }
+        });
+        
+        const batchResults = await Promise.all(batchPromises);
+        
+        // Process results
+        batchResults.forEach(result => {
+          results.total_processed++;
+          if (result.status === 'success') {
+            results.success_count++;
+            results.decrypted_patients.push(result);
+          } else {
+            results.failure_count++;
+            results.failed_patients.push(result);
+          }
+        });
+      }
+      
+      return results;
     } catch (error: any) {
       throw new Error(`Bulk decryption failed: ${error.response?.data?.detail || error.message}`);
     }

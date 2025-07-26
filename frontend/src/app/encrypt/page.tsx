@@ -11,13 +11,19 @@ import { Switch } from '@/components/ui/switch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Progress } from '@/components/ui/progress';
-import { Loader2, Shield, Lock, AlertCircle, ArrowLeft } from 'lucide-react';
-import api, { encryptionAPI } from '../../../utils/api';
+import { Loader2, Shield, Lock, AlertCircle, ArrowLeft, HelpCircle } from 'lucide-react';
+import api from '../../../utils/api';
 import { FileUpload } from "@/components/ui/file-upload";
 import Papa, { ParseResult } from 'papaparse';
 import BlurText from '@/components/BlurText/BlurText';
 import { AnimatePresence, motion, easeInOut } from 'framer-motion';
 import ScrollVelocity from '@/components/ScrollVelocity/ScrollVelocity';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 
 interface PatientData {
@@ -416,62 +422,72 @@ export default function EncryptPage() {
         setEncrypting(true);
         setTotalPatients(patients.length);
         setError(null);
+        let successCount = 0;
+        let failCount = 0;
         let encryptedList: any[] = [];
-        // Build apiData array for all patients
-        const apiDataArray = patients.map((row, i) => {
-          const apiData: any = {};
-          for (const [csvKey, apiKey] of Object.entries(csvToApiFieldMap)) {
-            apiData[apiKey] = row[csvKey] ?? "";
-          }
-          apiData.patient_id = `P${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
-          apiData.medical_history = [apiData.medical_condition || ""];
-          apiData.current_medications = [apiData.medication || ""];
-          apiData.notes = "";
-          // Auto-determine sensitivity level based on medical condition
-          const medicalCondition = row["Medical Condition"] || row["medical_condition"] || "";
-          const autoSensitivityLevel = getSensitivityLevelForCondition(medicalCondition);
-          apiData.sensitivity_level = row["Sensitivity Level"] || autoSensitivityLevel;
-          // Ensure all required fields have default values
-          apiData.gender = apiData.gender || "";
-          apiData.blood_type = apiData.blood_type || "";
-          apiData.medical_condition = apiData.medical_condition || "";
-          apiData.date_of_admission = apiData.date_of_admission || "";
-          apiData.doctor_name = apiData.doctor_name || "";
-          apiData.hospital = apiData.hospital || "";
-          apiData.insurance_provider = apiData.insurance_provider || "";
-          apiData.billing_amount = parseFloat(apiData.billing_amount) || 0.0;
-          apiData.room_number = apiData.room_number || "";
-          apiData.admission_type = apiData.admission_type || "";
-          apiData.discharge_date = apiData.discharge_date || "";
-          apiData.medication = apiData.medication || "";
-          apiData.test_results = apiData.test_results || "";
-          return apiData;
-        });
-        // Call the bulk endpoint
-        try {
-          const results: any[] = await encryptionAPI.encryptPatientsBulk(apiDataArray);
-          let successCount = 0;
-          let failCount = 0;
-          encryptedList = results.map((res: any, idx: number) => {
-            if (res.status === 'success') successCount++;
-            else failCount++;
-            return { ...apiDataArray[idx], status: res.status, error: res.error };
+        const batchSize = 100;
+        for (let i = 0; i < patients.length; i += batchSize) {
+          const batch = patients.slice(i, i + batchSize);
+          setPatientsProcessed(Math.min(i + batch.length, patients.length));
+          // Show the current patient name for progress
+          setCurrentPatientName(batch[0]["Name"]);
+          setCurrentEncryptionStep(0);
+          // Prepare API data for each patient in the batch
+          const batchPromises = batch.map(async (row) => {
+            for (let step = 0; step < encryptionSteps.length; step++) {
+              setCurrentEncryptionStep(step);
+              await new Promise(res => setTimeout(res, 10)); // Shorter animation for batch
+            }
+            setCurrentEncryptionStep(-1);
+            const apiData: any = {};
+            for (const [csvKey, apiKey] of Object.entries(csvToApiFieldMap)) {
+              apiData[apiKey] = row[csvKey] ?? "";
+            }
+            apiData.patient_id = `P${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
+            apiData.medical_history = [apiData.medical_condition || ""];
+            apiData.current_medications = [apiData.medication || ""];
+            apiData.notes = "";
+            // Auto-determine sensitivity level based on medical condition
+            const medicalCondition = row["Medical Condition"] || row["medical_condition"] || "";
+            const autoSensitivityLevel = getSensitivityLevelForCondition(medicalCondition);
+            apiData.sensitivity_level = row["Sensitivity Level"] || autoSensitivityLevel;
+            // Ensure all required fields have default values
+            apiData.gender = apiData.gender || "";
+            apiData.blood_type = apiData.blood_type || "";
+            apiData.medical_condition = apiData.medical_condition || "";
+            apiData.date_of_admission = apiData.date_of_admission || "";
+            apiData.doctor_name = apiData.doctor_name || "";
+            apiData.hospital = apiData.hospital || "";
+            apiData.insurance_provider = apiData.insurance_provider || "";
+            apiData.billing_amount = parseFloat(apiData.billing_amount) || 0.0;
+            apiData.room_number = apiData.room_number || "";
+            apiData.admission_type = apiData.admission_type || "";
+            apiData.discharge_date = apiData.discharge_date || "";
+            apiData.medication = apiData.medication || "";
+            apiData.test_results = apiData.test_results || "";
+            try {
+              await api.post('patients', apiData);
+              successCount++;
+              return { ...apiData, status: 'success' };
+            } catch (err) {
+              failCount++;
+              return { ...apiData, status: 'failed' };
+            }
           });
-          setEncrypting(false);
-          setCurrentPatientName(null);
-          setEncryptionResult({
-            success: failCount === 0,
-            patient_id: '',
-            encrypted: true,
-            epsilon_used: encryptionSettings.epsilon,
-            timestamp: new Date().toISOString(),
-            message: `Encryption complete. Success: ${successCount}, Failed: ${failCount}`
-          });
-          setEncryptedPatients(encryptedList);
-        } catch (err: any) {
-          setEncrypting(false);
-          setError('Bulk encryption failed: ' + (err.message || err.toString()));
+          const batchResults = await Promise.all(batchPromises);
+          encryptedList.push(...batchResults);
         }
+        setEncrypting(false);
+        setCurrentPatientName(null);
+        setEncryptionResult({
+          success: failCount === 0,
+          patient_id: '',
+          encrypted: true,
+          epsilon_used: encryptionSettings.epsilon,
+          timestamp: new Date().toISOString(),
+          message: `Encryption complete. Success: ${successCount}, Failed: ${failCount}`
+        });
+        setEncryptedPatients(encryptedList);
       },
       error: (error: Error, file: File) => {
         setError('Failed to parse CSV: ' + error.message);
@@ -610,7 +626,33 @@ export default function EncryptPage() {
                               <Card className="p-4">
                                 <div className="space-y-4">
                                   <div className="space-y-2">
-                                    <Label>Privacy Level (ε = {encryptionSettings.epsilon})</Label>
+                                    <div className="flex items-center gap-2">
+                                      <Label>Privacy Level (ε = {encryptionSettings.epsilon})</Label>
+                                      <TooltipProvider>
+                                        <Tooltip>
+                                          <TooltipTrigger asChild>
+                                            <HelpCircle className="h-4 w-4 text-black cursor-help" />
+                                          </TooltipTrigger>
+                                          <TooltipContent className="max-w-sm bg-white">
+                                            <div className="space-y-2">
+                                              <p className="font-semibold">Epsilon (ε) - Differential Privacy Parameter</p>
+                                              <p className="text-xs">
+                                                <strong>Lower ε (0.1-0.5):</strong> Maximum privacy protection, more noise added, less data utility
+                                              </p>
+                                              <p className="text-xs">
+                                                <strong>Medium ε (0.5-1.0):</strong> Balanced privacy and utility, good for most medical data
+                                              </p>
+                                              <p className="text-xs">
+                                                <strong>Higher ε (1.0-5.0):</strong> Higher data utility, less noise, lower privacy protection
+                                              </p>
+                                              <p className="text-xs text-muted-foreground">
+                                                ε controls how much noise is added to protect individual privacy while preserving data usefulness.
+                                              </p>
+                                            </div>
+                                          </TooltipContent>
+                                        </Tooltip>
+                                      </TooltipProvider>
+                                    </div>
                                     <Input
                                       type="range"
                                       min="0.1"
@@ -879,9 +921,9 @@ export default function EncryptPage() {
                     </div>
                     {/* Encryption progress UI is now outside the FileUpload card */}
                     {encrypting && (
-                      <div className="text-black w-full max-w-2xl mx-auto mt-10">
-                        <div className="font-normal text-4xl mb-4">Encryption in Progress</div>
-                        <div className="mb-2 text-2xl">{patientsProcessed} / {totalPatients} records processed</div>
+                      <div className="text-black w-full max-w-4xl mx-auto mt-10">
+                        <div className="font-normal text-4xl mb-4 flex items-center gap-2"><Loader2 className="w-8 h-8 mr-2 animate-spin" />Encryption in Progress(This may take a while)</div>
+                        <div className="mb-2 text-2xl">{patientsProcessed} / {totalPatients} records processed </div>
                         <div className="mb-2">{((patientsProcessed / (totalPatients || 1)) * 100).toFixed(1)}%</div>
                         <Progress value={totalPatients ? (patientsProcessed / totalPatients) * 100 : 0} className="w-full mb-4" />
                         <div className="flex  items-center w-full mb-2 gap-2 justify-center">

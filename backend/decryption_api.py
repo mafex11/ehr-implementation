@@ -284,7 +284,7 @@ async def decrypt_bulk_patients(
 @router.get("/patient/search/encrypted")
 async def search_encrypted_patients(
     sensitivity_level: str = Query(..., description="Sensitivity level to search"),
-    limit: int = Query(default=50, ge=1, le=200),
+    limit: int = Query(default=50, ge=1, le=10000),
     session_id: str = Depends(verify_decryption_session),
     storage: TDPQIMLEMongoStorage = Depends(get_decryption_storage)
 ):

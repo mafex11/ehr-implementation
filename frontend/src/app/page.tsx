@@ -424,11 +424,11 @@ export default function Home() {
                 </Link>
               </Button>
       </div>
-      <ScrollVelocity
+      {/* <ScrollVelocity
         texts={['', 'Checkout now!']} 
         velocity={200} 
         className=""
-      />
+      /> */}
     </div>
   )
 }

@@ -16,6 +16,112 @@ import { decryptionService, DecryptionCredentials, DecryptionSession } from '../
 import BlurText from '@/components/BlurText/BlurText';
 import { MultiSelect } from '@/components/ui/multiselect'; // (Assume we will create this component if not present)
 import { Tabs as InnerTabs, TabsList as InnerTabsList, TabsTrigger as InnerTabsTrigger, TabsContent as InnerTabsContent } from '@/components/ui/tabs';
+import { ChevronDown, ChevronUp } from 'lucide-react';
+
+// Component for displaying individual bulk decryption results
+const BulkDecryptionResult = ({ result }: { result: any }) => {
+  const [showDetails, setShowDetails] = useState(false);
+  
+  const patientData = result.data;
+  
+  return (
+    <div className="p-3 border border-green-200 bg-green-50 rounded-lg">
+      <div className="flex items-center justify-between mb-2">
+        <span className="font-semibold">{result.patient_id}</span>
+        <div className="flex items-center gap-2">
+          <Badge variant="default" className="bg-green-600">Success</Badge>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={() => setShowDetails(!showDetails)}
+            className="h-6 w-6 p-0"
+          >
+            {showDetails ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+          </Button>
+        </div>
+      </div>
+      
+      {/* Basic Info (Always Visible) */}
+      {patientData && (
+        <div className="text-sm space-y-1">
+          <div><span className="font-medium">Name:</span> {patientData.name}</div>
+          <div><span className="font-medium">Age:</span> {patientData.age}</div>
+          <div><span className="font-medium">Condition:</span> {patientData.medical_condition || patientData.diagnosis}</div>
+        </div>
+      )}
+      
+      {/* Detailed Info (Expandable) */}
+      {showDetails && patientData && (
+        <div className="mt-3 pt-3 border-t border-green-300">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+            <div><span className="font-medium">Gender:</span> {patientData.gender || 'N/A'}</div>
+            <div><span className="font-medium">Blood Type:</span> {patientData.blood_type || 'N/A'}</div>
+            <div><span className="font-medium">Date of Admission:</span> {patientData.date_of_admission || 'N/A'}</div>
+            <div><span className="font-medium">Doctor:</span> {patientData.doctor_name || 'N/A'}</div>
+            <div><span className="font-medium">Hospital:</span> {patientData.hospital || 'N/A'}</div>
+            <div><span className="font-medium">Insurance:</span> {patientData.insurance_provider || 'N/A'}</div>
+            <div><span className="font-medium">Billing Amount:</span> {patientData.billing_amount || 'N/A'}</div>
+            <div><span className="font-medium">Room Number:</span> {patientData.room_number || 'N/A'}</div>
+            <div><span className="font-medium">Admission Type:</span> {patientData.admission_type || 'N/A'}</div>
+            <div><span className="font-medium">Discharge Date:</span> {patientData.discharge_date || 'N/A'}</div>
+            <div><span className="font-medium">Medication:</span> {patientData.medication || 'N/A'}</div>
+            <div><span className="font-medium">Test Results:</span> {patientData.test_results || 'N/A'}</div>
+          </div>
+          
+          {/* Medical History */}
+          {patientData.medical_history && patientData.medical_history.length > 0 && (
+            <div className="mt-3">
+              <span className="font-medium">Medical History:</span>
+              <div className="mt-1 flex flex-wrap gap-1">
+                {patientData.medical_history.map((history: string, idx: number) => (
+                  <Badge key={idx} variant="outline" className="text-xs">
+                    {history}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          {/* Current Medications */}
+          {patientData.current_medications && patientData.current_medications.length > 0 && (
+            <div className="mt-3">
+              <span className="font-medium">Current Medications:</span>
+              <div className="mt-1 flex flex-wrap gap-1">
+                {patientData.current_medications.map((med: string, idx: number) => (
+                  <Badge key={idx} variant="outline" className="text-xs bg-blue-50">
+                    {med}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          )}
+          
+          {/* Notes */}
+          {patientData.notes && (
+            <div className="mt-3">
+              <span className="font-medium">Notes:</span>
+              <p className="mt-1 text-sm text-gray-700 bg-white p-2 rounded border">
+                {patientData.notes}
+              </p>
+            </div>
+          )}
+          
+          {/* Decryption Metadata */}
+          {result.metadata && (
+            <div className="mt-3 pt-3 border-t border-green-300">
+              <span className="font-medium text-green-700">Decryption Info:</span>
+              <div className="mt-1 text-xs text-green-600 space-y-1">
+                <div>Algorithm: {result.metadata.algorithm || 'TDP-QIMLE'}</div>
+                <div>Version: {result.metadata.version || 'N/A'}</div>
+                <div>Decrypted At: {new Date().toLocaleString()}</div>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+};
 
 interface Patient {
   patient_id: string;
@@ -75,6 +181,11 @@ export default function DecryptPage() {
   const [rawEncryptedData, setRawEncryptedData] = useState<string | null>(null);
   const [rawEncryptedLoading, setRawEncryptedLoading] = useState(false);
   const [rawEncryptedError, setRawEncryptedError] = useState<string | null>(null);
+
+  // Add pagination state
+  const [hasMorePatients, setHasMorePatients] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [loadedSensitivityLevels, setLoadedSensitivityLevels] = useState<Set<string>>(new Set());
 
   const decryptionSteps = [
     'Encrypted Records',
@@ -192,24 +303,88 @@ export default function DecryptPage() {
       setLoading(true);
       setError(null);
       
-      // Search for encrypted patients by different sensitivity levels
-      const highResults = await decryptionService.searchEncryptedPatients('HIGH', 20);
-      const mediumResults = await decryptionService.searchEncryptedPatients('MEDIUM', 20);
-      const lowResults = await decryptionService.searchEncryptedPatients('LOW', 10);
+      // Search for encrypted patients by different sensitivity levels with higher limits
+      const highResults = await decryptionService.searchEncryptedPatients('HIGH', 10000);
+      const mediumResults = await decryptionService.searchEncryptedPatients('MEDIUM', 10000);
+      const lowResults = await decryptionService.searchEncryptedPatients('LOW', 10000);
+      const criticalResults = await decryptionService.searchEncryptedPatients('CRITICAL', 10000);
       
       // Combine results
       const allPatients = [
         ...(highResults.encrypted_patients || []),
         ...(mediumResults.encrypted_patients || []),
-        ...(lowResults.encrypted_patients || [])
+        ...(lowResults.encrypted_patients || []),
+        ...(criticalResults.encrypted_patients || [])
       ];
       
-      setEncryptedPatients(allPatients);
+      // Remove duplicates based on patient_id
+      const uniquePatients = allPatients.filter((patient, index, self) => 
+        index === self.findIndex(p => p.patient_id === patient.patient_id)
+      );
+      
+      setEncryptedPatients(uniquePatients);
+      
+      // Check if we might have more patients (if any level returned full 200)
+      const hasMore = [
+        highResults.encrypted_patients?.length === 200,
+        mediumResults.encrypted_patients?.length === 200,
+        lowResults.encrypted_patients?.length === 200,
+        criticalResults.encrypted_patients?.length === 200
+      ].some(Boolean);
+      
+      setHasMorePatients(hasMore);
+      setLoadedSensitivityLevels(new Set(['HIGH', 'MEDIUM', 'LOW', 'CRITICAL']));
       
     } catch (err: any) {
       setError(err.message);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const loadMorePatients = async () => {
+    try {
+      setLoadingMore(true);
+      setError(null);
+      
+      const sensitivityLevels = ['HIGH', 'MEDIUM', 'LOW', 'CRITICAL'];
+      let newPatients: any[] = [];
+      let hasMore = false;
+      
+      for (const level of sensitivityLevels) {
+        if (loadedSensitivityLevels.has(level)) {
+          // Skip levels we've already loaded
+          continue;
+        }
+        
+        try {
+          const results = await decryptionService.searchEncryptedPatients(level, 200);
+          if (results.encrypted_patients && results.encrypted_patients.length > 0) {
+            newPatients.push(...results.encrypted_patients);
+            if (results.encrypted_patients.length === 200) {
+              hasMore = true;
+            }
+          }
+        } catch (err) {
+          console.warn(`Failed to load ${level} patients:`, err);
+        }
+      }
+      
+      if (newPatients.length > 0) {
+        // Remove duplicates with existing patients
+        const existingIds = new Set(encryptedPatients.map(p => p.patient_id));
+        const uniqueNewPatients = newPatients.filter(p => !existingIds.has(p.patient_id));
+        
+        setEncryptedPatients(prev => [...prev, ...uniqueNewPatients]);
+        setHasMorePatients(hasMore);
+      } else {
+        setHasMorePatients(false);
+      }
+      
+    } catch (err: any) {
+      setError(err.message);
+    } finally {
+      setLoadingMore(false);
     }
   };
 
@@ -273,18 +448,34 @@ export default function DecryptPage() {
       });
       setBulkResults(results);
       
-      // Add to logs
+      // Add to logs with detailed information
       const logEntry: DecryptionLog = {
         timestamp: new Date().toISOString(),
         operation: 'DECRYPT_BULK',
-        status: 'SUCCESS',
+        status: results.failure_count === 0 ? 'SUCCESS' : 'PARTIAL_SUCCESS',
         method: 'TDP-QIMLE'
       };
       
       setDecryptionLogs(prev => [logEntry, ...prev]);
       
+      // Show success message
+      if (results.success_count > 0) {
+        console.log(`Bulk decryption completed: ${results.success_count} successful, ${results.failure_count} failed`);
+      }
+      
     } catch (err: any) {
       setError(err.message);
+      
+      // Add error to logs
+      const logEntry: DecryptionLog = {
+        timestamp: new Date().toISOString(),
+        operation: 'DECRYPT_BULK',
+        status: 'FAILED',
+        method: 'TDP-QIMLE',
+        error: err.message
+      };
+      
+      setDecryptionLogs(prev => [logEntry, ...prev]);
     } finally {
       setLoading(false);
     }
@@ -440,6 +631,14 @@ export default function DecryptPage() {
             direction="top"
             className="md:text-8xl text-5xl lg:text-8xl mb-2 mt-20 text-center items-center justify-center font-bold"
           />
+          
+          {/* Total Patients Summary */}
+          <div className="flex items-center justify-center mb-6">
+            <div className="bg-blue-100 text-blue-900 rounded-full px-6 py-2 text-xl font-semibold shadow border border-blue-200">
+              Total Encrypted Patients: {encryptedPatients.length}
+            </div>
+          </div>
+          
         <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'single' | 'bulk' | 'audit')}>
           <TabsList className="grid w-full grid-cols-3  bg-blue-500 border-2 rounded-full mt-10 mb-10 max-w-4xl mx-auto">
             <TabsTrigger value="single" className='border-2  lg:text-xl md:text-lg'>Single Patient</TabsTrigger>
@@ -455,6 +654,9 @@ export default function DecryptPage() {
                   <CardTitle className="flex items-center text-2xl gap-2">
                     <Database className="w-8 h-8 " />
                     Encrypted Patients
+                    <Badge variant="secondary" className="ml-2 text-lg">
+                      {encryptedPatients.length} Total
+                    </Badge>
                   </CardTitle>
                   <CardDescription className='text-xl'>
                     Select a patient to decrypt their data
@@ -497,6 +699,36 @@ export default function DecryptPage() {
                       </div>
                         )}
                       </>
+                    )}
+                    
+                    {/* Load More Button */}
+                    {!loading && hasMorePatients && (
+                      <div className="flex justify-center mt-4">
+                        <Button 
+                          onClick={loadMorePatients} 
+                          disabled={loadingMore}
+                          variant="outline"
+                          className="w-full"
+                        >
+                          {loadingMore ? (
+                            <>
+                              <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                              Loading More Patients...
+                            </>
+                          ) : (
+                            <>
+                              <Database className="w-4 h-4 mr-2" />
+                              Load More Patients
+                            </>
+                          )}
+                        </Button>
+                      </div>
+                    )}
+                    
+                    {!loading && !hasMorePatients && encryptedPatients.length > 0 && (
+                      <div className="text-center py-4 text-muted-foreground text-sm">
+                        All available patients loaded
+                      </div>
                     )}
                   </div>
                 </CardContent>
@@ -693,7 +925,7 @@ export default function DecryptPage() {
             </div>
           </TabsContent>
 
-          <TabsContent value="bulk" className="space-y-6">
+          <TabsContent value="bulk" className="space-y-6 ">
             <Card>
               <CardHeader>
                 <CardTitle>Bulk Decryption</CardTitle>
@@ -712,15 +944,15 @@ export default function DecryptPage() {
                     placeholder="Select patient IDs..."
                   />
                 </div>
-                <Button onClick={handleBulkDecrypt} disabled={loading}>
+                <Button onClick={handleBulkDecrypt} disabled={loading} className="text-xl text-white bg-blue-500 ">
                   {loading ? (
                     <>
-                      <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                      <Loader2 className="w-6 h-6 mr-2 animate-spin" />
                       Decrypting...
                     </>
                   ) : (
                     <>
-                      <Unlock className="w-4 h-4 mr-2" />
+                      <Unlock className="w-6 h-6 mr-2" />
                       Decrypt All
                     </>
                   )}
@@ -728,16 +960,56 @@ export default function DecryptPage() {
                 {bulkResults && (
                   <div className="mt-6">
                     <h3 className="font-medium mb-3">Decryption Results</h3>
-                    <div className="space-y-2">
-                      {bulkResults.results?.map((result: any, index: number) => (
-                        <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
-                          <span>{result.patient_id}</span>
-                          <Badge variant={result.success ? "default" : "destructive"}>
-                            {result.success ? "Success" : "Failed"}
-                          </Badge>
+                    <div className="mb-4 p-3 bg-blue-50 rounded-lg">
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-md">
+                        <div>
+                          <span className="font-semibold">Total Processed:</span> {bulkResults.total_processed}
                         </div>
-                      ))}
+                        <div>
+                          <span className="font-semibold text-green-600">Success:</span> {bulkResults.success_count}
+                        </div>
+                        <div>
+                          <span className="font-semibold text-red-600">Failed:</span> {bulkResults.failure_count}
+                        </div>
+                        <div>
+                          <span className="font-semibold">Success Rate:</span> {bulkResults.total_processed > 0 ? Math.round((bulkResults.success_count / bulkResults.total_processed) * 100) : 0}%
+                        </div>
+                      </div>
                     </div>
+                    
+                    {/* Successful Decryptions */}
+                    {bulkResults.decrypted_patients && bulkResults.decrypted_patients.length > 0 && (
+                      <div className="mb-4">
+                        <h4 className="font-medium text-green-700 mb-2">Successfully Decrypted ({bulkResults.decrypted_patients.length})</h4>
+                        <div className="space-y-2 max-h-[80rem] overflow-y-auto">
+                          {bulkResults.decrypted_patients.map((result: any, index: number) => (
+                            <BulkDecryptionResult key={index} result={result} />
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* Failed Decryptions */}
+                    {bulkResults.failed_patients && bulkResults.failed_patients.length > 0 && (
+                      <div>
+                        <h4 className="font-medium text-red-700 mb-2">Failed Decryptions ({bulkResults.failed_patients.length})</h4>
+                        <div className="space-y-2 max-h-40 overflow-y-auto">
+                          {bulkResults.failed_patients.map((result: any, index: number) => (
+                            <div key={index} className="p-3 border border-red-200 bg-red-50 rounded-lg">
+                              <div className="flex items-center justify-between mb-2">
+                                <span className="font-semibold">{result.patient_id}</span>
+                                <Badge variant="destructive">Failed</Badge>
+                              </div>
+                              {result.error && (
+                                <div className="text-sm text-red-600">
+                                  Error: {result.error}
+                                </div>
+                              )}
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
               </CardContent>

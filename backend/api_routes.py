@@ -3,7 +3,7 @@ FastAPI Routes for TDP-QIMLE Algorithm
 Novel Encryption System for Patient Data Storage
 """
 
-from fastapi import APIRouter, HTTPException, Depends, BackgroundTasks, Query, Body
+from fastapi import APIRouter, HTTPException, Depends, BackgroundTasks, Query
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from pydantic import BaseModel, Field
 from typing import Dict, List, Optional, Any, Union
@@ -224,53 +224,6 @@ async def store_patient_data(
     except Exception as e:
         logging.error(f"Failed to store patient data: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Storage failed: {str(e)}")
-
-@router.post("/patients/bulk", response_model=List[Dict[str, Any]])
-async def bulk_store_patient_data(
-    requests: List[PatientDataRequest] = Body(..., description="List of patient data to encrypt and store"),
-    background_tasks: BackgroundTasks = Depends(),
-    storage: TDPQIMLEMongoStorage = Depends(get_storage),
-    credentials: HTTPAuthorizationCredentials = Depends(security)
-):
-    """
-    Bulk encrypt and store multiple patient records efficiently.
-    Accepts a list of patient data, encrypts and stores each, and returns a result per patient.
-    """
-    results = []
-
-    async def process_patient(request: PatientDataRequest):
-        try:
-            patient_data = {
-                "patient_id": request.patient_id,
-                "name": request.name,
-                "age": request.age,
-                "gender": request.gender,
-                "blood_type": request.blood_type,
-                "medical_condition": request.medical_condition,
-                "date_of_admission": request.date_of_admission,
-                "doctor_name": request.doctor_name,
-                "hospital": request.hospital,
-                "insurance_provider": request.insurance_provider,
-                "billing_amount": request.billing_amount,
-                "room_number": request.room_number,
-                "admission_type": request.admission_type,
-                "discharge_date": request.discharge_date,
-                "medication": request.medication,
-                "test_results": request.test_results,
-                "medical_history": request.medical_history,
-                "current_medications": request.current_medications,
-                "notes": request.notes
-            }
-            sensitivity = get_sensitivity_level(request.sensitivity_level)
-            document_id = await storage.store_patient_data(patient_data, sensitivity)
-            background_tasks.add_task(verify_storage_integrity, storage, request.patient_id)
-            return {"patient_id": request.patient_id, "status": "success", "document_id": document_id, "error": None}
-        except Exception as e:
-            return {"patient_id": request.patient_id, "status": "failed", "error": str(e)}
-
-    # Run all patient encryptions in parallel for speed
-    results = await asyncio.gather(*(process_patient(req) for req in requests))
-    return results
 
 @router.get("/patients/{patient_id}", response_model=PatientDataResponse)
 async def retrieve_patient_data(

@@ -6,7 +6,6 @@ const api = axios.create({
   timeout: 30000, // 30 second timeout for encryption operations
   headers: {
     'Content-Type': 'application/json',
-    'Authorization': 'Bearer demo-token', // Add demo token for testing
   },
 });
 
@@ -89,16 +88,6 @@ export const encryptionAPI = {
       return response.data;
     } catch (error) {
       throw new Error(`Encryption failed: ${error}`);
-    }
-  },
-
-  // Encrypt and store multiple patients in bulk
-  encryptPatientsBulk: async (patients: any[]) => {
-    try {
-      const response = await api.post('patients/bulk', patients);
-      return response.data;
-    } catch (error) {
-      throw new Error(`Bulk encryption failed: ${error}`);
     }
   },
 
@@ -270,7 +259,7 @@ export const dataUtils = {
 // Health check function
 export const healthCheck = async () => {
   try {
-    const response = await axios.get('http://localhost:8001/api/novel/health');
+    const response = await api.get('health');
     return response.data;
   } catch (error) {
     throw new Error(`Health check failed: ${error}`);
@@ -280,7 +269,7 @@ export const healthCheck = async () => {
 // System info function
 export const getSystemInfo = async () => {
   try {
-    const response = await axios.get('http://localhost:8001/system/info');
+    const response = await api.get('system/info');
     return response.data;
   } catch (error) {
     throw new Error(`Failed to get system info: ${error}`);
@@ -293,20 +282,8 @@ export const encryptionDemo = async (data: {
   diagnosis: string;
   lab_results: string;
 }) => {
-  const response = await fetch('http://localhost:8001/api/novel/encryption/demo', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': 'Bearer demo-token'
-    },
-    body: JSON.stringify(data)
-  });
-
-  if (!response.ok) {
-    throw new Error(`HTTP error! status: ${response.status}`);
-  }
-
-  return response.json();
+  const response = await api.post('encryption/demo', data);
+  return response.data;
 };
 
 export default api;
