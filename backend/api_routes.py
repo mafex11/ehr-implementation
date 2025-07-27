@@ -225,6 +225,141 @@ async def store_patient_data(
         logging.error(f"Failed to store patient data: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Storage failed: {str(e)}")
 
+@router.post("/patients/batch", response_model=Dict[str, Any])
+async def store_patient_data_batch(
+    request: List[PatientDataRequest],
+    background_tasks: BackgroundTasks,
+    storage: TDPQIMLEMongoStorage = Depends(get_storage),
+    credentials: HTTPAuthorizationCredentials = Depends(security)
+):
+    """
+    Store multiple patient data records using TDP-QIMLE encryption in batches
+    
+    This endpoint encrypts multiple patient data records using the novel TDP-QIMLE algorithm
+    and stores them securely in MongoDB with multiple layers of protection.
+    Optimized for bulk operations with batch processing.
+    """
+    try:
+        if len(request) == 0:
+            raise HTTPException(
+                status_code=400,
+                detail="No patient data provided"
+            )
+        
+        if len(request) > 1000:
+            raise HTTPException(
+                status_code=400,
+                detail="Maximum 1000 patients per batch request"
+            )
+        
+        results = {
+            "total_requested": len(request),
+            "success": 0,
+            "failed": 0,
+            "errors": [],
+            "document_ids": [],
+            "batch_size": len(request)
+        }
+        
+        # Process patients in parallel batches
+        batch_size = 100
+        document_ids = []
+        
+        for i in range(0, len(request), batch_size):
+            batch = request[i:i + batch_size]
+            
+            # Process batch in parallel
+            batch_tasks = []
+            for patient_request in batch:
+                task = asyncio.create_task(process_single_patient(patient_request, storage))
+                batch_tasks.append(task)
+            
+            # Wait for all patients in the batch to complete
+            batch_results = await asyncio.gather(*batch_tasks, return_exceptions=True)
+            
+            # Process batch results
+            for j, result in enumerate(batch_results):
+                if isinstance(result, Exception):
+                    results["failed"] += 1
+                    results["errors"].append({
+                        "patient_id": batch[j].patient_id,
+                        "error": str(result)
+                    })
+                else:
+                    results["success"] += 1
+                    document_ids.append(result)
+        
+        results["document_ids"] = document_ids
+        
+        # Background task for bulk integrity verification
+        background_tasks.add_task(
+            verify_bulk_storage_integrity,
+            storage,
+            document_ids
+        )
+        
+        return {
+            "message": f"Batch encryption completed. Processed {len(request)} patients in batches of {batch_size}",
+            "results": results,
+            "algorithm": "TDP-QIMLE",
+            "batch_processing": True
+        }
+        
+    except Exception as e:
+        logging.error(f"Batch encryption failed: {str(e)}")
+        raise HTTPException(
+            status_code=500,
+            detail=f"Batch encryption failed: {str(e)}"
+        )
+
+async def process_single_patient(patient_request: PatientDataRequest, storage: TDPQIMLEMongoStorage) -> str:
+    """Helper function to process a single patient for batch operations"""
+    try:
+        patient_data = {
+            "patient_id": patient_request.patient_id,
+            "name": patient_request.name,
+            "age": patient_request.age,
+            "gender": patient_request.gender,
+            "blood_type": patient_request.blood_type,
+            "medical_condition": patient_request.medical_condition,
+            "date_of_admission": patient_request.date_of_admission,
+            "doctor_name": patient_request.doctor_name,
+            "hospital": patient_request.hospital,
+            "insurance_provider": patient_request.insurance_provider,
+            "billing_amount": patient_request.billing_amount,
+            "room_number": patient_request.room_number,
+            "admission_type": patient_request.admission_type,
+            "discharge_date": patient_request.discharge_date,
+            "medication": patient_request.medication,
+            "test_results": patient_request.test_results,
+            "medical_history": patient_request.medical_history,
+            "current_medications": patient_request.current_medications,
+            "notes": patient_request.notes
+        }
+        
+        # Get sensitivity level
+        sensitivity = get_sensitivity_level(patient_request.sensitivity_level)
+        
+        # Store data
+        document_id = await storage.store_patient_data(patient_data, sensitivity)
+        return document_id
+        
+    except Exception as e:
+        raise e
+
+async def process_csv_patient(patient_data: Dict[str, Any], storage: TDPQIMLEMongoStorage) -> str:
+    """Helper function to process a single CSV patient for batch operations"""
+    try:
+        # Store the data
+        document_id = await storage.store_patient_data(
+            patient_data,
+            SensitivityLevel.HIGH
+        )
+        return document_id
+        
+    except Exception as e:
+        raise e
+
 @router.get("/patients/{patient_id}", response_model=PatientDataResponse)
 async def retrieve_patient_data(
     patient_id: str,
@@ -870,49 +1005,69 @@ async def upload_patient_csv(
         csv_data = io.StringIO(contents.decode('utf-8'))
         reader = csv.DictReader(csv_data)
         
-        # Process each row
+        # Process rows in batches
+        batch_size = 100
+        all_rows = list(reader)
         results = {
-            "total": 0,
+            "total": len(all_rows),
             "success": 0,
             "failed": 0,
             "errors": [],
-            "document_ids": []
+            "document_ids": [],
+            "batch_size": batch_size
         }
         
-        for row in reader:
-            results["total"] += 1
-            try:
-                # Convert to patient data structure
-                patient_data = {
-                    "patient_id": str(uuid.uuid4()),
-                    "name": row["Name"],
-                    "age": int(row["Age"]),
-                    "gender": row["Gender"],
-                    "blood_type": row["Blood Type"],
-                    "medical_condition": row["Medical Condition"],
-                    "date_of_admission": row["Date of Admission"],
-                    "doctor_name": row["Doctor Name"],
-                    "hospital": row["Hospital"],
-                    "insurance_provider": row["Insurance Provider"],
-                    "billing_amount": float(row["Billing Amount"]),
-                    "sensitivity_level": "HIGH"  # Default to high sensitivity
-                }
+        # Process in batches
+        for i in range(0, len(all_rows), batch_size):
+            batch = all_rows[i:i + batch_size]
+            
+            # Convert batch to patient data structures
+            batch_patients = []
+            for row in batch:
+                try:
+                    patient_data = {
+                        "patient_id": str(uuid.uuid4()),
+                        "name": row["Name"],
+                        "age": int(row["Age"]),
+                        "gender": row["Gender"],
+                        "blood_type": row["Blood Type"],
+                        "medical_condition": row["Medical Condition"],
+                        "date_of_admission": row["Date of Admission"],
+                        "doctor_name": row["Doctor Name"],
+                        "hospital": row["Hospital"],
+                        "insurance_provider": row["Insurance Provider"],
+                        "billing_amount": float(row["Billing Amount"]),
+                        "sensitivity_level": "HIGH"  # Default to high sensitivity
+                    }
+                    batch_patients.append(patient_data)
+                except Exception as e:
+                    results["failed"] += 1
+                    results["errors"].append({
+                        "row": i + len(batch_patients) + 1,
+                        "error": f"Data conversion failed: {str(e)}"
+                    })
+            
+            # Process batch in parallel
+            if batch_patients:
+                batch_tasks = []
+                for patient_data in batch_patients:
+                    task = asyncio.create_task(process_csv_patient(patient_data, storage))
+                    batch_tasks.append(task)
                 
-                # Store the data
-                document_id = await storage.store_patient_data(
-                    patient_data,
-                    SensitivityLevel.HIGH
-                )
+                # Wait for all patients in the batch to complete
+                batch_results = await asyncio.gather(*batch_tasks, return_exceptions=True)
                 
-                results["success"] += 1
-                results["document_ids"].append(document_id)
-                
-            except Exception as e:
-                results["failed"] += 1
-                results["errors"].append({
-                    "row": results["total"],
-                    "error": str(e)
-                })
+                # Process batch results
+                for j, result in enumerate(batch_results):
+                    if isinstance(result, Exception):
+                        results["failed"] += 1
+                        results["errors"].append({
+                            "row": i + j + 1,
+                            "error": str(result)
+                        })
+                    else:
+                        results["success"] += 1
+                        results["document_ids"].append(result)
         
         # Background task for integrity verification
         background_tasks.add_task(

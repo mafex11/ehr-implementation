@@ -11,7 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
-import { Loader2, Shield, Unlock, User, AlertCircle, CheckCircle, ArrowLeft, Eye, Database, Clock } from 'lucide-react';
+import { Loader2, Shield, Unlock, User, AlertCircle, CheckCircle, ArrowLeft, Eye, Database, Clock, RefreshCw } from 'lucide-react';
 import { decryptionService, DecryptionCredentials, DecryptionSession } from '../../../utils/decryption-api';
 import BlurText from '@/components/BlurText/BlurText';
 import { MultiSelect } from '@/components/ui/multiselect'; // (Assume we will create this component if not present)
@@ -303,33 +303,65 @@ export default function DecryptPage() {
       setLoading(true);
       setError(null);
       
-      // Search for encrypted patients by different sensitivity levels with higher limits
-      const highResults = await decryptionService.searchEncryptedPatients('HIGH', 10000);
-      const mediumResults = await decryptionService.searchEncryptedPatients('MEDIUM', 10000);
-      const lowResults = await decryptionService.searchEncryptedPatients('LOW', 10000);
-      const criticalResults = await decryptionService.searchEncryptedPatients('CRITICAL', 10000);
+      // Check for cached data first
+      const cachedData = localStorage.getItem('encryptedPatientsCache');
+      const cacheTimestamp = localStorage.getItem('encryptedPatientsCacheTimestamp');
+      const cacheAge = cacheTimestamp ? Date.now() - parseInt(cacheTimestamp) : Infinity;
       
-      // Combine results
-      const allPatients = [
-        ...(highResults.encrypted_patients || []),
-        ...(mediumResults.encrypted_patients || []),
-        ...(lowResults.encrypted_patients || []),
-        ...(criticalResults.encrypted_patients || [])
-      ];
+      // Use cache if it's less than 5 minutes old
+      if (cachedData && cacheAge < 5 * 60 * 1000) {
+        const cachedPatients = JSON.parse(cachedData);
+        setEncryptedPatients(cachedPatients);
+        setHasMorePatients(true); // Assume there might be more
+        setLoadedSensitivityLevels(new Set(['HIGH', 'MEDIUM', 'LOW', 'CRITICAL']));
+        setLoading(false);
+        return;
+      }
+      
+      // Start with smaller batches for faster initial load
+      const batchSize = 50; // Reduced from 10000 to 50 for faster initial load
+      
+      // Fetch patients in parallel with smaller batches
+      const [highResults, mediumResults, lowResults, criticalResults] = await Promise.allSettled([
+        decryptionService.searchEncryptedPatients('HIGH', batchSize),
+        decryptionService.searchEncryptedPatients('MEDIUM', batchSize),
+        decryptionService.searchEncryptedPatients('LOW', batchSize),
+        decryptionService.searchEncryptedPatients('CRITICAL', batchSize)
+      ]);
+      
+      // Process results with error handling
+      const allPatients: any[] = [];
+      
+      if (highResults.status === 'fulfilled' && highResults.value.encrypted_patients) {
+        allPatients.push(...highResults.value.encrypted_patients);
+      }
+      if (mediumResults.status === 'fulfilled' && mediumResults.value.encrypted_patients) {
+        allPatients.push(...mediumResults.value.encrypted_patients);
+      }
+      if (lowResults.status === 'fulfilled' && lowResults.value.encrypted_patients) {
+        allPatients.push(...lowResults.value.encrypted_patients);
+      }
+      if (criticalResults.status === 'fulfilled' && criticalResults.value.encrypted_patients) {
+        allPatients.push(...criticalResults.value.encrypted_patients);
+      }
       
       // Remove duplicates based on patient_id
       const uniquePatients = allPatients.filter((patient, index, self) => 
         index === self.findIndex(p => p.patient_id === patient.patient_id)
       );
       
+      // Cache the results
+      localStorage.setItem('encryptedPatientsCache', JSON.stringify(uniquePatients));
+      localStorage.setItem('encryptedPatientsCacheTimestamp', Date.now().toString());
+      
       setEncryptedPatients(uniquePatients);
       
-      // Check if we might have more patients (if any level returned full 200)
+      // Check if we might have more patients (if any level returned full batch size)
       const hasMore = [
-        highResults.encrypted_patients?.length === 200,
-        mediumResults.encrypted_patients?.length === 200,
-        lowResults.encrypted_patients?.length === 200,
-        criticalResults.encrypted_patients?.length === 200
+        highResults.status === 'fulfilled' && highResults.value.encrypted_patients?.length === batchSize,
+        mediumResults.status === 'fulfilled' && mediumResults.value.encrypted_patients?.length === batchSize,
+        lowResults.status === 'fulfilled' && lowResults.value.encrypted_patients?.length === batchSize,
+        criticalResults.status === 'fulfilled' && criticalResults.value.encrypted_patients?.length === batchSize
       ].some(Boolean);
       
       setHasMorePatients(hasMore);
@@ -347,28 +379,42 @@ export default function DecryptPage() {
       setLoadingMore(true);
       setError(null);
       
+      // Load larger batches when user explicitly requests more
+      const batchSize = 500; // Larger batch for "Load More" action
       const sensitivityLevels = ['HIGH', 'MEDIUM', 'LOW', 'CRITICAL'];
       let newPatients: any[] = [];
       let hasMore = false;
       
-      for (const level of sensitivityLevels) {
-        if (loadedSensitivityLevels.has(level)) {
-          // Skip levels we've already loaded
-          continue;
-        }
-        
+      // Fetch all levels in parallel for better performance
+      const promises = sensitivityLevels.map(async (level) => {
         try {
-          const results = await decryptionService.searchEncryptedPatients(level, 200);
-          if (results.encrypted_patients && results.encrypted_patients.length > 0) {
-            newPatients.push(...results.encrypted_patients);
-            if (results.encrypted_patients.length === 200) {
-              hasMore = true;
-            }
-          }
+          const results = await decryptionService.searchEncryptedPatients(level, batchSize);
+          return {
+            level,
+            results: results.encrypted_patients || [],
+            success: true
+          };
         } catch (err) {
           console.warn(`Failed to load ${level} patients:`, err);
+          return {
+            level,
+            results: [],
+            success: false
+          };
         }
-      }
+      });
+      
+      const results = await Promise.all(promises);
+      
+      // Process results
+      results.forEach(({ level, results: patients, success }) => {
+        if (success && patients.length > 0) {
+          newPatients.push(...patients);
+          if (patients.length === batchSize) {
+            hasMore = true;
+          }
+        }
+      });
       
       if (newPatients.length > 0) {
         // Remove duplicates with existing patients
@@ -386,6 +432,15 @@ export default function DecryptPage() {
     } finally {
       setLoadingMore(false);
     }
+  };
+
+  const refreshPatients = async () => {
+    // Clear cache
+    localStorage.removeItem('encryptedPatientsCache');
+    localStorage.removeItem('encryptedPatientsCacheTimestamp');
+    
+    // Reload fresh data
+    await loadEncryptedPatients();
   };
 
   const handleDecryptPatient = async (patientId: string) => {
@@ -651,16 +706,30 @@ export default function DecryptPage() {
               {/* Patient List */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center text-2xl gap-2">
-                    <Database className="w-8 h-8 " />
-                    Encrypted Patients
-                    <Badge variant="secondary" className="ml-2 text-lg">
-                      {encryptedPatients.length} Total
-                    </Badge>
-                  </CardTitle>
-                  <CardDescription className='text-xl'>
-                    Select a patient to decrypt their data
-                  </CardDescription>
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <CardTitle className="flex items-center text-2xl gap-2">
+                        <Database className="w-8 h-8 " />
+                        Encrypted Patients
+                        <Badge variant="secondary" className="ml-2 text-lg">
+                          {encryptedPatients.length} Total
+                        </Badge>
+                      </CardTitle>
+                      <CardDescription className='text-xl'>
+                        Select a patient to decrypt their data
+                      </CardDescription>
+                    </div>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={refreshPatients}
+                      disabled={loading}
+                      className="flex items-center gap-2 bg-white border-2 border-blue-500 text-blue-500"
+                    >
+                      <Database className="w-4 h-4" />
+                      Refresh
+                    </Button>
+                  </div>
                 </CardHeader>
                 <CardContent>
                   {/* Increase the height of the encrypted patient list */}
@@ -668,7 +737,11 @@ export default function DecryptPage() {
                     {loading ? (
                       <div className="flex flex-col items-center justify-center py-12">
                         <Loader2 className="animate-spin w-10 h-10 text-blue-500 mb-4" />
-                        <span className="text-xl text-muted-foreground">Loading encrypted patients...</span>
+                        <span className="text-xl text-muted-foreground mb-2">Loading encrypted patients...</span>
+                        <span className="text-sm text-muted-foreground text-center">
+                          Fetching from deployed server<br />
+                          This may take a moment due to network latency
+                        </span>
                       </div>
                     ) : (
                       <>
@@ -703,12 +776,12 @@ export default function DecryptPage() {
                     
                     {/* Load More Button */}
                     {!loading && hasMorePatients && (
-                      <div className="flex justify-center mt-4">
+                      <div className="flex justify-center mt-4 ">
                         <Button 
                           onClick={loadMorePatients} 
                           disabled={loadingMore}
                           variant="outline"
-                          className="w-full"
+                          className="w-fit bg-white border-2 border-blue-500 text-blue-500"
                         >
                           {loadingMore ? (
                             <>

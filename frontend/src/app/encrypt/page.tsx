@@ -402,10 +402,11 @@ export default function EncryptPage() {
   };
 
   const handleFileUpload = (files: File[]) => {
-    if (!files.length) return;
+    if (files.length === 0) return;
+    
     setUploading(true);
     setEncrypting(false);
-    setCurrentPatientName(null);
+    setEncryptionResult(null);
     setEncryptedPatients([]);
     setTotalPatients(0);
     setPatientsProcessed(0);
@@ -422,23 +423,23 @@ export default function EncryptPage() {
         setEncrypting(true);
         setTotalPatients(patients.length);
         setError(null);
+        
+        // Use backend batch processing instead of individual API calls
+        const batchSize = 100;
         let successCount = 0;
         let failCount = 0;
         let encryptedList: any[] = [];
-        const batchSize = 100;
+        
         for (let i = 0; i < patients.length; i += batchSize) {
           const batch = patients.slice(i, i + batchSize);
           setPatientsProcessed(Math.min(i + batch.length, patients.length));
+          
           // Show the current patient name for progress
           setCurrentPatientName(batch[0]["Name"]);
           setCurrentEncryptionStep(0);
-          // Prepare API data for each patient in the batch
-          const batchPromises = batch.map(async (row) => {
-            for (let step = 0; step < encryptionSteps.length; step++) {
-              setCurrentEncryptionStep(step);
-              await new Promise(res => setTimeout(res, 10)); // Shorter animation for batch
-            }
-            setCurrentEncryptionStep(-1);
+          
+          // Prepare batch data for backend
+          const batchData = batch.map((row) => {
             const apiData: any = {};
             for (const [csvKey, apiKey] of Object.entries(csvToApiFieldMap)) {
               apiData[apiKey] = row[csvKey] ?? "";
@@ -447,10 +448,12 @@ export default function EncryptPage() {
             apiData.medical_history = [apiData.medical_condition || ""];
             apiData.current_medications = [apiData.medication || ""];
             apiData.notes = "";
+            
             // Auto-determine sensitivity level based on medical condition
             const medicalCondition = row["Medical Condition"] || row["medical_condition"] || "";
             const autoSensitivityLevel = getSensitivityLevelForCondition(medicalCondition);
             apiData.sensitivity_level = row["Sensitivity Level"] || autoSensitivityLevel;
+            
             // Ensure all required fields have default values
             apiData.gender = apiData.gender || "";
             apiData.blood_type = apiData.blood_type || "";
@@ -465,18 +468,45 @@ export default function EncryptPage() {
             apiData.discharge_date = apiData.discharge_date || "";
             apiData.medication = apiData.medication || "";
             apiData.test_results = apiData.test_results || "";
-            try {
-              await api.post('patients', apiData);
-              successCount++;
-              return { ...apiData, status: 'success' };
-            } catch (err) {
-              failCount++;
-              return { ...apiData, status: 'failed' };
-            }
+            
+            return apiData;
           });
-          const batchResults = await Promise.all(batchPromises);
-          encryptedList.push(...batchResults);
+          
+          try {
+            // Use batch endpoint for much better performance
+            const response = await api.post('patients/batch', batchData);
+            const batchResults = response.data.results;
+            
+            successCount += batchResults.success;
+            failCount += batchResults.failed;
+            
+            // Add successful patients to the list
+            batchData.forEach((patientData, index) => {
+              if (index < batchResults.success) {
+                encryptedList.push({ ...patientData, status: 'success' });
+              } else {
+                encryptedList.push({ ...patientData, status: 'failed' });
+              }
+            });
+            
+            // Animation for progress
+            for (let step = 0; step < encryptionSteps.length; step++) {
+              setCurrentEncryptionStep(step);
+              await new Promise(res => setTimeout(res, 10));
+            }
+            setCurrentEncryptionStep(-1);
+            
+          } catch (err: any) {
+            console.error('Batch encryption failed:', err);
+            failCount += batch.length;
+            
+            // Mark all patients in this batch as failed
+            batchData.forEach(patientData => {
+              encryptedList.push({ ...patientData, status: 'failed' });
+            });
+          }
         }
+        
         setEncrypting(false);
         setCurrentPatientName(null);
         setEncryptionResult({
@@ -485,7 +515,7 @@ export default function EncryptPage() {
           encrypted: true,
           epsilon_used: encryptionSettings.epsilon,
           timestamp: new Date().toISOString(),
-          message: `Encryption complete. Success: ${successCount}, Failed: ${failCount}`
+          message: `Batch encryption complete. Success: ${successCount}, Failed: ${failCount}`
         });
         setEncryptedPatients(encryptedList);
       },
@@ -526,11 +556,11 @@ export default function EncryptPage() {
             direction="top"
             className=" text-5xl lg:text-8xl sm:text-5xl md:text-5xl mb-2 mt-20 text-center items-center justify-center font-bold"
           />
-          <p className="md:text-3xl sm:text-3xl lg:text-5xl mb-30 text-center max-w-5xl mx-auto">
+          <p className="md:text-3xl sm:text-3xl lg:text-5xl mb-30 text-center max-w-6xl mx-auto">
             Choose manual entry or upload a CSV file to encrypt patient data using TDP-QIMLE quantum-inspired encryption
           </p>
         </div>
-        <Tabs value={entryMode} onValueChange={(v) => setEntryMode(v as 'manual' | 'upload')} className="w-full max-w-4xl mx-auto mb-24">
+        <Tabs value={entryMode} onValueChange={(v) => setEntryMode(v as 'manual' | 'upload')} className="w-full max-w-7xl mx-auto mb-24">
           <TabsList className=" w-full mx-auto flex mb-6 bg-blue-500 rounded-full">
             <TabsTrigger value="manual" className="flex-1 text-2xl font-medium">Manual Entry</TabsTrigger>
             <TabsTrigger value="upload" className="flex-1 text-2xl font-medium">Upload CSV</TabsTrigger>
@@ -595,7 +625,7 @@ export default function EncryptPage() {
                                 <SelectTrigger >
                                   <SelectValue placeholder="Select diagnosis" />
                                 </SelectTrigger>
-                                <SelectContent className='bg-zinc-950'>
+                                <SelectContent className='bg-white text-black'>
                                   {commonDiagnoses.map((diagnosis) => (
                                     <SelectItem key={diagnosis} value={diagnosis}>
                                       {diagnosis}
@@ -680,7 +710,7 @@ export default function EncryptPage() {
                                       <SelectTrigger>
                                         <SelectValue placeholder="Select sensitivity level" />
                                       </SelectTrigger>
-                                      <SelectContent className='bg-zinc-950'>
+                                      <SelectContent className='bg-white text-black'>
                                         <SelectItem value="LOW">Low (Level 1)</SelectItem>
                                         <SelectItem value="MEDIUM">Medium (Level 2)</SelectItem>
                                         <SelectItem value="HIGH">High (Level 3)</SelectItem>
@@ -711,7 +741,7 @@ export default function EncryptPage() {
                                       <SelectTrigger>
                                         <SelectValue />
                                       </SelectTrigger>
-                                      <SelectContent className='bg-zinc-950'>
+                                      <SelectContent className='bg-white text-black '>
                                         <SelectItem value="TDP-QIMLE">TDP-QIMLE (Quantum-Inspired)</SelectItem>
                                         <SelectItem value="AES-256-CBC-DP">AES-256-CBC with DP</SelectItem>
                                       </SelectContent>
@@ -786,7 +816,7 @@ export default function EncryptPage() {
                                     variant="outline"
                                     size="sm"
                                     onClick={() => navigator.clipboard.writeText(encryptionResult.patient_id)}
-                                    className="text-xs"
+                                    className="text-xs bg-white border-2 border-green-500 text-green-500"
                                   >
                                     Copy
                                   </Button>
@@ -838,7 +868,7 @@ export default function EncryptPage() {
                   // Removed absolute positioning
                 >
                   <div>
-                    <div className="w-full max-w-4xl mx-auto min-h-32 border border-dashed bg-white border-gray-500 dark:border-neutral-800 rounded-lg flex flex-col items-center justify-center p-4">
+                    <div className="w-full max-w-8xl mx-auto min-h-32 border border-dashed bg-white border-gray-500 dark:border-neutral-800 rounded-lg flex flex-col items-center justify-center p-4">
                       <FileUpload onChange={handleFileUpload} />
                       {uploading && <div className="mt-4 text-white flex items-center"><Loader2 className="w-4 h-4 mr-2 animate-spin" />Uploading file...</div>}
                       {error && (
@@ -848,7 +878,7 @@ export default function EncryptPage() {
                       )}
                     </div>
                     {/* CSV Preview Table */}
-                    <div className="w-full min-h-96 max-w-8xl mx-auto mt-20 bg-white rounded-xl p-4 border-2 overflow-x-auto">
+                    <div className="w-full min-h-96 max-w-screen-2xl mx-auto mt-20 bg-white rounded-xl p-4 border-2 overflow-x-auto">
                       <div className="text-2xl font-bold text-black mb-2">CSV Data Preview (first 5 rows)</div>
                       {csvPreview.length > 0 ? (
                         <>
@@ -856,9 +886,9 @@ export default function EncryptPage() {
                             <thead>
                               <tr>
                                 {Object.keys(csvPreview[0]).map((key) => (
-                                  <th key={key} className="px-2 py-1 border-b border-zinc-700 font-semibold">{key}</th>
+                                  <th key={key} className="px-4 py-2 border-b border-zinc-700 font-semibold">{key}</th>
                                 ))}
-                                <th className="px-2 py-1 border-b border-zinc-700 font-semibold">Auto-Detected Sensitivity</th>
+                                <th className="px-4 py-2 border-b border-zinc-700 font-semibold">Auto-Detected Sensitivity</th>
                               </tr>
                             </thead>
                             <tbody>
@@ -875,9 +905,9 @@ export default function EncryptPage() {
                                 return (
                                   <tr key={idx} className="border-b border-zinc-700">
                                     {Object.values(row).map((val, i) => (
-                                      <td key={i} className="px-2 py-1">{String(val)}</td>
+                                      <td key={i} className="px-4 py-2">{String(val)}</td>
                                     ))}
-                                    <td className="px-2 py-1">
+                                    <td className="px-4 py-2">
                                       <Badge className={`${sensitivityColors[autoSensitivity as keyof typeof sensitivityColors]} font-semibold`}>
                                         {autoSensitivity}
                                       </Badge>
@@ -919,27 +949,87 @@ export default function EncryptPage() {
                         </div>
                       )}
                     </div>
-                    {/* Encryption progress UI is now outside the FileUpload card */}
+                    {/* Enhanced Encryption Progress UI */}
                     {encrypting && (
-                      <div className="text-black w-full max-w-4xl mx-auto mt-10">
-                        <div className="font-normal text-4xl mb-4 flex items-center gap-2"><Loader2 className="w-8 h-8 mr-2 animate-spin" />Encryption in Progress(This may take a while)</div>
-                        <div className="mb-2 text-2xl">{patientsProcessed} / {totalPatients} records processed </div>
-                        <div className="mb-2">{((patientsProcessed / (totalPatients || 1)) * 100).toFixed(1)}%</div>
-                        <Progress value={totalPatients ? (patientsProcessed / totalPatients) * 100 : 0} className="w-full mb-4" />
-                        <div className="flex  items-center w-full mb-2 gap-2 justify-center">
-                          {encryptionSteps.map((step, idx) => (
-                            <div key={step.label} className="flex flex-col items-center mt-10 ">
-                              <div className={`w-50 h-20 flex items-center justify-center text-base font-bold border-2 transition-all duration-200 rounded-md 
-                                ${currentEncryptionStep === idx ? 'bg-blue-500 border-blue-400 text-white scale-105 shadow-lg' :
-                                  currentEncryptionStep > idx ? 'bg-green-500 border-green-400 text-white' : 'bg-zinc-800 border-zinc-600 text-zinc-300'}`}
-                              >
-                                {step.label}
-                              </div>
-                              <span className={`mt-2 text-lg font-bold text-center w-50 block ${currentEncryptionStep === idx ? 'text-blue-300 font-semibold' : currentEncryptionStep > idx ? 'text-green-400' : 'text-zinc-400'}`}>{step.name}</span>
+                      <div className="w-full max-w-6xl mx-auto mt-10">
+                        {/* Main Progress Card */}
+                        <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 border-2 border-blue-200 shadow-lg">
+                          <CardHeader className="text-center pb-4">
+                            <div className="flex items-center justify-center gap-3 mb-2">
+                              <Loader2 className="w-10 h-10 animate-spin text-blue-600" />
+                              <CardTitle className="text-3xl font-bold text-blue-900">
+                                Batch Encryption in Progress
+                              </CardTitle>
                             </div>
-                          ))}
-                        </div>
-                        {currentPatientName && <div className="flex  items-center w-full mb-2 gap-2 justify-center mt-10 text-2xl">Encrypting: <span className="font-bold">{currentPatientName}</span></div>}
+                            <CardDescription className="text-lg text-blue-700">
+                              Processing {totalPatients} patients using advanced TDP-QIMLE encryption
+                            </CardDescription>
+                          </CardHeader>
+                          
+                          <CardContent className="space-y-6">
+                            {/* Progress Bar */}
+                            <div className="space-y-2">
+                              <div className="flex justify-between items-center">
+                                <span className="text-lg font-semibold text-blue-800">
+                                  Progress: {patientsProcessed} / {totalPatients} records
+                                </span>
+                                <span className="text-lg font-bold text-blue-900">
+                                  {((patientsProcessed / (totalPatients || 1)) * 100).toFixed(1)}%
+                                </span>
+                              </div>
+                              <Progress 
+                                value={totalPatients ? (patientsProcessed / totalPatients) * 100 : 0} 
+                                className="w-full h-3" 
+                              />
+                            </div>
+
+                            {/* Current Patient Info */}
+                            {currentPatientName && (
+                              <div className="bg-blue-100 rounded-lg p-4 text-center">
+                                <div className="text-lg text-blue-800 mb-1">Currently Processing:</div>
+                                <div className="text-xl font-bold text-blue-900">{currentPatientName}</div>
+                              </div>
+                            )}
+
+                            {/* Encryption Steps */}
+                            <div className="space-y-4">
+                              <h3 className="text-lg font-semibold text-blue-800 text-center">Encryption Process</h3>
+                              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                                {encryptionSteps.map((step, idx) => (
+                                  <div key={step.label} className="flex flex-col items-center">
+                                    <div className={`w-full h-16 flex items-center justify-center text-sm font-bold border-2 transition-all duration-300 rounded-lg 
+                                      ${currentEncryptionStep === idx 
+                                        ? 'bg-blue-500 border-blue-400 text-white scale-105 shadow-lg' 
+                                        : currentEncryptionStep > idx 
+                                        ? 'bg-green-500 border-green-400 text-white' 
+                                        : 'bg-gray-200 border-gray-300 text-gray-500'}`}
+                                    >
+                                      {step.label}
+                                    </div>
+                                    <span className={`mt-2 text-xs font-medium text-center w-full block 
+                                      ${currentEncryptionStep === idx 
+                                        ? 'text-blue-600 font-bold' 
+                                        : currentEncryptionStep > idx 
+                                        ? 'text-green-600' 
+                                        : 'text-gray-500'}`}>
+                                      {step.name}
+                                    </span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+
+                            {/* Status Message */}
+                            <div className="bg-blue-50 rounded-lg p-4 text-center">
+                              <div className="text-sm text-blue-700">
+                                ⚡ Using batch processing for optimal performance
+                              </div>
+                              <div className="text-xs text-blue-600 mt-1">
+                                This may take a moment depending on the number of patients
+                              </div>
+                            </div>
+                          </CardContent>
+                        </Card>
                       </div>
                     )}
                     {encryptionResult && (
@@ -948,14 +1038,22 @@ export default function EncryptPage() {
                       </Alert>
                     )}
                     {encryptedPatients.length > 0 && (
-                      <div className="mt-10 w-full max-w-4xl max-h-full mx-auto">
+                      <div className="mt-10 w-full max-w-6xl max-h-full mx-auto">
                         <h2 className="text-3xl font-bold mb-2 text-black">Encrypted Patients</h2>
-                        <div className="max-h-full overflow-y-auto border-2 border-zinc-800 rounded-xl p-4">
+                        <div className="max-h-[40rem] overflow-y-auto border-2 border-zinc-800 rounded-xl p-4">
                           <ul className="text-black text-xl">
                             {encryptedPatients.map((p, idx) => (
                               <li key={idx} className="flex items-center gap-2 border-b border-zinc-800 py-1">
-                                <span className="font-semibold ">{p.name} = {p.encrypted_name}</span>
-                                <Badge className="text-xl" variant={p.status === 'success' ? 'default' : 'destructive'}>{p.status}</Badge>
+                                <span className="font-semibold">
+                                  {p.name} = {p.encrypted_name}
+                                </span>
+                                <Badge className="text-xl text-black" variant={p.status === 'success' ? 'default' : 'destructive'}>
+                                  
+                                  {p.status === 'success' && p.patient_id && (
+                                    <span className="ml-2 text-xl text-black font-normal">Patient ID: {p.patient_id}  </span>
+                                  )}
+                                  <span  className="ml-2 text-xl text-black font-extralight"> ({p.status})</span>
+                                </Badge>
                               </li>
                             ))}
                           </ul>

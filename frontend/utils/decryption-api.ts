@@ -5,7 +5,7 @@
 
 import axios from 'axios';
 
-// Separate API instance for decryption service (Railway backend)
+// Separate API instance for decryption service (Production backend)
 const decryptionAPI = axios.create({
   baseURL: 'https://ehr-implementation-production.up.railway.app/api/decrypt',
   timeout: 30000,
@@ -184,25 +184,15 @@ export const decryptionService = {
       }
       
       // Use the same approach as single patient decryption to avoid broadcasting errors
-      type DecryptionResult = 
-        | { patient_id: string; status: string; data: any; metadata: any; error?: undefined; }
-        | { patient_id: string; status: string; error: any; data?: undefined; metadata?: undefined; };
-
-      const results: {
-        decrypted_patients: DecryptionResult[];
-        failed_patients: DecryptionResult[];
-        total_processed: number;
-        success_count: number;
-        failure_count: number;
-      } = {
-        decrypted_patients: [],
-        failed_patients: [],
+      const results = {
+        decrypted_patients: [] as any[],
+        failed_patients: [] as any[],
         total_processed: 0,
         success_count: 0,
         failure_count: 0
       };
       
-      const batchSize = request.batch_size || 5;
+      const batchSize = request.batch_size || 100;
       
       for (let i = 0; i < request.patient_ids.length; i += batchSize) {
         const batch = request.patient_ids.slice(i, i + batchSize);

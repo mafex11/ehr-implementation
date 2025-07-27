@@ -91,6 +91,39 @@ export const encryptionAPI = {
     }
   },
 
+  // Batch encrypt and store multiple patient data records
+  encryptBatchPatients: async (patientsData: any[], sensitivity: string = 'MEDIUM') => {
+    try {
+      const batchRequest = patientsData.map(patientData => ({
+        patient_id: patientData.patient_id || `P${Date.now()}_${Math.random().toString(36).substr(2, 5)}`,
+        name: patientData.name,
+        age: patientData.age,
+        gender: patientData.gender || '',
+        blood_type: patientData.blood_type || '',
+        medical_condition: patientData.medical_condition || patientData.diagnosis || '',
+        date_of_admission: patientData.date_of_admission || '',
+        doctor_name: patientData.doctor_name || '',
+        hospital: patientData.hospital || '',
+        insurance_provider: patientData.insurance_provider || '',
+        billing_amount: patientData.billing_amount || 0.0,
+        room_number: patientData.room_number || '',
+        admission_type: patientData.admission_type || '',
+        discharge_date: patientData.discharge_date || '',
+        medication: patientData.medication || '',
+        test_results: patientData.test_results || String(patientData.lab_result || ''),
+        medical_history: patientData.medical_history || [patientData.diagnosis || ''],
+        current_medications: patientData.current_medications || [],
+        notes: patientData.notes || '',
+        sensitivity_level: patientData.sensitivity_level || sensitivity
+      }));
+      
+      const response = await api.post('patients/batch', batchRequest);
+      return response.data;
+    } catch (error) {
+      throw new Error(`Batch encryption failed: ${error}`);
+    }
+  },
+
   // Get all patients (with optional decryption)
   getPatients: async (decrypt: boolean = true) => {
     try {

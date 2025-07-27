@@ -49,9 +49,9 @@ export default function AlgorithmPage() {
               Temporal Differential Privacy with Quantum-Inspired Multi-Layer Encryption
             </p>
             <div className="flex flex-wrap gap-2 justify-center ">
-              <Badge className='bg-zinc-800 hover:bg-zinc-700 text-xl font-extralight' variant="outline">Version 3.0.0</Badge>
-              <Badge className='bg-zinc-800 hover:bg-zinc-700 text-xl font-extralight' variant="outline">Post-Quantum Secure</Badge>
-              <Badge className='bg-zinc-800 hover:bg-zinc-700 text-xl font-extralight' variant="outline">Research Implementation</Badge>
+              <Badge className='bg-zinc-800 hover:bg-zinc-700 text-xl font-extralight text-white' variant="outline">Version 3.0.0</Badge>
+              <Badge className='bg-zinc-800 hover:bg-zinc-700 text-xl font-extralight text-white' variant="outline">Post-Quantum Secure</Badge>
+              <Badge className='bg-zinc-800 hover:bg-zinc-700 text-xl font-extralight text-white' variant="outline">Research Implementation</Badge>
             </div>
           </div>
         </div>
