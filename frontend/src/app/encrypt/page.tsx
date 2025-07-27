@@ -440,14 +440,14 @@ export default function EncryptPage() {
           
           // Prepare batch data for backend
           const batchData = batch.map((row) => {
-            const apiData: any = {};
-            for (const [csvKey, apiKey] of Object.entries(csvToApiFieldMap)) {
-              apiData[apiKey] = row[csvKey] ?? "";
-            }
-            apiData.patient_id = `P${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
+          const apiData: any = {};
+          for (const [csvKey, apiKey] of Object.entries(csvToApiFieldMap)) {
+            apiData[apiKey] = row[csvKey] ?? "";
+          }
+          apiData.patient_id = `P${Date.now()}_${Math.random().toString(36).substr(2, 5)}`;
             apiData.medical_history = [apiData.medical_condition || ""];
             apiData.current_medications = [apiData.medication || ""];
-            apiData.notes = "";
+          apiData.notes = "";
             
             // Auto-determine sensitivity level based on medical condition
             const medicalCondition = row["Medical Condition"] || row["medical_condition"] || "";
@@ -657,7 +657,7 @@ export default function EncryptPage() {
                                 <div className="space-y-4">
                                   <div className="space-y-2">
                                     <div className="flex items-center gap-2">
-                                      <Label>Privacy Level (ε = {encryptionSettings.epsilon})</Label>
+                                    <Label>Privacy Level (ε = {encryptionSettings.epsilon})</Label>
                                       <TooltipProvider>
                                         <Tooltip>
                                           <TooltipTrigger asChild>
@@ -882,16 +882,16 @@ export default function EncryptPage() {
                       <div className="text-2xl font-bold text-black mb-2">CSV Data Preview (first 5 rows)</div>
                       {csvPreview.length > 0 ? (
                         <>
-                          <table className="min-w-full text-lg text-left text-black">
-                            <thead>
-                              <tr>
-                                {Object.keys(csvPreview[0]).map((key) => (
+                        <table className="min-w-full text-lg text-left text-black">
+                          <thead>
+                            <tr>
+                              {Object.keys(csvPreview[0]).map((key) => (
                                   <th key={key} className="px-4 py-2 border-b border-zinc-700 font-semibold">{key}</th>
-                                ))}
+                              ))}
                                 <th className="px-4 py-2 border-b border-zinc-700 font-semibold">Auto-Detected Sensitivity</th>
-                              </tr>
-                            </thead>
-                            <tbody>
+                            </tr>
+                          </thead>
+                          <tbody>
                               {csvPreview.map((row, idx) => {
                                 const medicalCondition = row["Medical Condition"] || row["medical_condition"] || "";
                                 const autoSensitivity = getSensitivityLevelForCondition(medicalCondition);
@@ -903,20 +903,20 @@ export default function EncryptPage() {
                                 };
                                 
                                 return (
-                                  <tr key={idx} className="border-b border-zinc-700">
-                                    {Object.values(row).map((val, i) => (
+                              <tr key={idx} className="border-b border-zinc-700">
+                                {Object.values(row).map((val, i) => (
                                       <td key={i} className="px-4 py-2">{String(val)}</td>
-                                    ))}
+                                ))}
                                     <td className="px-4 py-2">
                                       <Badge className={`${sensitivityColors[autoSensitivity as keyof typeof sensitivityColors]} font-semibold`}>
                                         {autoSensitivity}
                                       </Badge>
                                     </td>
-                                  </tr>
+                              </tr>
                                 );
                               })}
-                            </tbody>
-                          </table>
+                          </tbody>
+                        </table>
                           <div className="mt-4 p-4 bg-blue-50 rounded-lg">
                             <h3 className="text-lg font-semibold text-blue-900 mb-2">Sensitivity Level Auto-Detection</h3>
                             <p className="text-blue-800 text-sm">
@@ -995,7 +995,7 @@ export default function EncryptPage() {
                             <div className="space-y-4">
                               <h3 className="text-lg font-semibold text-blue-800 text-center">Encryption Process</h3>
                               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                                {encryptionSteps.map((step, idx) => (
+                          {encryptionSteps.map((step, idx) => (
                                   <div key={step.label} className="flex flex-col items-center">
                                     <div className={`w-full h-16 flex items-center justify-center text-sm font-bold border-2 transition-all duration-300 rounded-lg 
                                       ${currentEncryptionStep === idx 
@@ -1003,9 +1003,9 @@ export default function EncryptPage() {
                                         : currentEncryptionStep > idx 
                                         ? 'bg-green-500 border-green-400 text-white' 
                                         : 'bg-gray-200 border-gray-300 text-gray-500'}`}
-                                    >
-                                      {step.label}
-                                    </div>
+                              >
+                                {step.label}
+                              </div>
                                     <span className={`mt-2 text-xs font-medium text-center w-full block 
                                       ${currentEncryptionStep === idx 
                                         ? 'text-blue-600 font-bold' 
@@ -1014,9 +1014,9 @@ export default function EncryptPage() {
                                         : 'text-gray-500'}`}>
                                       {step.name}
                                     </span>
-                                  </div>
-                                ))}
-                              </div>
+                            </div>
+                          ))}
+                        </div>
                             </div>
 
                             {/* Status Message */}
